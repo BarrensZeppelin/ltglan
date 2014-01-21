@@ -45,34 +45,32 @@
 	
 	
 	//hvis spilleren allerede er i et hold, die - TEST!!!
-	$query = mysql_query("SELECT * FROM deltagere WHERE guestID=".$userid." AND tournamentID=".$tournament_id);
+	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=".$userid." AND tournament_id=".$tournament_id);
 	if(mysql_num_rows($query)>=1) {
 		header("refresh: 3; ./");
 		die("Du er allerede en del af et hold, og kan derfor ikke acceptere invationer.");
 	}
 	
 	//Tjek sa om holdet er fyldt op(?) - TEST!!!
-	if(mysql_num_rows(mysql_query("SELECT * FROM deltagere WHERE tournamentID=".$tournament_id." AND teamID=".$team_id))==$max_spillere) {
+	if(mysql_num_rows(mysql_query("SELECT * FROM deltagere WHERE tournament_id=".$tournament_id." AND team_id=".$team_id))==$max_spillere) {
 		header("refresh: 3; ./");
 		die("Dette hold er allerede fyldt op.");
 	}
 	
 	
 	//Find pladsen hvor brugeren skal skrives ind
-	$positionquery = mysql_query("SELECT MAX(pos) FROM deltagere WHERE tournamentID=".$tournament_id." AND teamID=".$team_id);
+	$positionquery = mysql_query("SELECT MAX(pos) FROM deltagere WHERE tournament_id=$tournament_id AND team_id=$team_id");
 	$pos = mysql_result($positionquery,0)+1;
 	
 	//Tilfoj den nye spiller til holdet
-	/*mysql_query("UPDATE ". $turnering_db_navn ." SET $column='". $userid ."'
-				 WHERE teamid='". $team_id . "'");*/
-	mysql_query("INSERT INTO deltagere (guestID, tournamentID, teamID, pos)
-				VALUES (".$userid.", ".$tournament_id.", ".$team_id.", ".$pos.")");
+	mysql_query("INSERT INTO deltagere (guest_id, tournament_id, team_id, pos)
+				VALUES ($userid, $tournament_id, $team_id, $pos)") or die(mysql_error());
 	
 	if(($pos+1) == $max_spillere) {
 		mysql_query("UPDATE teams SET teamstatus='Accepted'
 					WHERE id='". $team_id . "'");
 	}
 	
-	header("Location: ./");
+	header("refresh: 3; ./");
 	die("Du er nu medlem af holdet " . $team_navn);
 ?>

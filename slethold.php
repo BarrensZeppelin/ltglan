@@ -2,7 +2,7 @@
 	$allowIncludes = true;
 	require "login/includes.php";
 
-	if(!verify_login()) {header("Location: ./");}
+	if(!verify_login()) {header("refresh 2; ./");die("Du er ikke logget ind.");}
 	
 	
 	if(!isset($_GET["tid"], $_GET["id"])) {
@@ -26,17 +26,15 @@
 	
 	
 	$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_SESSION['billetnr']));
-	if($row['leaderID'] == $bruger['id']) {
-		mysql_query("DELETE FROM teams WHERE id='" . $id . "'");
-		mysql_query("DELETE FROM deltagere WHERE teamID=". $id);
-		mysql_query("DELETE FROM invites WHERE team_id='" . $id . "' AND tournament_id='" . $tid . "'");
-		mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $row["navn"] . "%" . $turnering_navn . "%'");
-
-		echo mysql_error();
+	if($row['leader_id'] == $bruger['id']) {
+		mysql_query("DELETE FROM teams WHERE id='" . $id . "'") or die(mysql_error());
+		mysql_query("DELETE FROM deltagere WHERE team_id=". $id) or die(mysql_error());
+		mysql_query("DELETE FROM invites WHERE team_id='" . $id . "' AND tournament_id='" . $tid . "'") or die(mysql_error());
+		mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $row["navn"] . "%" . $turnering_navn . "%'") or die(mysql_error());
 		
 		
-		header("Location: ./");
-		die("<br/>Dit hold er blevet slettet. Du omdirigeres til hovedsiden om 3 sekunder.");
+		header("refresh: 3; ./");
+		die("Dit hold er blevet slettet. Du omdirigeres til hovedsiden om 3 sekunder.");
 	}
 	
 	

@@ -15,7 +15,7 @@
 			if(isset($_POST['navn'.$i])) {
 				if($_POST['navn'.$i]!=0 && $_POST['navn'.$i]!="") {
 					//Tjek om der allerede findes en besked til denne spiller
-					$query = mysql_query("SELECT * FROM beskeder WHERE modtager=".$_POST['navn'.$i]);
+					$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id=".$_POST['navn'.$i]);
 					$test = 0;
 					
 					$holdnavn = mysql_result(mysql_query("SELECT navn FROM teams WHERE id='". $_GET['id']."'"),0);
@@ -24,9 +24,13 @@
 					while($row = mysql_fetch_array($query)) {
 						if(strpos($row['indhold'], $turnering['navn'])!=false and strpos($row['indhold'], $holdnavn)!=false) {
 							$test = 1;
+							
+							$deltagernavn = mysql_result(mysql_query("SELECT navn FROM guests WHERE id=". $_POST['navn'.$i]), 0);
+							echo "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende.<br/>";
 						}
 						
 					}
+					
 					if($test == 0) {
 						//Lav en ny invitation
 						$hash = md5(time() . rand());
@@ -47,16 +51,17 @@
 						
 						
 						
-						mysql_query("INSERT INTO beskeder (id, modtager, indhold, laest)
-									 VALUES ('". ($max_id+1) ."', '". $leaderid ."', 'Du inviterede ". $modtagernavn ." til $holdnavn', '0')");
-						echo mysql_error();
-						mysql_query("INSERT INTO beskeder (id, modtager, indhold, laest)
-									 VALUES ('" . $max_id . "', '" . $modtager . "', 'Du er blevet inviteret til at spille for holdet " . $holdnavn . " i ". $turnering['navn'] ."-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=" . $hash . "\'>her</a>', '0')");
+						mysql_query("INSERT INTO beskeder (modtager_id, indhold, laest)
+									 VALUES ($leaderid, 'Du inviterede $modtagernavn til $holdnavn', 0)") or die(mysql_error());
+						mysql_query("INSERT INTO beskeder (modtager_id, indhold, laest)
+									 VALUES ($modtager, 'Du er blevet inviteret til at spille for holdet $holdnavn i ". $turnering['navn'] ."-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=" . $hash . "\'>her</a>', '0')");
 					}
 				}
 			}
 		}
-		header("Location: ./");
+		
+		header("refresh: 2; ./");
+		exit;
 	}
 ?>
 
