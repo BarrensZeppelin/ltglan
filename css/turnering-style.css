@@ -1,0 +1,119 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*Turneringer.html*/
+#wrapper-turnering-alt{ /*Rammen til alt på siden*/
+	width:1024px;
+	height:auto;
+	display: inline-block;
+}
+
+#wrapper-turneringsoversigt{ /*Rammen til den venstre-del af siden*/
+	width:603px;
+	height:auto;
+	float:left;
+}
+
+/*Overskriften til turneringssiden*/
+#turnering-overskrift{
+	width:542;
+	height:35px;
+	margin-left:61px;
+	border-bottom:1px solid #666;
+}
+
+p#t-overskrift{
+	margin-top:0px;
+	font: 30px Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+/*Turnerings-billederne - Gaelder alle kategorierne*/
+.turnerings-billede{ /*Gaelder for alle billederne på turnerings-siden*/
+	width:542px;
+	height:100px;
+	border-radius:10px;
+	margin-left:61px;
+	padding-top:30px;
+}
+
+.turnerings-billede#turnerings-billede-leagueoflegends{ /*Gaelder for alle billederne på turnerings-siden*/
+	padding-top:9px !important;
+}
+
+.turnerings-billede img{ /*Gaelder for alle billederne på turnerings-siden*/
+	border-radius:10px;
+	border:double 1px #CCC;
+}
+
+.turnerings-billede img:hover{ /*Gaelder for alle billederne på turnerings-siden*/
+	cursor:pointer;
+	opacity:0.6;
+	border-width:2px;
+}
+
+/*Informations-boksen til hoejre*/
+#turnering-informationer{
+	width:420px;
+	height:auto;
+	float:left;
+	margin-left:1px;
+	margin-top:0px;
+}
+
+#wrapper-turnering-info-overskrift{
+	width:298px;
+	height:35px;
+	margin:auto;
+	border-bottom:1px solid #666;
+}
+
+#wrapper-nyheder{
+	width:298px;
+	height:26px;
+	margin-top:10px;
+}
+
+#wrapper-nyheder span{
+	cursor:default;
+	font:30px FrizQuadrata;
+}
+
+.turnering-info{
+	width:250px;
+	height:331px;
+	margin:auto;
+	background-image:url(../imgs/login-baggrund.jpg);
+	font:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-size:14px;
+	color: #000;
+	text-decoration:none;
+	padding-left:22px;
+	padding-right:26px;
+	padding-top:15px;
+	padding-bottom:15px;
+	box-shadow: 0px 0px 15px 5px #333;
+	border-radius:10px;
+	margin-top:10px;
+	overflow: auto;
+}
+
+.besked-unread {
+	border: 3px solid black;
+	text-align: left;
+	padding: 5px;
+	width: 230px;
+	margin: 5px;
+	background-color: rgba(100,100,100,0.5);
+}
+
+.besked-read {
+	border: 1px solid black;
+	border-radius: 5px;
+	text-align: left;
+	padding: 5px;
+	width: 230px;
+	margin:5px;
+	background-color: rgba(100,100,100,0.5);
+}

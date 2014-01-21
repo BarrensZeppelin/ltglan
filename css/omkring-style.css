@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*Omkring.html*/
+#wrapper-omkring-alt{ /*Rammen til alt på siden*/
+	width:1024px;
+	height:auto;	
+}
+
+#wrapper-omkring-oversigt{ /*Rammen til den venstre-del af siden*/
+	width:603px;
+	height:auto;
+	float:left;
+}
+
+p.o-overskrift{
+	margin-top:0px;
+	font: 30px Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+.omkring-overskrift{
+	width:542px;
+	height:35px;
+	margin-left:61px;
+	margin-top:40px;
+	border-bottom:1px solid #666;
+}
+
+.omkring-overskrift#omkring-overskrift-no-margin{
+	margin-top:0px !important;
+}
+
+.wrapper-o-tekst{
+	width:542px;
+	height:350px;
+	margin-left:61px;
+}
+
+/*Informations-boksen til hoejre*/
+#omkring-informationer{
+	width:420px;
+	height:auto;
+	float:left;
+	margin-left:1px;
+	margin-top:0px;
+}
+
+#wrapper-omkring-info-overskrift{
+	width:298px;
+	height:35px;
+	margin:auto;
+	border-bottom:1px solid #666;
+}
+
+#wrapper-nyheder{
+	width:298px;
+	height:26px;
+	margin-top:10px;
+}
+
+#wrapper-nyheder span{
+	cursor:default;
+	font:30px FrizQuadrata;
+}

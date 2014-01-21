@@ -1,0 +1,59 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*------------*/
+#social_side_links {
+	width:48px;
+	height:164px;
+	display:block;
+	list-style:none;
+    position: absolute;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:0px !important;
+	padding-bottom:0px;
+	top: 25%;
+    left: 0px;
+    background: -webkit-gradient(linear, left top, left bottom, from( #555 ), to( #111 ), color-stop( 50%, #444 ), color-stop( 50%, #333 ));
+    background: -webkit-linear-gradient(#555, #444 50%, #333 50%, #111);
+    background: -moz-linear-gradient(#555, #444 50%, #333 50%, #111);
+    background: -ms-linear-gradient(#555, #444 50%, #333 50%, #111);
+    background: -o-linear-gradient(#555, #444 50%, #333 50%, #111);
+    background: linear-gradient(#555, #444 50%, #333 50%, #111);
+    border-width: 2px 2px 2px 0px;
+    border-style: groove;
+    border-color: #777 #888 #999;
+    -webkit-border-top-right-radius: 6px;
+    -moz-border-top-right-radius: 6px;
+    border-top-right-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    -moz-border-bottom-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+#social_side_links li{
+    -webkit-border--radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+	margin-top:5px;
+	display:block;
+	list-style:none;
+	background-image:none;
+}
+
+#social_side_links li a {
+    -webkit-border--radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+#social_side_links li a img {
+	display:block;
+	list-style:none;
+}
+
+#social_side_links li a:hover img {
+	display:block;
+	list-style:none;
+	padding:0px;
+}

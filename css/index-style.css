@@ -1,0 +1,372 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*Index og forside*/
+/*Venstre side af index og forsiden*/
+#forside-v{
+	width:375px;
+	height:630px;
+	float:left;
+	padding-left:115px;
+	padding-right:110px;
+	line-height:normal;
+	font:Arial, Helvetica, sans-serif;
+}
+
+#velkommen{
+	font-size:30px;
+	font-weight:bold;
+}
+
+#velkommen-tekst{
+	width:375px;
+	height:595px;
+	white-space:normal;
+}
+
+#velkommen-tekst span{
+	white-space:normal;
+	font-size:18px
+}
+
+/*Hoejre side af index og forsiden*/
+#forside-h{
+	width:423px;
+	height:630px;
+	margin-left:1px;
+	float:left;
+}
+
+/*De 2 "grå" bokse i hoejre side når man er logget ind*/
+/*øverste boks*/
+.info1{
+	width:250px;
+	height:150px;
+	background-image:url(../imgs/login-baggrund.jpg);
+	font:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-size: 14px;
+	color:#000;
+	text-decoration: none;
+	padding-left:22px;
+	padding-right:26px;
+	padding-top:15px;
+	margin-bottom:40px;
+	box-shadow: 0px 0px 15px 5px #CCC;
+	border-radius:10px;
+}
+/*nederste boxz*/
+#info2{
+	height:290px !important;
+}
+
+/*Form når man skal logge ind på forsiden*/
+form#login, form#opret{
+	width:250px;
+	height:150px;
+	background-image:url(../imgs/login-baggrund.jpg);
+	font-weight:bold;
+	font-size: 14px;
+	color:#000;
+	text-decoration: none;
+	padding-left:22px;
+	padding-right:26px;
+	padding-top:15px;
+	margin-bottom:40px;
+	box-shadow: 0px 0px 15px 5px #CCC;
+	border-radius:10px;
+}
+
+input[type=password], input[type=text]{
+	width:250px;
+	display:block;
+	height: 15px; /*Ændring af denne vil ændre på input tags'ene*/
+}
+
+input[type=submit]{
+	width:255px;
+	display:block;
+	height: 25px; /*Ændring af denne vil ændre på input tags'ene*/
+}
+
+option{
+	width:auto;
+}
+
+form#opret{ /*Opret sig på forsiden*/
+	height:290px !important;
+	
+}
+
+#klasse{
+	width:255px;
+}
+
+/*Turneringer.html*/
+#wrapper-turnering-alt{ /*Rammen til alt på siden*/
+	width:1024px;
+	height:1800px;	
+}
+
+#wrapper-turneringsoversigt{ /*Rammen til den venstre-del af siden*/
+	width:603px;
+	height:1800px;
+	float:left;
+}
+
+/*Overskriften til turneringssiden*/
+#turnering-overskrift{
+	width:542;
+	height:35px;
+	margin-left:61px;
+	border-bottom:1px solid #666;
+}
+
+p#t-overskrift{
+	margin-top:0px;
+	font: 30px Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+/*Turnerings-billederne - Gaelder alle kategorierne*/
+.turnerings-billede{ /*Gaelder for alle billederne på turnerings-siden*/
+	width:542px;
+	height:100px;
+	border-radius:10px;
+	margin-left:61px;
+	padding-top:30px;
+}
+
+.turnerings-billede#turnerings-billede-leagueoflegends{ /*Gaelder for alle billederne på turnerings-siden*/
+	padding-top:9px !important;
+}
+
+.turnerings-billede img{ /*Gaelder for alle billederne på turnerings-siden*/
+	border-radius:10px;
+	box-shadow: 0px 0px 15px 5px #999;
+	border:double 1px #CCC;
+}
+
+.turnerings-billede img:hover{ /*Gaelder for alle billederne på turnerings-siden*/
+	cursor:pointer;
+	opacity:0.6;
+	border-width:2px;
+}
+
+/*Informations-boksen til hoejre*/
+#turnering-informationer{
+	width:420px;
+	height:1800px;
+	float:left;
+	margin-left:1px;
+	margin-top:0px;
+}
+
+#wrapper-turnering-info-overskrift{
+	width:298px;
+	height:35px;
+	margin:auto;
+	border-bottom:1px solid #666;
+}
+
+#wrapper-nyheder{
+	width:298px;
+	height:26px;
+	margin-top:10px;
+}
+
+#wrapper-nyheder span{
+	cursor:default;
+	font:30px FrizQuadrata;
+}
+
+.turnering-info{
+	width:250px;
+	height:331px;
+	margin:auto;
+	background-image:url(../imgs/login-baggrund.jpg);
+	font:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-size:14px;
+	color:#000;
+	text-decoration:none;
+	padding-left:22px;
+	padding-right:26px;
+	padding-top:15px;
+	padding-bottom:15px;
+	box-shadow: 0px 0px 15px 5px #333;
+	border-radius:10px;
+	margin-top:10px;
+}
+
+/*Galleri.html*/ /*Alle galleri-siderne*/
+/*de 4 fire bokse som vil indeholde 4 billeder på langs*/
+.wrapper-galleri-bokse{
+	width:1024px;
+	height:200px;
+	margin-top:0px;
+}
+
+.wrapper-galleri-bokse1{
+	width:1024px;
+	height:150px;
+	margin-top:0px;
+}
+
+/*de fire bokse på vandret linje*/
+.wrapper-bokse-margin{
+	width:750px; /*width på .wrapper-bokse x4 = 600px + (50px * 3) = 750px*/
+	height:150px; /*Samme som i .wrapper-bokse*/
+	margin:auto;
+	margin-bottom:50px;
+}
+
+.wrapper-bokse-margin#no-margin{ /*Ingen margin til den sidste boks*/
+	margin-bottom:0px !important;
+}
+
+.wrapper-bokse{
+	width:150px;
+	height:150px; /*Samme størrelse som .wrapper-galleri-bokse*/
+	float:left;
+	margin-left:50px;
+	border-radius:10px;
+	box-shadow: 0px 0px 15px 5px #999;
+}
+
+.wrapper-bokse#no-margin{ /*Ingen margin til den første boks*/
+	margin-left:0px !important;
+}
+
+.wrapper-bokse img{
+	border-radius:10px;
+	border:none;
+}
+
+.wrapper-bokse img:hover{
+	opacity:0.7;
+}
+
+/*galleri menu - frem og tilbage*/
+#wrapper-billede-menu{
+	width:1024px;
+	height:30px;
+	padding-top:30px;
+	margin-top:1px;
+}
+
+#wrapper-billede-menu-margin{
+	width:228px; /*width i .billede-menu = (64px * 2) + 100px i .billede-menu#pages = 228px*/
+	height:30px;
+	margin:auto;
+}
+
+.billede-menu{
+	width:64px;
+	height:30px;
+	float:left;
+}
+
+.billede-menu img{
+	border:none;
+}
+
+.billede-menu a{
+	text-decoration:none;
+	border:none;
+}
+
+.billede-menu#pages{
+	width:100px !important;
+}
+
+.billede-menu#pages p{
+	font:Arial, Helvetica, sans-serif;
+	font-size:23px;
+	color:#FFF;
+	margin:0px;
+}
+
+/*Omkring.html*/
+#wrapper-omkring-alt{ /*Rammen til alt på siden*/
+	width:1024px;
+	height:1800px;	
+}
+
+#wrapper-omkring-oversigt{ /*Rammen til den venstre-del af siden*/
+	width:603px;
+	height:1800px;
+	float:left;
+}
+
+p.o-overskrift{
+	margin-top:0px;
+	font: 30px Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+.omkring-overskrift{
+	width:542px;
+	height:35px;
+	margin-left:61px;
+	margin-top:40px;
+	border-bottom:1px solid #666;
+}
+
+.omkring-overskrift#omkring-overskrift-no-margin{
+	margin-top:0px !important;
+}
+
+.wrapper-o-tekst{
+	width:542px;
+	height:350px;
+	margin-left:61px;
+}
+
+/*Informations-boksen til hoejre*/
+#omkring-informationer{
+	width:420px;
+	height:1800px;
+	float:left;
+	margin-left:1px;
+	margin-top:0px;
+}
+
+#wrapper-omkring-info-overskrift{
+	width:298px;
+	height:35px;
+	margin:auto;
+	border-bottom:1px solid #666;
+}
+
+#wrapper-nyheder{
+	width:298px;
+	height:26px;
+	margin-top:10px;
+}
+
+#wrapper-nyheder span{
+	cursor:default;
+	font:30px FrizQuadrata;
+}
+
+.omkring-info{
+	width:250px;
+	height:331px;
+	margin:auto;
+	background-image:url(../imgs/login-baggrund.jpg);
+	font:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-size:14px;
+	color:#000;
+	text-decoration:none;
+	padding-left:22px;
+	padding-right:26px;
+	padding-top:15px;
+	padding-bottom:15px;
+	box-shadow: 0px 0px 15px 5px #333;
+	border-radius:10px;
+	margin-top:10px;
+}
+
+/*Kontakt.html*/

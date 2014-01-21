@@ -1,0 +1,367 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*Dette dokument linkes alle siderne til, da der indeholdes banneret,menuen og footeren, samt midten af siden. - altså generelle ting, som er ens for alle siderne*/
+
+/*Body &amp; Wrapper*/
+body{
+	margin:0px;
+	padding:0px;
+	overflow-y:scroll; /*Kunstig scroll-bar*/
+	background-color:#000000;
+}
+
+#wrapper{ /*Rammen til det hele - alle sider */
+	width:1024px;
+	height:auto;
+	margin:auto;
+	background-image:url(../imgs/wrapper-baggrund.png);
+	background-repeat:repeat-y;
+	border: 1px solid #CCC;
+	border-top:none;
+	border-bottom:none;
+}
+
+/*Banner*/
+#wrapper-logo-sponsorer{ /*Wrapper til toppen hvori logo + cocio befinder sig*/
+	width:1024px;
+	height:130px;
+}
+
+#logo-ltg{
+	width:335px;
+	height:109px;
+	float:left;
+	padding-left:15px;
+	padding-top:22px;
+}
+
+#logo-ltg img{
+	width:320px; /*Samme som billede størrelsen*/
+	height:84px; /*Samme som billede størrelsen*/
+}
+
+/*De forskellige sponsorer*/
+#sponsor-logo{	
+	width:673px;
+	height:123px;
+	margin-left:1px;
+	float:left;
+	padding-top:8px;
+}
+
+#logo-cocio{
+	width:140px; /*skal matche billedets width*/
+	height:47px; /*skal matche billedets height*/
+	margin-top:2px;
+	margin-left:60px;
+	float:left;
+}
+
+#logo-pc-klinik{
+	width:140px; /*skal matche billedets width*/
+	height:47px; /*skal matche billedets height*/
+	margin-top:2px;
+	margin-left:40px;
+	float:left;
+}
+
+#logo-bravo-internationals{
+	width:187px; /*skal matche billedets width*/
+	height:47px; /*skal matche billedets height*/
+	margin-top:2px;
+	margin-left:40px;
+	float:left;
+}
+
+#logo-shark-gaming{
+	width:547px; /*skal matche billedets width*/
+	height:47px; /*skal matche billedets height*/
+	margin-top:15px;
+	margin-left:60px;
+	float:left;
+}
+
+#logo-js{
+	/*width:560px;*/ /*skal matche billedets width*/
+	height:80px; /*skal matche billedets height*/
+	margin-top:15px;
+	margin-left:5px;
+	margin-right:15px;
+	float:right;
+}
+
+#sponsor-logo img{
+	border-color:#000;
+	box-shadow: 0px 0px 5px 4px #CCC;
+	border-radius:5px;
+}
+
+#sponsor-logo a:hover{
+	cursor:pointer;
+	opacity:0.6;
+}
+
+/*Menu*/
+#wrapper-menu{
+	width:1024px;
+	height:50px;
+	background-image:url(../imgs/menu-baggrund.png);
+	margin:auto;
+	margin-top:1px;
+	
+}
+.navmenu ul {
+	width:auto; /*Skal være auto*/
+	float:left;
+	display: block; /*Menuen er aflang og skal vises som en "block"*/
+	list-style:none;
+	margin:0px;
+	padding:0px;
+} 
+
+li{
+	background-image:url(../menu-baggrund.png);
+	float: left; /*Stiller dem op på række*/
+	cursor:default;
+}
+
+li:hover {
+	background-image:url(../imgs/menu-baggrund-omvendt.png);
+	cursor:default;
+}
+
+.navmenu li{
+	margin-right:50px;
+	cursor:default;
+}
+
+.navmenu li a {
+	height:27px;
+	color: #000; /*Skrift-farve*/
+	display: block;
+	font: 22px/1 myriadbold,Arial,sans-serif;
+	text-decoration:none;
+	white-space:nowrap;
+	font-weight:bold;
+	padding-top:13px;
+	padding-bottom:10px;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+.navmenu li#hjem{
+	margin-left:15px;
+}
+
+.navmenu li#turneringer{
+	cursor:default;
+}
+
+li.aktiv{ /*Gælder når man står på siden*/
+	background-image:url(../imgs/menu-baggrund-omvendt.png);
+}
+
+li#hjem img{
+	margin-top:-7px;
+	margin-right:5px;
+	float:left;
+	border:none;
+}
+
+li#turneringer img{
+	margin-top:-4px;
+	margin-right:7px;
+	float:left;
+	border:none;
+}
+
+
+li#galleri img{
+	margin-top:-5px;
+	margin-right:5px;
+	float:left;
+	border:none;
+}
+
+li#omkring img{
+	margin-top:-5px;
+	margin-right:5px;
+	float:left;
+	border:none;
+}
+
+li#kontakt img{
+	margin-top:-5px;
+	margin-right:7px;
+	float:left;
+	border:none;
+}
+
+li#servere img{
+	margin-top:-5px;
+	margin-right:5px;
+	float:left;
+	border:none;
+}
+
+
+
+----------------------
+/*Dropdown-menu*/
+
+.navemenu li:hover a { /*skal være der, for ikke at fucke op*/
+}
+
+.navmenu ul ul {
+	display:none; /*Dropdown-menuen skal hoveres for at ses*/
+	padding: 0px; /*Samme som i .navmenu ul ul:hover*/
+	position: absolute; /*Dropdown-menuen staar under den valgte menu*/ /*Samme som i .navmenu ul ul:hover*/
+	margin-top:0px;
+	background-color: rgb(56, 54, 54);
+}	
+.navmenu ul ul:hover {
+	display: none;
+	padding: 0px; /*Samme som i .navmenu ul ul*/
+	position: absolute; /*Dropdown-menuen staar under den valgte menu*/ /*Samme som i .navmenu ul ul*/
+}
+.navmenu ul ul li {
+	float: none; 
+	border-top: 2px solid #CCC;
+	position: relative;
+	cursor:auto;
+}
+
+.navmenu li.margin{
+	margin-right:0px !important;
+}
+	
+.navmenu ul ul li:last-child {
+	border-bottom:2px solid #CCC;
+}
+	.navmenu ul ul li a {
+			padding: 10px 26px;
+			color:#fff; /*Tekstfarve til dropdown-menu*/
+		}
+		
+	.navmenu ul ul li a:hover {
+			padding: 10px 26px;
+			color:#000; /*Tekstfarve til dropdown-menu*/	
+		}		
+			
+	.navmenu ul li:hover > ul {
+		display: block;
+	}
+	
+.navemenu ul:after {
+	clear: both; 
+	display: block;
+}
+
+/*Dropdown dropdown menu*/
+.navmenu ul ul ul {
+	position: absolute; /*Dropdown-menuen staar under den valgte menu*/ /*Samme som i .navmenu ul ul:hover*/
+	left:100%;
+	top:-2px;
+}
+
+/*Midten - indstil dog selv height med en id og !important*/
+.wrapper-midten{
+	width:1024px;
+	margin-top:1px;
+	font: 30px Arial, Helvetica, sans-serif;
+	color:#FFFFFF;
+	margin:auto;
+}
+	/*index.html og forside.html*/
+	.wrapper-midten#index-forside{
+		height:630px;
+		padding-top:70px;
+	}
+	
+	/*turnering.html*/
+	.wrapper-midten#turnering{
+		height:auto;
+		padding-top:40px;
+		padding-bottom:40px;
+	}
+	
+	.wrapper-midten#omkring{
+		display:inline-block;
+		height:auto;
+		padding-top:40px;
+	}
+	
+	.wrapper-midten#servere{
+		display:inline-block;
+		height:auto;
+		padding-top:40px;
+	}
+	
+	
+	/*galleri.html (fra 1 til 4)*/
+	.wrapper-midten#galleri{
+		height:700px;
+		padding-top:30px;
+	}
+	
+/*Footer*/
+#footer{
+ width:1024px;
+ height:60px;
+ margin:auto;
+ margin-top:1px;
+ border-top:10px;
+ border-top-color:#999;
+ background-image:url(../imgs/menu-baggrund.png);
+}
+
+#footer-box1{
+ width:300px;
+ height:60px;
+ float:left;
+ background-image:
+}
+
+p#alle-rettigheder{
+ margin:0px;
+ margin-left:10px;
+ margin-top:9px;
+ color:#000;
+ font: myriadbold,Arial,sans-serif;
+ /*font:Arial, Helvetica, sans-serif;*/
+ font-size:16px;
+}
+
+#footer-box2{
+ padding-top:8px;
+ width:422px;
+ height:60px;
+ margin-left:1px;
+ margin-right:1px;
+ float:left;
+}
+
+p#logud{
+ margin:0px;
+ text-decoration:underline;
+ color:#000;
+}
+
+p#footer-kontakt{
+ margin:0px;
+ color:#000;
+}
+
+#footer-box3{
+ width:300px;
+ height:60px;
+ float:left;
+}
+
+#facebook{
+ width:50px;
+ height:50px;
+ margin-left:230px;
+ margin-top:6px;
+}

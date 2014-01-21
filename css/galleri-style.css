@@ -1,0 +1,90 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*Galleri.html*/ /*Alle galleri-siderne*/
+/*de 4 fire bokse som vil indeholde 4 billeder på langs*/
+.wrapper-galleri-bokse{
+	width:1024px;
+	height:200px;
+	margin-top:0px;
+}
+
+.wrapper-galleri-bokse1{
+	width:1024px;
+	height:150px;
+	margin-top:0px;
+}
+
+/*de fire bokse på vandret linje*/
+.wrapper-bokse-margin{
+	width:750px; /*width på .wrapper-bokse x4 = 600px + (50px * 3) = 750px*/
+	height:150px; /*Samme som i .wrapper-bokse*/
+	margin:auto;
+	margin-bottom:50px;
+}
+
+.wrapper-bokse-margin#no-margin{ /*Ingen margin til den sidste boks*/
+	margin-bottom:0px !important;
+}
+
+.wrapper-bokse{
+	width:150px;
+	height:150px; /*Samme størrelse som .wrapper-galleri-bokse*/
+	float:left;
+	margin-left:50px;
+	border-radius:10px;
+	box-shadow: 0px 0px 15px 5px #999;
+}
+
+.wrapper-bokse#no-margin{ /*Ingen margin til den første boks*/
+	margin-left:0px !important;
+}
+
+.wrapper-bokse img{
+	border-radius:10px;
+	border:none;
+}
+
+.wrapper-bokse img:hover{
+	opacity:0.7;
+}
+
+/*galleri menu - frem og tilbage*/
+#wrapper-billede-menu{
+	width:1024px;
+	height:30px;
+	padding-top:30px;
+	margin-top:1px;
+}
+
+#wrapper-billede-menu-margin{
+	width:228px; /*width i .billede-menu = (64px * 2) + 100px i .billede-menu#pages = 228px*/
+	height:30px;
+	margin:auto;
+}
+
+.billede-menu{
+	width:64px;
+	height:30px;
+	float:left;
+}
+
+.billede-menu img{
+	border:none;
+}
+
+.billede-menu a{
+	text-decoration:none;
+	border:none;
+}
+
+.billede-menu#pages{
+	width:100px !important;
+}
+
+.billede-menu#pages p{
+	font:Arial, Helvetica, sans-serif;
+	font-size:23px;
+	color:#FFF;
+	margin:0px;
+}
