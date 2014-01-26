@@ -27,14 +27,16 @@
 	
 	$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_SESSION['billetnr']));
 	if($row['leader_id'] == $bruger['id']) {
+		if($row['avatarpath'] != null && $row['avatarpath'] != "") unlink($row['avatarpath']); // Slet avatar
+	
 		mysql_query("DELETE FROM teams WHERE id='" . $id . "'") or die(mysql_error());
 		mysql_query("DELETE FROM deltagere WHERE team_id=". $id) or die(mysql_error());
 		mysql_query("DELETE FROM invites WHERE team_id='" . $id . "' AND tournament_id='" . $tid . "'") or die(mysql_error());
 		mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $row["navn"] . "%" . $turnering_navn . "%'") or die(mysql_error());
 		
 		
-		header("refresh: 3; ./");
-		die("Dit hold er blevet slettet. Du omdirigeres til hovedsiden om 3 sekunder.");
+		header("refresh: 2; ./");
+		die("Dit hold er blevet slettet. Du omdirigeres til hovedsiden om 2 sekunder.");
 	}
 	
 	

@@ -269,14 +269,14 @@ li#servere img{
 .wrapper-midten{
 	width:1024px;
 	margin-top:1px;
-	font: 30px Arial, Helvetica, sans-serif;
+	font: 30px "Trebuchet MS", Helvetica, sans-serif;
 	color:#FFFFFF;
 	margin:auto;
 }
 	/*index.html og forside.html*/
 	.wrapper-midten#index-forside{
 		height:630px;
-		padding-top:70px;
+		padding-top:30px;
 	}
 	
 	/*turnering.html*/

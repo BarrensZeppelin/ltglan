@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               5.6.12-log - MySQL Community Server (GPL)
+-- Server version:            ltglan   5.6.12-log - MySQL Community Server (GPL)
 -- Server OS:                    Win32
 -- HeidiSQL Version:             8.2.0.4675
 -- --------------------------------------------------------

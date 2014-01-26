@@ -4,9 +4,7 @@
 		exit;
 	}
 	
-	$allowIncludes = true;
-	require 'login/connect.php';
-	require 'login/functions.php';
+	require "login/includes.php";
 	
 	$klassearray = get_klasse_array();
 	$billetnr = $_GET['billetnr'];
@@ -86,7 +84,7 @@
 		}
 		document.getElementById("newplayercontainer" + playerCounter).removeChild(document.getElementById("newplayerbtn"));
 		playerCounter++;
-		document.getElementById("row" + playerCounter).innerHTML = "<td>Spiller " + playerCounter + ":</td><td><select name='klasse" + playerCounter + "' onchange='klasseValgt(" + playerCounter + ");' ><option value=''></option><?php for($i = 0; $i<sizeof($klassearray); $i++) {echo '<option value=\'' . $klassearray[$i] . '\'>' . $klassearray[$i] . '</option>';} ?> </select></td><td id='namecontainer" + playerCounter + "'></td>";
+		document.getElementById("row" + playerCounter).innerHTML = "<td><b>Spiller " + playerCounter + ":</b></td><td><select name='klasse" + playerCounter + "' onchange='klasseValgt(" + playerCounter + ");' ><option value=''></option><?php for($i = 0; $i<sizeof($klassearray); $i++) {echo '<option value=\'' . $klassearray[$i] . '\'>' . $klassearray[$i] . '</option>';} ?> </select></td><td id='namecontainer" + playerCounter + "'></td>";
 		if(playerCounter<maxSpillere) {
 			document.getElementById("row" + playerCounter).innerHTML = document.getElementById("row" + playerCounter).innerHTML + "<td id='newplayercontainer" + playerCounter + "'><span class='newplayer' onclick='newPlayerRow()' id='newplayerbtn'>[+]</span></td>";
 		}
@@ -110,89 +108,93 @@
 	}
 	
 </script>
-	
-		<div style="text-align:center;width:100%;">
-			<span style="font-size:xx-large;">Signup til <?php echo $turnering_navn; ?></span><br />
-			<span style="font-size:x-large;"> Lav et nyt hold:</span><br/>
-			<?php if($max_spillere > 1) {echo "<span>(Denne turninering kræver ". $max_spillere ." spillere. Du kan invitere alle sammen nu, eller vente til senere)</span>";} ?>
-			<br/>
-			<form name="nytHold" action="./join.php?id=<?php echo $id; ?>" method="post" onsubmit="return checkRules()" enctype="multipart/form-data" style="display:inline-block;">
-			<input type="hidden" value="1" name="playercounter" id="playercounter" />
-			<input type="hidden" value="false" name="jsenabled" id="jsenabled" />
+		<link rel="stylesheet" href="css/turnering-style.css" />
+		<div class="join-page" id="outer" style="text-align:center;background-image: url(imgs/tournament-<?php echo $id; ?>-backdrop.png);">
+			<div class="join-page" id="middle">
+				<div class="join-page" id="inner">
+					<span style="font-size:xx-large;">Signup til <?php echo $turnering_navn; ?></span><br />
+					<span style="font-size:x-large;"> Lav et nyt hold:</span><br/>
+					<?php if($max_spillere > 1) {echo "<span>(Denne turninering kræver ". $max_spillere ." spillere. Du kan invitere alle sammen nu, eller vente til senere)</span>";} ?>
+					<br/>
+					<form name="nytHold" action="./join.php?id=<?php echo $id; ?>" method="post" onsubmit="return checkRules()" enctype="multipart/form-data" style="display:inline-block;">
+					<input type="hidden" value="1" name="playercounter" id="playercounter" />
+					<input type="hidden" value="false" name="jsenabled" id="jsenabled" />
 
-				<table>
-					<tbody id="signup_body">
-						<tr>
-							<td>
-								Hold navn:
-							</td>
-							<td>
-								<input style ="width:100%" type="text" name="holdnavn" />
-							</td>
-							<td>
-								<div style="margin-left:10px;display:inline-block;float:left;"> Bordnr: </div> <input style="width:30px" type="text" name="bordnr" />
-							</td>
-						</tr>
-						
-						<tr>
-							<td>
-								Rules & Format:
-							</td>
-							<td style="border: 1px solid black; width: auto; padding:4px;">
-								<?php echo $rules; ?>
-							</td>
-							<td>
-								<input type="checkbox" name="rulesCheckbox" value="rules" /> Accept
-							</td>
-						</tr>
-						
-						<tr>
-							<td>
-								Spiller 1:
-							</td>
-							<td>
-								<select name="klasse1" disabled="true">
-									<?php
-										echo "<option value='" . $user_klasse . "'>" . $user_klasse . "</option>"; //$user_klasse er en variabel som er den klasse som brugeren gaar i.
-									?>
-								</select>
-							</td>
-							<td>
-								<select name="navn1" disabled="true">
-									<?php
-										echo "<option value='" . $navn . "'>" . $navn ."</option>"; //$navn er navnet pa brugeren som er logget ind.
-									?>
-								</select>
-							</td>
-							<td id="newplayercontainer1">
-								<span class='newplayer' onclick="newPlayerRow()" id='newplayerbtn'>[+]</span>
-							</td>
-						</tr>
-						<?php
-							for($i=2; $i<=$max_spillere; $i++) {
-								echo "<tr id='row" . $i . "'></tr>\n";
-							}
-							
-						?>
-						<tr>
-							<td>
-								Avatar:
-							</td>
-							<td style="text-align:center;">
-								Billedet skaleres<br />kvadratisk
-							</td>
-							<td>
-								<input size="1" type="file" name="fileupload" />
-							</td>
-						</tr>
-						<tr>
-							<td />
-							<td style="text-align:center;">
-								<input type="submit" value="Registrer!" />
-							</td>
-						</tr>
-						
-					</tbody>
-				</table>
-			</form>
+						<table>
+							<tbody id="signup_body">
+								<tr>
+									<td>
+										<b>Hold navn:</b>
+									</td>
+									<td>
+										<input style ="width:100%" type="text" name="holdnavn" />
+									</td>
+									<td>
+										<div style="margin-left:50px;display:inline-block;float:left;"> <b>Bordnr:</b> </div> <div style="display:inline-block;margin-left:5px;float:left;"><input style="width:30px" type="text" name="bordnr" /></div>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<b>Rules & Format:</b>
+									</td>
+									<td style="border: 1px solid black; width: auto; padding:4px;">
+										<?php echo $rules; ?>
+									</td>
+									<td>
+										<input type="checkbox" name="rulesCheckbox" value="rules" /> Accept
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<b>Spiller 1:</b>
+									</td>
+									<td>
+										<select name="klasse1" disabled="true">
+											<?php
+												echo "<option value='" . $user_klasse . "'>" . $user_klasse . "</option>"; //$user_klasse er en variabel som er den klasse som brugeren gaar i.
+											?>
+										</select>
+									</td>
+									<td>
+										<select name="navn1" disabled="true">
+											<?php
+												echo "<option value='" . $navn . "'>" . $navn ."</option>"; //$navn er navnet pa brugeren som er logget ind.
+											?>
+										</select>
+									</td>
+									<td id="newplayercontainer1">
+										<span class='newplayer' onclick="newPlayerRow()" id='newplayerbtn'>[+]</span>
+									</td>
+								</tr>
+								<?php
+									for($i=2; $i<=$max_spillere; $i++) {
+										echo "<tr id='row" . $i . "'></tr>\n";
+									}
+									
+								?>
+								<tr>
+									<td>
+										<b>Avatar:</a>
+									</td>
+									<td style="text-align:center;">
+										<i>Billedet skaleres kvadratisk<br/>(Maks. 5MB)</i>
+									</td>
+									<td>
+										<input size="1" type="file" name="fileupload" />
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td style="text-align:center;">
+										<input style="width:100px;margin:auto;" type="submit" value="Registrer!" />
+									</td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
 		</div>

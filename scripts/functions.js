@@ -2,6 +2,13 @@
 
 // Checks password on registration form on front page
 function checkPass() {
+	var bnr = document.forms["opretForm"]["billetnr"].value;
+	if(isNaN(bnr)) {alert("Dit billetnummer er ugyldigt."); return false;}
+	if(bnr.toString().length != 6) {alert("Dit billetnummer er altså 6 cifre langt."); return false;}
+	
+	var navn = document.forms["opretForm"]["navn"].value;
+	if((navn.length) > 30) {alert("Dit navn er for langt, det må højst være på 30 bogstaver."); return false;}
+
 	var x = document.forms["opretForm"]["pass"].value;
 	var y = document.forms["opretForm"]["check_pass"].value;
 	

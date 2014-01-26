@@ -7,14 +7,14 @@
 	width:375px;
 	height:630px;
 	float:left;
-	padding-left:115px;
+	padding-left:30px;
 	padding-right:110px;
 	line-height:normal;
 	font:Arial, Helvetica, sans-serif;
 }
 
 #velkommen{
-	font-size:30px;
+	font-size:36px;
 	font-weight:bold;
 }
 
@@ -26,15 +26,41 @@
 
 #velkommen-tekst span{
 	white-space:normal;
-	font-size:18px
+	font-size:19px
+}
+
+#velkommen-tekst a{
+	color: #FFFFFF;
+	text-decoration:none;
+	
+	text-shadow:1px 1px 2px #6F6965,
+				-1px -1px 2px #6F6965,
+				1px -1px 2px #6F6965,
+				-1px 1px 2px #6F6965,
+				0px 1px 2px #6F6965,
+				1px 0px 2px #6F6965,
+				0px -1px 2px #6F6965,
+				-1px 0px 2px #6F6965;
+}
+
+#velkommen-tekst a:hover{
+	text-shadow:1px 1px 2px #FFFFFF,
+				-1px -1px 2px #FFFFFF,
+				1px -1px 2px #FFFFFF,
+				-1px 1px 2px #FFFFFF,
+				0px 1px 2px #FFFFFF,
+				1px 0px 2px #FFFFFF,
+				0px -1px 2px #FFFFFF,
+				-1px 0px 2px #FFFFFF;
 }
 
 /*Hoejre side af index og forsiden*/
 #forside-h{
-	width:423px;
-	height:630px;
-	margin-left:1px;
-	float:left;
+	/*width:423px;*/
+	/*height:630px;*/
+	margin-top: 0.6em;
+	margin-right: 50px;
+	float:right;
 }
 
 /*De 2 "grå" bokse i hoejre side når man er logget ind*/

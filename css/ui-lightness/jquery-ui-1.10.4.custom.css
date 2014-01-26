@@ -467,7 +467,8 @@ button.ui-button::-moz-focus-inner {
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding: .2em;
+	/*padding: .2em;*/
+	padding: 0;
 	outline: 0;
 }
 .ui-dialog .ui-dialog-titlebar {
@@ -494,7 +495,6 @@ button.ui-button::-moz-focus-inner {
 .ui-dialog .ui-dialog-content {
 	position: relative;
 	border: 0;
-	padding: .5em 1em;
 	background: none;
 	overflow: auto;
 }
@@ -784,7 +784,7 @@ body .ui-tooltip {
 ----------------------------------*/
 .ui-widget {
 	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
-	font-size: 1.1em;
+	/*font-size: 1.1em;*/
 }
 .ui-widget .ui-widget {
 	font-size: 1em;
@@ -799,7 +799,7 @@ body .ui-tooltip {
 .ui-widget-content {
 	border: 1px solid #dddddd;
 	background: #eeeeee url(images/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x;
-	color: #333333;
+	/*color: #333333;*/
 }
 .ui-widget-content a {
 	color: #333333;

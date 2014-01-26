@@ -30,7 +30,7 @@
 		
 		
 		<!--	 	jQuery & jQuery UI			-->
-		<link rel="stylesheet" 	href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
+		<link rel="stylesheet" 	href="css/ui-lightness/jquery-ui-1.10.4.custom.css" />
 		<script 				src="scripts/jquery-2.0.3.js"></script>
 		<script 				src="scripts/jquery-ui-1.10.4.js"></script>
 		

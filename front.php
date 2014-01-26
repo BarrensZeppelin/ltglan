@@ -1,10 +1,10 @@
 <div class="wrapper-midten" id="index-forside">
 	  <div id="forside-v">
 			<div id="velkommen" align="left">
-				<u>Velkommen</u>
+				<span class="text-blur-white">Velkommen</span>
 			</div>
 			<div id="velkommen-tekst">
-				<span>
+				<span class="text-blur-white">
 					Igen i år åbner vi dørene op, for en kæmpe weekend med masser af sjov og selvfølgelig hardcore gaming. 
 
 					Vi ønsker alle en god weekend med håbet om et hyggeligt arrangement. 

@@ -32,10 +32,11 @@
 			header("refresh: 2; ./");
 			die("Dette billetnummer er allerede blevet registreret.");
 		}
-		if(mysql_num_rows(mysql_query("SELECT * FROM billetnr WHERE billetnr='$billet_nr'"))==0) {
+		
+		/*if(mysql_num_rows(mysql_query("SELECT * FROM billetnr WHERE billetnr='$billet_nr'"))==0) {
 			header("refresh: 2; ./");
 			die("Dette billetnummer kunne ikke findes i databasen.");
-		}
+		}*/
 		
 		
 		

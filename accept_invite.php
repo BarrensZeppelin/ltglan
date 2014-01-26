@@ -18,14 +18,12 @@
 	
 	
 	if(mysql_num_rows(mysql_query("SELECT * FROM invites WHERE hash='$hash'"))==0) {
-			header("refresh: 3; ./");
-			die("Denne invitation kunne ikke findes i databasen. Du bliver sendt tilbage til hovedsiden.");
+		header("refresh: 3; ./");
+		die("Denne invitation kunne ikke findes i databasen. Du bliver sendt tilbage til hovedsiden.");
 	}
 	
 	$billetnr = $_SESSION['billetnr'];
-	$query = mysql_query("SELECT * FROM guests WHERE billetnr='$billetnr'");
-	$row = mysql_fetch_array($query);
-	$userid = $row["id"];
+	$userid = mysql_result(mysql_query("SELECT id FROM guests WHERE billetnr=$billetnr"), 0);
 	
 	
 	$query = mysql_query("SELECT * FROM invites WHERE hash='$hash'");
@@ -34,14 +32,9 @@
 	$tournament_id = $row["tournament_id"];
 	
 	
-	$arr = mysql_fetch_array(mysql_query("SELECT * FROM tournaments WHERE id='" . $tournament_id . "'"));
-	//$turnering_db_navn = $arr["db_navn"];
-	$max_spillere = $arr["max_spillere"];
-	
+	$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id='" . $tournament_id . "'"), 0);
 
-	$query = mysql_query("SELECT * FROM teams WHERE id='$team_id'");
-	$row = mysql_fetch_array($query);
-	$team_navn = $row["navn"];
+	$team_navn = mysql_result(mysql_query("SELECT navn FROM teams WHERE id='$team_id'"), 0);
 	
 	
 	//hvis spilleren allerede er i et hold, die - TEST!!!

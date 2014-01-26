@@ -1,7 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
 <!--script src="js/jquery.lint.js" type="text/javascript" charset="utf-8"></script-->
 <link rel="stylesheet" href="./css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
-<script src="./css/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function(){
