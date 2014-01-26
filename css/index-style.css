@@ -89,7 +89,6 @@
 /*Form når man skal logge ind på forsiden*/
 form#login, form#opret{
 	width:250px;
-	height:150px;
 	background-image:url(../imgs/login-baggrund.jpg);
 	font-weight:bold;
 	font-size: 14px;
@@ -98,9 +97,11 @@ form#login, form#opret{
 	padding-left:22px;
 	padding-right:26px;
 	padding-top:15px;
+	padding-bottom:15px;
 	margin-bottom:40px;
 	box-shadow: 0px 0px 15px 5px #CCC;
 	border-radius:10px;
+	display:inline-block;
 }
 
 input[type=password], input[type=text]{
@@ -119,10 +120,6 @@ option{
 	width:auto;
 }
 
-form#opret{ /*Opret sig på forsiden*/
-	height:290px !important;
-	
-}
 
 #klasse{
 	width:255px;

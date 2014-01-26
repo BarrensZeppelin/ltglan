@@ -24,7 +24,7 @@
 							$test = 1;
 							
 							$deltagernavn = mysql_result(mysql_query("SELECT navn FROM guests WHERE id=". $_POST['navn'.$i]), 0);
-							echo "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende.<br/>";
+							echo "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende eller allerede er medlem af dit hold.<br/>";
 						}
 						
 					}
@@ -50,6 +50,7 @@
 						
 						send_message($leaderid, "Du inviterede $modtagernavn til $holdnavn");
 						send_message($modtager, "Du er blevet inviteret til at spille for holdet $holdnavn i ". $turnering['navn'] ."-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=" . $hash . "\'>her</a>");	
+						echo "$modtagernavn blev inviteret til $holdnavn.<br/>";
 					}
 				}
 			}
@@ -114,7 +115,7 @@
 	
 		$( "#dialog" ).dialog({
 			autoOpen: false,
-			height: 650,
+			height: 648,
 			width: 960,
 			modal: true,
 			closeOnEscape: true,
@@ -296,6 +297,7 @@
 							?>
 							
 							<script type="text/javascript">
+								$(document).ready(function() {
 								<?php for($i = 0; $i < $playersinteam; ++$i) { ?>
 									$( "#spiller<?php echo $i?>" ).hover(function() {
 										$( "#spiller<?php echo $i?>klasse" ).css("visibility", "visible");
@@ -303,12 +305,13 @@
 										$( "#spiller<?php echo $i?>klasse" ).css("visibility", "hidden");
 									});
 								<?php } ?>
+								});
 							</script>
 							
 							
 							<?php
 				
-							echo "<div><div style='float:left;display:inline-block;width:100%'><table style='text-align:left;padding: 10px 5px 10px 0;width:100%'>
+							echo "<br/><div id='content' style='display:inline-block;width=100%;'><div style='float:left;display:inline-block;width:100%'><table style='text-align:left;padding: 10px 5px 10px 0;width:100%'>
 									<tbody>
 										". $tcontent ."
 									</tbody>
@@ -317,7 +320,7 @@
 							if($bracketlink != "") {
 								echo "<a href='#' onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=bracket&turl=". $bracketlink ."\")'><img height='50px' src='./imgs/brackets.png' /></a>";
 							}
-							echo "</div></div>";
+							echo "</div>". ($team['leader_id'] == $bruger['id'] && $team["teamstatus"] == "Pending" ? "<br/><span style='display:inline-block;width:100%;text-align:right;'><a onclick='admin_panel(0)'>Admin Panel</a>" : "") ."</span></div>";
 							
 							
 
@@ -325,39 +328,62 @@
 							//Tjek for at se om brugeren er holdleder
 							$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_GET['billetnr']));
 							if($team['leader_id'] == $bruger['id']) {
-								//Admin panel
-								
-								echo "<br /><br /><a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a><br />";
-								
-								
 								if($team['teamstatus']=="Pending") {
-									
-									$tcontent = "";
-									
-									for($i = 2; $i<=$max_players; $i++) {
-										$deltagerquery = mysql_query("SELECT * FROM deltagere WHERE team_id=".$team['id']." AND pos=".($i-1));
-										if( mysql_num_rows($deltagerquery)==0) {//$row['player'.$i] == 0) {
-											$klasser = "";
-											for($k = 0; $k<sizeof($klassearray); $k++) {$klasser = $klasser . '<option value=\'' . $klassearray[$k] . '\'>' . $klassearray[$k] . '</option>';}
+									?>
+									<script type="text/javascript">
+										var html;
+										function admin_panel(func) {
+											if(func == 0) {
+												html = document.getElementById("content").innerHTML;
+												
+												
+												document.getElementById("content").innerHTML = "<?php
+												$tcontent = "";
 										
-											$tcontent = $tcontent . "<tr>
-												<td>Spiller ". $i .":</td>
-												<td><select name='klasse". $i ."' onchange='klasseValgt(".$i.");'><option value=''></option>". $klasser ."</select></td>
-												<td id='namecontainer". $i ."'></td>
-											</tr>";
+												for($i = 2; $i<=$max_players; $i++) {
+													$deltagerquery = mysql_query("SELECT * FROM deltagere WHERE team_id=".$team['id']." AND pos=".($i-1));
+													if( mysql_num_rows($deltagerquery)==0) {//$row['player'.$i] == 0) {
+														$klasser = "";
+														for($k = 0; $k<sizeof($klassearray); $k++) {$klasser = $klasser . '<option value=\'' . $klassearray[$k] . '\'>' . $klassearray[$k] . '</option>';}
+													
+														$tcontent = $tcontent . "<tr> \
+															<td><b>Spiller ". $i ."</b></td> \
+															<td style='padding-left:10px;'><select name='klasse". $i ."' onchange='klasseValgt(".$i.");'><option value=''></option>". $klasser ."</select></td> \
+															<td id='namecontainer". $i ."'></td> \
+														</tr>\ ";
+													}
+												}
+										
+												echo "<form name='editHold' action='./tournaments.php?tid=".$_GET['tid']."&id=".$_GET['id']."' method='post' style='display:inline-block;margin-top:10px;margin-bottom:10px;'> \
+														<span style='font-size:x-large;padding: 0 10px;'>Tilføj resten af spillerne her:</span> \
+														<input type='hidden' value='1' name='edit' /> \
+														<table style='text-align:left;'> \
+															<tbody> \
+																". $tcontent ." \
+															</tbody> \
+														</table> \
+														<input style='width:50%;margin:auto' type='submit' value='Inviter spillere!' /> \
+													</form><br/><a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a><br /><span style='display:inline-block;width:100%;text-align:right;'><a onclick='admin_panel(1)'>Back</a></span>";
+												?>";
+												
+												
+											} else {
+												document.getElementById("content").innerHTML = html;
+												
+												<?php for($i = 0; $i < $playersinteam; ++$i) { ?>
+													$( "#spiller<?php echo $i?>" ).hover(function() {
+														$( "#spiller<?php echo $i?>klasse" ).css("visibility", "visible");
+													}, function() {
+														$( "#spiller<?php echo $i?>klasse" ).css("visibility", "hidden");
+													});
+												<?php } ?>
+											}
 										}
-									}
 									
-									echo "<form name='editHold' action='./tournaments.php?tid=".$_GET['tid']."&id=".$_GET['id']."' method='post' style='display:inline-block;margin-top:20px;'>
-											<span style='font-size:x-large;'>Tilføj resten af spillerne her:</span>
-											<input type='hidden' value='1' name='edit' />
-											<table style='text-align:left;'>
-												<tbody>
-													". $tcontent ."
-												</tbody>
-											</table>
-											<input type='submit' value='Inviter spillere!' />
-										</form>";
+									</script>
+									<?php
+								} else {
+									echo "<br /><a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a>";
 								}
 							}
 							?>

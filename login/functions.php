@@ -61,6 +61,12 @@
 	}
 	
 	
+	function is_using_ie() {
+		$u_agent = $_SERVER['HTTP_USER_AGENT'];
+		if(preg_match('/MSIE/i',$u_agent) || preg_match('/Trident/', $u_agent)) {
+			return true;
+		} else return false;;
+	}
 	
 	
 	

@@ -127,10 +127,10 @@
 										<b>Hold navn:</b>
 									</td>
 									<td>
-										<input style ="width:100%" type="text" name="holdnavn" />
+										<input style="width:100%;height:20px" type="text" name="holdnavn" />
 									</td>
 									<td>
-										<div style="margin-left:50px;display:inline-block;float:left;"> <b>Bordnr:</b> </div> <div style="display:inline-block;margin-left:5px;float:left;"><input style="width:30px" type="text" name="bordnr" /></div>
+										<div style="margin-left:50px;display:inline-block;float:left;"> <b>Bordnr:</b> </div> <div style="display:inline-block;margin-left:5px;float:left;"><input style="width:20px;height:20px" type="text" name="bordnr" /></div>
 									</td>
 								</tr>
 								
@@ -164,9 +164,13 @@
 											?>
 										</select>
 									</td>
+									
 									<td id="newplayercontainer1">
+									<?php if($max_spillere != 1) { ?>
 										<span class='newplayer' onclick="newPlayerRow()" id='newplayerbtn'>[+]</span>
+										<?php } ?>
 									</td>
+									
 								</tr>
 								<?php
 									for($i=2; $i<=$max_spillere; $i++) {
