@@ -1,8 +1,8 @@
 <?php
 	require "login/includes.php";
 	
-	if(is_using_ie()) {
-		die("Stop Internet Explorer legen.");
+	if(browser_is_valid()) {
+		die("Siden understøtter desværre hverken Internet Explorer eller Opera.");
 	}
 	
 	if(isset($_GET['logoff']) || isset($_GET['logout'])) {session_destroy(); header("Location: ./");}

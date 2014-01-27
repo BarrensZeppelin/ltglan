@@ -61,9 +61,9 @@
 	}
 	
 	
-	function is_using_ie() {
+	function browser_is_valid() {
 		$u_agent = $_SERVER['HTTP_USER_AGENT'];
-		if(preg_match('/MSIE/i',$u_agent) || preg_match('/Trident/', $u_agent)) {
+		if(preg_match('/MSIE/i',$u_agent) || preg_match('/Trident/', $u_agent) || preg_match('/Opera/', $u_agent)) {
 			return true;
 		} else return false;;
 	}
