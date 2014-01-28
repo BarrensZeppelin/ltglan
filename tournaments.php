@@ -243,24 +243,34 @@
 	
 	if($_GET['page'] == "team") {
 		if(!isset($_GET['tid'])) {header("Location: ./");}
+		if(!isset($_GET['billetnr'])) {header("Location: ./");}
+		else {$_GET['billetnr'] = mysql_real_escape_string($_GET['billetnr']);}
+		
+		$_GET['tid'] = mysql_real_escape_string($_GET['tid']);
 		
 		$klassearray = get_klasse_array();
 		$max_players = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id = ". $_GET['tid']),0);
 		
 		$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_GET['billetnr']));
 		
-		if($max_players > 1) {	
-			if(isset($_GET['id'])) {
-				$query = mysql_query("SELECT * FROM teams WHERE id = ". $_GET['id']);
-				if(mysql_num_rows($query) != 1) {header("Location: ./");}
+		?>
+		
+		<div class="join-page" id="outer" style="text-align:center;background-image: url(imgs/tournament-<?php echo $_GET['tid']; ?>-backdrop.png);">
+			<div class="join-page" id="middle">
+				<div class="join-page" id="inner">			
+					
+					<?php
+					if($max_players > 1) {
+						if(isset($_GET['id'])) {
+							$_GET['id'] = mysql_real_escape_string($_GET['id']);
+							
+							$query = mysql_query("SELECT * FROM teams WHERE id = ". $_GET['id']);
+							if(mysql_num_rows($query) != 1) {header("Location: ./");}
+							
+							$team = mysql_fetch_array($query);
+							?>
 				
-				$team = mysql_fetch_array($query);
-				?>
-				
-				<script src="scripts/functions.js"></script>
-				<div class="join-page" id="outer" style="text-align:center;background-image: url(imgs/tournament-<?php echo $_GET['tid']; ?>-backdrop.png);">
-					<div class="join-page" id="middle">
-							<div class="join-page" id="inner">
+							<script src="scripts/functions.js"></script>
 							
 							<?php
 							echo "<span class='text-outline-white' style='font-size:xx-large;'>". $team['navn'] ."</span><br />";
@@ -322,7 +332,7 @@
 							}
 							echo "</div>";
 							
-							echo "<div style='display:inline;width:100%'><span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid\")'>Alle Hold</a></span>";
+							echo "<div style='display:inline;width:100%'><span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&billetnr=". $_GET['billetnr'] ."\")'>Alle Hold</a></span>";
 							echo ($team['leader_id'] == $bruger['id'] && $team["teamstatus"] == "Pending" ? "<br/><span style='display:inline;float:right'><a onclick='admin_panel(0)'>Admin Panel</a>" : "") ."</span></div>";
 							echo "</div>";
 							
@@ -389,51 +399,54 @@
 									echo "<br /><a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a>";
 								}
 							}
-							?>
-						</div>
-					</div>
+
+						} else {
+							//rems alle hold op
+							$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $_GET['tid'] ." ORDER BY id DESC");
+							
+							$tcontent = "";
+							while($row = mysql_fetch_array($query)) {
+								$tcontent = $tcontent . "<tr>
+															<td><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $row['id'] ."&billetnr=". $_GET['billetnr'] ."\")'><span class='teamname'>". $row['navn'] ."</span></a></td>
+														</tr>";
+							}
+							
+							if(mysql_num_rows($query)==0) {
+								$tcontent = "<tr>
+												<td>Der er endnu ingen hold tilmeldt til denne turnering.</td>
+											</tr>";
+							}
+							
+							echo "<div><table style='text-align:left;float:left;margin-right:30px;'>
+									<tbody>
+										". $tcontent ."
+									</tbody>
+								</table></div>";
+						}
+					} else {
+						//Rems alle spillere op (til 1-mands turneringer)
+						$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $_GET['tid'] ." ORDER BY id DESC");
+							$tcontent = "";
+							while($row = mysql_fetch_array($query)) {
+								$player = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE id=". $row['leader_id']));
+								$tcontent = $tcontent . "<tr>
+															<td><span class='teamname'>". $row['navn'] ."</span></td><td>". $player['klasse'] ."</td>
+														</tr>";
+							}
+							
+						echo "<div><table style='text-align:left;float:left;margin-right:30px;'>
+								<tbody>
+									". $tcontent ."
+								</tbody>
+							</table></div>";
+					}
+					?>
 				</div>
-			<?php
-			} else {
-				//rems alle hold op
-				$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $_GET['tid'] ." ORDER BY id DESC");
-				
-				$tcontent = "";
-				while($row = mysql_fetch_array($query)) {
-					$tcontent = $tcontent . "<tr>
-												<td><a href='./?p=tournaments&page=team&tid=". $_GET['tid'] ."&id=". $row['id'] ."'><span class='teamname'>". $row['navn'] ."</span></a></td>
-											</tr>";
-				}
-				
-				if(mysql_num_rows($query)==0) {
-					$tcontent = "<tr>
-									<td>Der er endnu ingen hold tilmeldt til denne turnering.</td>
-								</tr>";
-				}
-				
-				echo "<div><table style='text-align:left;float:left;margin-right:30px;'>
-						<tbody>
-							". $tcontent ."
-						</tbody>
-					</table></div>";
-			}
-		} else {
-			//Rems alle spillere op (til 1-mands turneringer)
-			$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $_GET['tid'] ." ORDER BY id DESC");
-				$tcontent = "";
-				while($row = mysql_fetch_array($query)) {
-					$player = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE id=". $row['leader_id']));
-					$tcontent = $tcontent . "<tr>
-												<td><span class='teamname'>". $row['navn'] ."</span></td><td>". $player['klasse'] ."</td>
-											</tr>";
-				}
-				
-			echo "<div><table style='text-align:left;float:left;margin-right:30px;'>
-					<tbody>
-						". $tcontent ."
-					</tbody>
-				</table></div>";
-		}
+			</div>
+		</div>			
+					
+		<?php
+		
 		
 	} else if($_GET["page"] == "bracket") {
 		?> <script src="https://raw.github.com/challonge/challonge-jquery-plugin/master/jquery.challonge.js"></script> <?php

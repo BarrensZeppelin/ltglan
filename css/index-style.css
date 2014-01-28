@@ -145,11 +145,6 @@ option{
 	border-bottom:1px solid #666;
 }
 
-p#t-overskrift{
-	margin-top:0px;
-	font: 30px Arial, Helvetica, sans-serif;
-	color: #FFFFFF;
-}
 
 /*Turnerings-billederne - Gaelder alle kategorierne*/
 .turnerings-billede{ /*Gaelder for alle billederne på turnerings-siden*/

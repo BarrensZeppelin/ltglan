@@ -1,10 +1,10 @@
 <div class="wrapper-midten" id="index-forside">
 	  <div id="forside-v">
 			<div id="velkommen" align="left">
-				<span class="text-blur-white">Velkommen</span>
+				<span>Velkommen</span>
 			</div>
 			<div id="velkommen-tekst">
-				<span class="text-blur-white">
+				<span>
 					Igen i år åbner vi dørene op, for en kæmpe weekend med masser af sjov og selvfølgelig hardcore gaming. 
 
 					Vi ønsker alle en god weekend med håbet om et hyggeligt arrangement. 
@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		
-		<div id="forside-h" class="hentai">                        
+		<div id="forside-h">                        
 				<form action="./" method="post" id="login">
 					<label>
 						<span>Billetnummer:</span><input type="text" name="billetnr" />
