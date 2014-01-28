@@ -332,8 +332,8 @@
 							}
 							echo "</div>";
 							
-							echo "<div style='display:inline;width:100%'><span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&billetnr=". $_GET['billetnr'] ."\")'>Alle Hold</a></span>";
-							echo ($team['leader_id'] == $bruger['id'] && $team["teamstatus"] == "Pending" ? "<br/><span style='display:inline;float:right'><a onclick='admin_panel(0)'>Admin Panel</a>" : "") ."</span></div>";
+							echo "<br/><div style='display:inline-block;width:100%;margin-top:5px;'><span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&billetnr=". $_GET['billetnr'] ."\")'>Alle Hold</a></span>";
+							echo ($team['leader_id'] == $bruger['id'] && $team["teamstatus"] == "Pending" ? "<span style='display:inline;float:right'><a onclick='admin_panel(0)'>Admin Panel</a>" : "") ."</span></div>";
 							echo "</div>";
 							
 
