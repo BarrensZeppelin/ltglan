@@ -320,8 +320,11 @@
 							if($bracketlink != "") {
 								echo "<a href='#' onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=bracket&turl=". $bracketlink ."\")'><img height='50px' src='./imgs/brackets.png' /></a>";
 							}
-							echo "</div>". ($team['leader_id'] == $bruger['id'] && $team["teamstatus"] == "Pending" ? "<br/><span style='display:inline-block;width:100%;text-align:right;'><a onclick='admin_panel(0)'>Admin Panel</a>" : "") ."</span></div>";
+							echo "</div>";
 							
+							echo "<div style='display:inline;width:100%'><span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid\")'>Alle Hold</a></span>";
+							echo ($team['leader_id'] == $bruger['id'] && $team["teamstatus"] == "Pending" ? "<br/><span style='display:inline;float:right'><a onclick='admin_panel(0)'>Admin Panel</a>" : "") ."</span></div>";
+							echo "</div>";
 							
 
 							// Admin panel skal vises
