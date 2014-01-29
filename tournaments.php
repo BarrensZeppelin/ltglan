@@ -277,7 +277,7 @@
 							$status_string = "Bordnr.: <b>". $team['bord'] ."</b><br /> Status: <b><span class='text-outline-black' style='color: ". ($team['teamstatus'] == "Pending" ? "yellow" : "green") .";'>". $team['teamstatus'] ."</b>";
 							if($team['avatarpath'] != null) {
 								echo "<div style='display:inline-block'><div style='display:inline-block;float:left;'><img style='width:125px;height:125px;' src='". $team['avatarpath'] ."' /></div><div style='display:inline-block;float:left;width:125px;margin-top:2em;margin-left:10px;'>$status_string</div></div>";
-							} else echo $status_string ."<br />";
+							} else echo $status_string;
 							
 							$tcontent = "";
 							$playersinteam = 0;
@@ -287,16 +287,16 @@
 								echo mysql_error();
 								
 								if(mysql_num_rows($deltagerquery)!=1) {
-									$tcontent = $tcontent . "<tr><td><b>Spiller ". ($i+1) ."</b></td><td style='padding-left: 10px;'><i>Pending/Not Invited</i></td></tr>";
+									$tcontent = $tcontent . "<tr><td style='text-align:right;'><b>Spiller ". ($i+1) ."</b></td><td style='padding-left: 10px;'><i>Pending/Not Invited</i></td></tr>";
 								} else {
 									$deltager = mysql_fetch_array($deltagerquery);
 									$player = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE id=".$deltager['guest_id']));
 									echo mysql_error();
 									
 									if($i==0) {
-										$tcontent = $tcontent . "<tr><td><b>Leader</b></td>";
+										$tcontent = $tcontent . "<tr><td style='text-align:right;'><b>Leader</b></td>";
 									} else {
-										$tcontent = $tcontent . "<tr><td><b>Spiller ". ($i+1) ."</b></td>";
+										$tcontent = $tcontent . "<tr><td style='text-align:right;'><b>Spiller ". ($i+1) ."</b></td>";
 									}
 									$tcontent = $tcontent . "<td><span style='padding-left: 10px;". ($player['id'] == $bruger['id'] ? "font-weight:bold;font-style:italic;" : "") ."' id='spiller$i'>". $player['navn'] ."</span><span style='visibility:hidden;float:right;margin-left: 5px;' id='spiller$i"."klasse'><b> // ". $player['klasse'] ."</b></span></td></tr>";
 									
@@ -321,7 +321,7 @@
 							
 							<?php
 				
-							echo "<br/><div id='content' style='display:inline-block;width=100%;'><div style='float:left;display:inline-block;width:100%'><table style='text-align:left;padding: 10px 5px 10px 0;width:100%'>
+							echo "<br/><div id='content' style='display:block;width=100%;'><div style='float:left;display:inline-block;width:100%'><table style='text-align:left;padding: 10px 5px 10px 0;width:100%'>
 									<tbody>
 										". $tcontent ."
 									</tbody>
@@ -330,10 +330,15 @@
 							if($bracketlink != "") {
 								echo "<a href='#' onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=bracket&turl=". $bracketlink ."\")'><img height='50px' src='./imgs/brackets.png' /></a>";
 							}
+							
+							if($team['leader_id'] == $bruger['id'] && $team["teamstatus"] != "Pending") {
+								if($bracketlink != "") echo "<br/>";
+								echo "<a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a>";
+							}
 							echo "</div>";
 							
 							echo "<br/><div style='display:inline-block;width:100%;margin-top:5px;'><span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&billetnr=". $_GET['billetnr'] ."\")'>Alle Hold</a></span>";
-							echo ($team['leader_id'] == $bruger['id'] && $team["teamstatus"] == "Pending" ? "<span style='display:inline;float:right'><a onclick='admin_panel(0)'>Admin Panel</a>" : "") ."</span></div>";
+							echo ($team['leader_id'] == $bruger['id'] && $team["teamstatus"] == "Pending" ? "<span style='display:inline;float:right'><a onclick='admin_panel(0)'>Admin Panel</a></span>" : "") ."</div>";
 							echo "</div>";
 							
 
@@ -395,8 +400,6 @@
 									
 									</script>
 									<?php
-								} else {
-									echo "<br /><a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a>";
 								}
 							}
 
