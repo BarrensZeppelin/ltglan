@@ -356,8 +356,10 @@
 												
 												
 												document.getElementById("content").innerHTML = "<?php
+												echo "<br/><a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a><br/>\ ";
+												
 												$tcontent = "";
-										
+												
 												for($i = 2; $i<=$max_players; $i++) {
 													$deltagerquery = mysql_query("SELECT * FROM deltagere WHERE team_id=".$team['id']." AND pos=".($i-1));
 													if( mysql_num_rows($deltagerquery)==0) {//$row['player'.$i] == 0) {
@@ -381,7 +383,7 @@
 															</tbody> \
 														</table> \
 														<input style='width:50%;margin:auto' type='submit' value='Inviter spillere!' /> \
-													</form><br/><a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a><br /><span style='display:inline-block;width:100%;text-align:right;'><a onclick='admin_panel(1)'>Back</a></span>";
+													</form><br /><span style='display:inline-block;width:100%;text-align:right;'><a onclick='admin_panel(1)'>Back</a></span>";
 												?>";
 												
 												
@@ -409,8 +411,15 @@
 							
 							$tcontent = "";
 							while($row = mysql_fetch_array($query)) {
+								$leader = mysql_fetch_array(mysql_query("SELECT * from guests WHERE id=". $row['leader_id']));
+							
 								$tcontent = $tcontent . "<tr>
-															<td><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $row['id'] ."&billetnr=". $_GET['billetnr'] ."\")'><span class='teamname'>". $row['navn'] ."</span></a></td>
+															<td>
+																<div style='display:inline-block;width:100%;'>
+																	<span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $row['id'] ."&billetnr=". $_GET['billetnr'] ."\")'>". $row['navn'] ."</a></span>
+																	<span style='float:right;'>". $leader['navn'] ." - <b>". $leader['klasse'] ."</b></span>
+																</div>
+															</td>
 														</tr>";
 							}
 							
@@ -420,7 +429,7 @@
 											</tr>";
 							}
 							
-							echo "<div><table style='text-align:left;float:left;margin-right:30px;'>
+							echo "<div id='team-container'><table style='text-align:left;float:left;margin-right:30px; width:100%'>
 									<tbody>
 										". $tcontent ."
 									</tbody>

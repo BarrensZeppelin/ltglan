@@ -123,6 +123,17 @@ p#t-overskrift{
 }
 
 
+#team-container {
+	min-width:300px;
+	display: inline-block;
+	padding: 10px;
+}
+
+#team-container a{
+	font-size: 1.5em;
+}
+
+
 .join-page#outer {
 	display: table;
 	position: absolute;
