@@ -407,20 +407,16 @@
 
 						} else {
 							//rems alle hold op
-							$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $_GET['tid'] ." ORDER BY id DESC");
+							$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $_GET['tid'] ." ORDER BY id ASC");
 							
 							$tcontent = "";
 							while($row = mysql_fetch_array($query)) {
 								$leader = mysql_fetch_array(mysql_query("SELECT * from guests WHERE id=". $row['leader_id']));
 							
-								$tcontent = $tcontent . "<tr>
-															<td>
-																<div style='display:inline-block;width:100%;'>
-																	<span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $row['id'] ."&billetnr=". $_GET['billetnr'] ."\")'>". $row['navn'] ."</a></span>
-																	<span style='float:right;'>". $leader['navn'] ." - <b>". $leader['klasse'] ."</b></span>
-																</div>
-															</td>
-														</tr>";
+								$tcontent = $tcontent . "<div class='team'>
+															<span><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $row['id'] ."&billetnr=". $_GET['billetnr'] ."\")'>". $row['navn'] ."</a></span><br/>
+															<span style='font-size:0.8em'>Bord: ". $row['bord'] ." - <b>". $leader['klasse'] ."</b></span>
+														</div>";
 							}
 							
 							if(mysql_num_rows($query)==0) {
@@ -429,11 +425,13 @@
 											</tr>";
 							}
 							
-							echo "<div id='team-container'><table style='text-align:left;float:left;margin-right:30px; width:100%'>
-									<tbody>
+							$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $_GET['tid']), 0);
+							
+							echo "<span style='font-size:2em;' class='text-blur-white'>". $turnering_navn ."</span><br/>
+								
+								<div id='team-container'>
 										". $tcontent ."
-									</tbody>
-								</table></div>";
+								</div>";
 						}
 					} else {
 						//Rems alle spillere op (til 1-mands turneringer)
