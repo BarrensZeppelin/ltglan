@@ -123,6 +123,26 @@ p#t-overskrift{
 }
 
 
+#team-container {
+	min-width:300px;
+	display: inline-block;
+	max-height: 400px;
+	max-width:600px;
+	overflow:auto;
+}
+
+
+#team-container a{
+	font-size: 1.5em;
+}
+
+#team-container .team{
+	display:inline-block;
+	margin:10px;
+	text-align:center;
+}
+
+
 .join-page#outer {
 	display: table;
 	position: absolute;

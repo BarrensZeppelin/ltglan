@@ -37,6 +37,31 @@ p.o-overskrift{
 	margin-left:61px;
 }
 
+.wrapper-o-tekst a{
+	color: #FFFFFF;
+	text-decoration:none;
+	
+	text-shadow:1px 1px 2px #6F6965,
+				-1px -1px 2px #6F6965,
+				1px -1px 2px #6F6965,
+				-1px 1px 2px #6F6965,
+				0px 1px 2px #6F6965,
+				1px 0px 2px #6F6965,
+				0px -1px 2px #6F6965,
+				-1px 0px 2px #6F6965;
+}
+
+.wrapper-o-tekst a:hover{
+	text-shadow:1px 1px 2px #FFFFFF,
+				-1px -1px 2px #FFFFFF,
+				1px -1px 2px #FFFFFF,
+				-1px 1px 2px #FFFFFF,
+				0px 1px 2px #FFFFFF,
+				1px 0px 2px #FFFFFF,
+				0px -1px 2px #FFFFFF,
+				-1px 0px 2px #FFFFFF;
+}
+
 /*Informations-boksen til hoejre*/
 #omkring-informationer{
 	width:420px;
