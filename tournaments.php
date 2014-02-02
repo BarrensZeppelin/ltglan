@@ -459,10 +459,21 @@
 		
 		
 	} else if($_GET["page"] == "bracket") {
-		?> <script src="https://raw.github.com/challonge/challonge-jquery-plugin/master/jquery.challonge.js"></script> <?php
+		if(!isset($_GET["turl"])) {header("Location: ./"); die();}
 		$challonge_url = $_GET["turl"];
-		echo '<iframe src="'. $challonge_url .'/module" style="width:925px;height:580px;margin:0px;" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>';
+		//echo '<iframe src="'. $challonge_url .'/module" style="width:925px;height:580px;margin:0px;" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>';
 		
+		?>
+		
+		<div style="width:100%;height:100%;" id="bracket_div"></div>
+		<script src="./scripts/jquery.challonge.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#bracket_div').challonge('<?php echo $challonge_url; ?>', {subdomain: '', theme: '1', multiplier: '0.8', match_width_multiplier: '0.8', show_final_results: '0', show_standings: '0'});
+			});
+		</script>
+		
+		<?php	
 	} else {header("Location: ./");}
 }
 ?>

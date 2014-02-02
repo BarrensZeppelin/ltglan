@@ -24,6 +24,9 @@
 		$_SESSION["billetnr"] = $billetnr;
 		$_SESSION["pass"]  = $pass;
 		
+		if(mysql_num_rows(mysql_query("SELECT * FROM admins WHERE guest_id=". $row['id'])) >= 1) $_SESSION["admin"] = true;
+		else $_SESSION["admin"] = false;
+		
 		header("Location: ./"); //Redirect til forsiden (index.php)
 		return true;
 	}
@@ -45,6 +48,10 @@
 				
 				if($rows==1) {
 					$row = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='" . $billetnr . "' AND pass_hashed='" . $pass . "'"));
+					
+					if(mysql_num_rows(mysql_query("SELECT * FROM admins WHERE guest_id=". $row['id'])) >= 1) $_SESSION["admin"] = true;
+					else $_SESSION["admin"] = false;
+					
 					return true;
 				} else {
 					return false;

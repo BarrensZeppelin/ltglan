@@ -5,14 +5,18 @@
 		</div>
 		
 	 <div id="footer-box2">
-		<p align="center" id="footer-kontakt">
-			HTX LAN LTG
-		</p>
-			
+		<?php if(!isset($_SESSION["admin"]) || $_SESSION["admin"] == false) { ?>
+			<p align="center" id="footer-kontakt">
+				HTX LAN LTG
+			</p>
+				
 			<p align="center" id="footer-kontakt">
 			 LTG LAN-Gruppen | Akademivej 451
 			</p>
-		</div>
+		<?php } else {
+			echo "<p align='center'><a href='./admin.php'>Vær Admin :D</a></p>";
+		} ?>
+	</div>
 		
 	 <div id="footer-box3">
 		<div id="facebook">
