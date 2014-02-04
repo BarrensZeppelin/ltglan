@@ -16,6 +16,7 @@ USE `ltglan`;
 
 
 -- Dumping structure for table ltglan.admins
+DROP TABLE IF EXISTS `admins`;
 CREATE TABLE IF NOT EXISTS `admins` (
   `guest_id` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
@@ -29,6 +30,7 @@ INSERT INTO `admins` (`guest_id`) VALUES
 
 
 -- Dumping structure for table ltglan.beskeder
+DROP TABLE IF EXISTS `beskeder`;
 CREATE TABLE IF NOT EXISTS `beskeder` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `modtager_id` int(10) DEFAULT NULL,
@@ -38,13 +40,14 @@ CREATE TABLE IF NOT EXISTS `beskeder` (
   KEY `modtager` (`modtager_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.beskeder: 3 rows
+-- Dumping data for table ltglan.beskeder: 0 rows
 DELETE FROM `beskeder`;
 /*!40000 ALTER TABLE `beskeder` DISABLE KEYS */;
 /*!40000 ALTER TABLE `beskeder` ENABLE KEYS */;
 
 
 -- Dumping structure for table ltglan.billetnr
+DROP TABLE IF EXISTS `billetnr`;
 CREATE TABLE IF NOT EXISTS `billetnr` (
   `billetnr` int(6) unsigned zerofill NOT NULL,
   KEY `billetnr` (`billetnr`)
@@ -60,6 +63,7 @@ INSERT INTO `billetnr` (`billetnr`) VALUES
 
 
 -- Dumping structure for table ltglan.brackets
+DROP TABLE IF EXISTS `brackets`;
 CREATE TABLE IF NOT EXISTS `brackets` (
   `t_id` int(10) unsigned DEFAULT NULL,
   `c_t_id` int(10) unsigned DEFAULT NULL
@@ -72,6 +76,7 @@ DELETE FROM `brackets`;
 
 
 -- Dumping structure for table ltglan.deltagere
+DROP TABLE IF EXISTS `deltagere`;
 CREATE TABLE IF NOT EXISTS `deltagere` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `guest_id` int(11) NOT NULL,
@@ -84,13 +89,14 @@ CREATE TABLE IF NOT EXISTS `deltagere` (
   KEY `team_id` (`team_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.deltagere: 3 rows
+-- Dumping data for table ltglan.deltagere: 0 rows
 DELETE FROM `deltagere`;
 /*!40000 ALTER TABLE `deltagere` DISABLE KEYS */;
 /*!40000 ALTER TABLE `deltagere` ENABLE KEYS */;
 
 
 -- Dumping structure for table ltglan.guests
+DROP TABLE IF EXISTS `guests`;
 CREATE TABLE IF NOT EXISTS `guests` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Et bruger id til internt brug',
   `pass_hashed` mediumtext NOT NULL,
@@ -101,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `guests` (
   KEY `billetnr` (`billetnr`)
 ) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.guests: 9 rows
+-- Dumping data for table ltglan.guests: 8 rows
 DELETE FROM `guests`;
 /*!40000 ALTER TABLE `guests` DISABLE KEYS */;
 INSERT INTO `guests` (`id`, `pass_hashed`, `billetnr`, `navn`, `klasse`) VALUES
@@ -117,6 +123,7 @@ INSERT INTO `guests` (`id`, `pass_hashed`, `billetnr`, `navn`, `klasse`) VALUES
 
 
 -- Dumping structure for table ltglan.invites
+DROP TABLE IF EXISTS `invites`;
 CREATE TABLE IF NOT EXISTS `invites` (
   `hash` text NOT NULL,
   `tournament_id` int(11) DEFAULT NULL,
@@ -125,13 +132,14 @@ CREATE TABLE IF NOT EXISTS `invites` (
   KEY `team_id` (`team_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.invites: 2 rows
+-- Dumping data for table ltglan.invites: 0 rows
 DELETE FROM `invites`;
 /*!40000 ALTER TABLE `invites` DISABLE KEYS */;
 /*!40000 ALTER TABLE `invites` ENABLE KEYS */;
 
 
 -- Dumping structure for table ltglan.teams
+DROP TABLE IF EXISTS `teams`;
 CREATE TABLE IF NOT EXISTS `teams` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `navn` text COLLATE utf8_danish_ci NOT NULL,
@@ -145,13 +153,14 @@ CREATE TABLE IF NOT EXISTS `teams` (
   KEY `leader_id` (`leader_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.teams: 1 rows
+-- Dumping data for table ltglan.teams: 0 rows
 DELETE FROM `teams`;
 /*!40000 ALTER TABLE `teams` DISABLE KEYS */;
 /*!40000 ALTER TABLE `teams` ENABLE KEYS */;
 
 
 -- Dumping structure for table ltglan.tournaments
+DROP TABLE IF EXISTS `tournaments`;
 CREATE TABLE IF NOT EXISTS `tournaments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `navn` text CHARACTER SET utf8 COLLATE utf8_danish_ci,

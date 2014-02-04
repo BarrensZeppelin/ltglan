@@ -188,21 +188,23 @@
 			$row = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='$billetnr'"));
 			$userid = $row["id"];
 			
-			//$besked = '<a href="./?p=tournaments&page=join&id=' . $i . '">';
 			$besked = '<a onclick="createDialog(\'join-popup-page.php\', \'id='.$i.'&billetnr='.$billetnr.'\');">';
 			
 			$inteam = false;
 			$status = "Pending";
 					
-			$deltagerquery = mysql_query("SELECT * FROM deltagere WHERE guest_id='$userid' and tournament_id=$i");
-			if(mysql_num_rows($deltagerquery)>=1) {
-				$deltager = mysql_fetch_array($deltagerquery);
+			$deltagerquery = mysql_query("SELECT * FROM deltagere WHERE guest_id=$userid");
+			while( $deltager = mysql_fetch_array($deltagerquery) ) {
+				$team = get_team( $deltager['team_id'] );
+				if($team['tournament_id'] == $i) {
 				
-				$teamid = $deltager["team_id"];
-				//$besked = '<a href="./?p=tournaments&page=team&tid=' . $i . '&id=' . $teamid . '">';
-				$besked = '<a onclick="createDialog(\'tournaments.php\', \'page=team&tid='.$i.'&id='.$teamid.'&billetnr='. $_SESSION['billetnr'] .'\');">';
-				$inteam = true;
-				$status = mysql_result(mysql_query("SELECT teamstatus FROM teams WHERE id=$teamid"),0);
+					$teamid = $team["id"];
+					$besked = '<a onclick="createDialog(\'tournaments.php\', \'page=team&tid='.$i.'&id='.$teamid.'&billetnr='. $_SESSION['billetnr'] .'\');">';
+					$inteam = true;
+					$status = mysql_result(mysql_query("SELECT teamstatus FROM teams WHERE id=$teamid"),0);
+				
+					break;
+				}
 			}
 		
 		

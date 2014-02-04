@@ -19,20 +19,21 @@
 
 	//tournament id
 	$id = $_GET["id"];
-	$id = mysql_real_escape_string($id);
+	$id = intval($id);
 
 
 	$max_turneringer = mysql_query("SELECT MAX(id) FROM tournaments");
 	$max_turneringer = mysql_result($max_turneringer,0);
 
 	//Se om spilleren allerede deltager i denne turnering
-	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=".$userid." AND tournament_id=".$id);
-
-
-	if($id>$max_turneringer or mysql_num_rows($query)>=1) {
-		header("Location: ./");
-		exit;
-	} 
+	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=$userid");
+	while( $deltager = mysql_fetch_array($query) ) {
+		$team = get_team($deltager['team_id']);
+		if($team['tournament_id' == $id) {
+			header("Location: ./");
+			exit;
+		} 
+	}
 
 
 

@@ -10,21 +10,21 @@ function send_message($modtager, $indhold) {
 // Simple ID Fetches
 
 function get_deltager($id) {
-	$deltagerquery = mysql_query("SELECT FROM deltagere WHERE id=$id");
+	$deltagerquery = mysql_query("SELECT * FROM deltagere WHERE id=$id") or die(mysql_error());
 	
-	return mysql_fetch_array($deltagerquery) or die(mysql_error());
+	return mysql_fetch_array($deltagerquery);
 }
 
 function get_guest($id) {
-	$guestquery = mysql_query("SELECT FROM guests WHERE id=$id");
+	$guestquery = mysql_query("SELECT * FROM guests WHERE id=$id");
 	
-	return mysql_fetch_array($guestquery) or die(mysql_error());
+	return mysql_fetch_array($guestquery);
 }
 
 function get_team($id) {
-	$teamquery = mysql_query("SELECT FROM teams WHERE id=$id");
+	$teamquery = mysql_query("SELECT * FROM teams WHERE id=$id");
 	
-	return mysql_fetch_array($teamquery) or die(mysql_error());
+	return mysql_fetch_array($teamquery);
 }
 
 ////////////////////////////////
@@ -32,24 +32,31 @@ function get_team($id) {
 
 
 
+function slet_hold($holdid) {
+	$team = get_team($holdid);
+
+	$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
+		
+	if($team['avatarpath'] != null && $team['avatarpath'] != "") unlink($team['avatarpath']); // Slet avatar
+
+	mysql_query("DELETE FROM teams WHERE id=" . $team['id']) or die(mysql_error());
+	mysql_query("DELETE FROM deltagere WHERE team_id=". $team['id']) or die(mysql_error());
+	mysql_query("DELETE FROM invites WHERE team_id=" . $team['id']) or die(mysql_error());
+	mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $team["navn"] . "%" . $turnering_navn . "%'") or die(mysql_error());
+}
+
 
 function slet_deltager($deltagerid) {
-	$deltager = mysql_fetch_array(mysql_query("SELECT * FROM deltagere WHERE id=$deltagerid"));
-
-	$team = mysql_fetch_array(mysql_query("SELECT * FROM teams WHERE id=". $deltager['team_id']));
+	$deltager = get_deltager($deltagerid);
+	
+	$team = get_team($deltager['team_id']);
 	if($deltager['pos'] == 0) {	
-		$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
 		
-		if($team['avatarpath'] != null && $team['avatarpath'] != "") unlink($team['avatarpath']); // Slet avatar
-
-		mysql_query("DELETE FROM teams WHERE id=" . $team['id']) or die(mysql_error());
-		mysql_query("DELETE FROM deltagere WHERE team_id=". $team['id']) or die(mysql_error());
-		mysql_query("DELETE FROM invites WHERE team_id=" . $team['id']) or die(mysql_error());
-		mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $team["navn"] . "%" . $turnering_navn . "%'") or die(mysql_error());
+		slet_hold($team['id']);
 		
 	} else {
 		mysql_query("DELETE FROM deltagere WHERE id=". $deltager['id']);
-		mysql_query("UPDATE teams SET status='Pending' WHERE id=". $team['id']);
+		mysql_query("UPDATE teams SET teamstatus='Pending' WHERE id=". $team['id']) or die(mysql_error());
 		
 		$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id=". $team['tournament_id']), 0);
 		$pos = $deltager['pos'];

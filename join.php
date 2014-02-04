@@ -37,13 +37,14 @@
 	
 	
 	//Se om spilleren allerede deltager i denne turnering
-	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=".$userid." AND tournament_id=".$id);
-	
-	
-	if(mysql_num_rows($query)>=1) {
-		header("refresh: 2; ./");
-		die("Du deltager allerede i denne turnering.");
-	} 
+	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=$userid");
+	while( $deltager = mysql_fetch_array($query) ) {
+		$team = get_team($deltager['team_id']);
+		if($team['tournament_id' == $id) {
+			header("Refresh: 2; ./");
+			die("Du deltager allerede i denne turnering.");
+		} 
+	}
 	
 	
 	
@@ -169,8 +170,8 @@
 		
 		
 		//Opret lederen som deltager
-		mysql_query("INSERT INTO deltagere (guest_id, tournament_id, team_id, pos)
-					VALUES (". $userid .", ". $id .", ". $team_id .", 0)");
+		mysql_query("INSERT INTO deltagere (guest_id, team_id, pos)
+					VALUES (". $userid .", ". $team_id .", 0)");
 		
 		for($i=2; $i<=$spillerantal; $i++) {
 			if(!isset($_POST["navn" . $i])) continue;

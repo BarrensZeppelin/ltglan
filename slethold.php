@@ -10,35 +10,20 @@
 		exit;
 	}
 	
-	$tid = $_GET["tid"];
-	$id = $_GET["id"];
+	$tid = intval($_GET["tid"]);
+	$id = intval($_GET["id"]);
 	
-	$tid = mysql_real_escape_string($tid);
-	$id = mysql_real_escape_string($id);
+	$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=$tid"), 0);
 	
-	
-	
-	$arr = mysql_fetch_array(mysql_query("SELECT * FROM tournaments WHERE id=$tid"));
-	
-	$turnering_navn = $arr["navn"];
-	
-	$row = mysql_fetch_array(mysql_query("SELECT * FROM teams WHERE id=$id"));
+	$team = get_team(id);
 	
 	
 	$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_SESSION['billetnr']));
-	if($row['leader_id'] == $bruger['id']) {
-		if($row['avatarpath'] != null && $row['avatarpath'] != "") unlink($row['avatarpath']); // Slet avatar
-	
-		mysql_query("DELETE FROM teams WHERE id='" . $id . "'") or die(mysql_error());
-		mysql_query("DELETE FROM deltagere WHERE team_id=". $id) or die(mysql_error());
-		mysql_query("DELETE FROM invites WHERE team_id='" . $id . "' AND tournament_id='" . $tid . "'") or die(mysql_error());
-		mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $row["navn"] . "%" . $turnering_navn . "%'") or die(mysql_error());
-		
+	if($team['leader_id'] == $bruger['id']) {
+		slet_hold($id);
 		
 		header("refresh: 2; ./");
 		die("Dit hold er blevet slettet. Du omdirigeres til hovedsiden om 2 sekunder.");
 	}
-	
-	
 	
 ?>
