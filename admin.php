@@ -29,33 +29,7 @@
 			
 			$deltager_query = mysql_query("SELECT * FROM deltagere WHERE guest_id=$id");
 			while($deltager = mysql_fetch_array($deltager_query)) {
-				
-				if($deltager['pos'] == 0) {
-					$team = mysql_fetch_array(mysql_query("SELECT * FROM teams WHERE leader_id=$id"));
-					$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
-					
-					if($team['avatarpath'] != null && $team['avatarpath'] != "") unlink($team['avatarpath']); // Slet avatar
-	
-					mysql_query("DELETE FROM teams WHERE id=" . $team['id']) or die(mysql_error());
-					mysql_query("DELETE FROM deltagere WHERE team_id=". $team['id']) or die(mysql_error());
-					mysql_query("DELETE FROM invites WHERE team_id=" . $team['id']) or die(mysql_error());
-					mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $team["navn"] . "%" . $turnering_navn . "%'") or die(mysql_error());
-					
-				} else {
-					$team = mysql_fetch_array(mysql_query("SELECT * FROM teams WHERE id=". $deltager['team_id'])); 
-				
-					mysql_query("DELETE FROM deltagere WHERE guest_id=$id");
-					mysql_query("UPDATE teams SET status='Pending' WHERE id=". $team['id']);
-					
-					$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id=". $team['tournament_id']), 0);
-					$pos = $deltager['pos'];
-					
-					if($pos != (mysql_result(mysql_query("SELECT MAX(pos) FROM deltagere WHERE team_id=". $team['id']), 0)+1)) {
-						$deltager2 = mysql_fetch_array(mysql_query("SELECT * FROM deltagere WHERE team_id=". $team['id'] ." ORDER BY pos DESC LIMIT 1"));
-						echo $deltager2['id'];
-						mysql_query("UPDATE deltagere SET pos=$pos WHERE id=". $deltager2['id']);
-					}
-				}
+				slet_deltager($deltager['id']);
 			}
 			
 			header("Location: ./admin.php?page=guests");
