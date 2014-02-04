@@ -57,6 +57,7 @@ function slet_deltager($deltagerid) {
 	} else {
 		mysql_query("DELETE FROM deltagere WHERE id=". $deltager['id']);
 		mysql_query("UPDATE teams SET teamstatus='Pending' WHERE id=". $team['id']) or die(mysql_error());
+		mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $team["navn"] . "%" . $turnering_navn . "%' AND modtager_id=". $deltager['guest_id']) or die(mysql_error());
 		
 		$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id=". $team['tournament_id']), 0);
 		$pos = $deltager['pos'];

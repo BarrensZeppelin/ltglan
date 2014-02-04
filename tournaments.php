@@ -48,7 +48,7 @@
 						
 						
 						
-						send_message($leaderid, "Du inviterede $modtagernavn til $holdnavn");
+						//send_message($leaderid, "Du inviterede $modtagernavn til $holdnavn");
 						send_message($modtager, "Du er blevet inviteret til at spille for holdet $holdnavn i ". $turnering['navn'] ."-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=" . $hash . "\'>her</a>");	
 						echo "$modtagernavn blev inviteret til $holdnavn.<br/>";
 					}
