@@ -38,11 +38,13 @@ CREATE TABLE IF NOT EXISTS `beskeder` (
   `laest` tinyint(4) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `modtager` (`modtager_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.beskeder: 0 rows
+-- Dumping data for table ltglan.beskeder: 1 rows
 DELETE FROM `beskeder`;
 /*!40000 ALTER TABLE `beskeder` DISABLE KEYS */;
+INSERT INTO `beskeder` (`id`, `modtager_id`, `indhold`, `laest`) VALUES
+	(46, 3, 'Du er blevet inviteret til at spille for holdet Sygt Hold 420 i League of Legends-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=cfccf46490eef68d5bfa442b21308c77\'>her</a>', 1);
 /*!40000 ALTER TABLE `beskeder` ENABLE KEYS */;
 
 
@@ -80,18 +82,19 @@ DROP TABLE IF EXISTS `deltagere`;
 CREATE TABLE IF NOT EXISTS `deltagere` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `guest_id` int(11) NOT NULL,
-  `tournament_id` int(11) NOT NULL,
   `team_id` int(11) NOT NULL,
   `pos` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `guest_id` (`guest_id`),
-  KEY `tournament_id` (`tournament_id`),
   KEY `team_id` (`team_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.deltagere: 0 rows
+-- Dumping data for table ltglan.deltagere: 2 rows
 DELETE FROM `deltagere`;
 /*!40000 ALTER TABLE `deltagere` DISABLE KEYS */;
+INSERT INTO `deltagere` (`id`, `guest_id`, `team_id`, `pos`) VALUES
+	(7, 1, 19, 0),
+	(19, 3, 19, 1);
 /*!40000 ALTER TABLE `deltagere` ENABLE KEYS */;
 
 
@@ -105,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `klasse` char(7) NOT NULL COMMENT 'personens klasse (2. MI / 2. b)',
   PRIMARY KEY (`id`),
   KEY `billetnr` (`billetnr`)
-) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table ltglan.guests: 8 rows
 DELETE FROM `guests`;
@@ -132,9 +135,14 @@ CREATE TABLE IF NOT EXISTS `invites` (
   KEY `team_id` (`team_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.invites: 0 rows
+-- Dumping data for table ltglan.invites: 4 rows
 DELETE FROM `invites`;
 /*!40000 ALTER TABLE `invites` DISABLE KEYS */;
+INSERT INTO `invites` (`hash`, `tournament_id`, `team_id`) VALUES
+	('cfccf46490eef68d5bfa442b21308c77', 1, 19),
+	('c0974fa6a492d3d54db96ef4e468c32d', 1, 19),
+	('8ecd35b9147b6b342f9dec8416c89e16', 1, 19),
+	('5afc098187b1d2fbd581303c90394cac', 1, 19);
 /*!40000 ALTER TABLE `invites` ENABLE KEYS */;
 
 
@@ -151,11 +159,13 @@ CREATE TABLE IF NOT EXISTS `teams` (
   PRIMARY KEY (`id`),
   KEY `tournament_id` (`tournament_id`),
   KEY `leader_id` (`leader_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.teams: 0 rows
+-- Dumping data for table ltglan.teams: 1 rows
 DELETE FROM `teams`;
 /*!40000 ALTER TABLE `teams` DISABLE KEYS */;
+INSERT INTO `teams` (`id`, `navn`, `leader_id`, `teamstatus`, `tournament_id`, `avatarpath`, `bord`) VALUES
+	(19, 'Sygt Hold 420', 1, 'Pending', 1, '', 2);
 /*!40000 ALTER TABLE `teams` ENABLE KEYS */;
 
 

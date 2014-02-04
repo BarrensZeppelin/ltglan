@@ -69,12 +69,10 @@
 		$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_SESSION['billetnr']));
 		$team = get_team($deltager['team_id']);
 		
-		if($team['leader_id'] != $bruger['id']) {
-			die("Du er ikke admin for dette hold.");
-		}
-	
 		
-		slet_deltager($deltager['id']);
+		if($team['leader_id'] == $bruger['id'] || ($bruger['id'] == $delid AND $bruger['id'] != $team['leader_id'])) {
+			slet_deltager($deltager['id']);
+		} else die("Du er ikke admin for dette hold.");
 		
 		die("Done.");
 	}
@@ -317,7 +315,7 @@
 										$tcontent = $tcontent . "<tr><td style='text-align:right;'><b>Leader</b></td>";
 									} else {
 										$tcontent = $tcontent . "<tr><td style='text-align:right;'>";
-										if($bruger['id'] == $team['leader_id']) $tcontent .= "<a onclick='$.post(\"tournaments.php\", { del: \"". $deltager['id'] ."\" });createDialog(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $_GET['id'] ."&billetnr=". $_SESSION['billetnr'] ."\");'><span class='delico'>x</span></a>";
+										if(($bruger['id'] == $team['leader_id']) || ($bruger['id'] == $player['id'])) $tcontent .= "<a onclick='$.post(\"tournaments.php\", { del: \"". $deltager['id'] ."\" });createDialog(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $_GET['id'] ."&billetnr=". $_SESSION['billetnr'] ."\");'><span class='delico'>x</span></a>";
 										$tcontent .= "<b>Spiller ". ($i+1) ."</b></td>";
 									}
 									$tcontent = $tcontent . "<td><span style='padding-left: 10px;". ($player['id'] == $bruger['id'] ? "font-weight:bold;font-style:italic;" : "") ."' id='spiller$i'>". $player['navn'] ."</span><span style='visibility:hidden;float:right;margin-left: 5px;' id='spiller$i"."klasse'><b> // ". $player['klasse'] ."</b></span></td></tr>";
