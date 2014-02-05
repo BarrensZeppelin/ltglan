@@ -184,7 +184,7 @@
 			//Lav en ny invitation
 			$hash = md5(time() . rand());
 			mysql_query("INSERT INTO invites
-						 VALUES('" .  $hash . "', '" . $id . "', '" . $team_id . "')");
+						 VALUES('" .  $hash . "', '" . $team_id . "')");
 						 
 			//send en besked til hver spiller som er inviteret.
 			send_message($modtager, "Du er blevet inviteret til at spille for holdet $holdnavn i ". $turnering_navn ."-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=" . $hash . "\'>her</a>");			

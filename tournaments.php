@@ -33,7 +33,7 @@
 						//Lav en ny invitation
 						$hash = md5(time() . rand());
 						mysql_query("INSERT INTO invites
-									 VALUES('" .  $hash . "', '" . $_GET['tid'] . "', '" . $_GET['id'] . "')");
+									 VALUES('" .  $hash . "', '" . $_GET['id'] . "')");
 									 
 						//send en besked til hver spiller som er inviteret.	
 						

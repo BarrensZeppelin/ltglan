@@ -29,13 +29,12 @@
 	$query = mysql_query("SELECT * FROM invites WHERE hash='$hash'");
 	$row = mysql_fetch_array($query);
 	$team_id = $row["team_id"];
-	$tournament_id = $row["tournament_id"];
+	$tournament_id = mysql_result(mysql_query("SELECT tournament_id FROM teams WHERE id=$team_id"), 0);;
 	
 	
-	$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id='" . $tournament_id . "'"), 0);
+	$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id=" . $tournament_id), 0);
 
-	$team_navn = mysql_result(mysql_query("SELECT navn FROM teams WHERE id='$team_id'"), 0);
-	$newteam = get_team($team_id);
+	$team_navn = mysql_result(mysql_query("SELECT navn FROM teams WHERE id=$team_id"), 0);
 	
 	//hvis spilleren allerede er i et hold, die - TEST!!!
 	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=$userid");

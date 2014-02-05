@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               5.6.12-log - MySQL Community Server (GPL)
--- Server OS:                    Win32
+-- Server version:               5.5.24-log - MySQL Community Server (GPL)
+-- Server OS:                    Win64
 -- HeidiSQL Version:             8.3.0.4694
 -- --------------------------------------------------------
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   CONSTRAINT `admins.guest_id` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.admins: ~0 rows (approximately)
+-- Dumping data for table ltglan.admins: ~1 rows (approximately)
 DELETE FROM `admins`;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
 INSERT INTO `admins` (`guest_id`) VALUES
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `deltagere` (
   CONSTRAINT `deltagere.guest_id` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.deltagere: ~2 rows (approximately)
+-- Dumping data for table ltglan.deltagere: ~1 rows (approximately)
 DELETE FROM `deltagere`;
 /*!40000 ALTER TABLE `deltagere` DISABLE KEYS */;
 INSERT INTO `deltagere` (`id`, `guest_id`, `team_id`, `pos`) VALUES
@@ -117,22 +117,19 @@ INSERT INTO `guests` (`id`, `pass_hashed`, `billetnr`, `navn`, `klasse`) VALUES
 DROP TABLE IF EXISTS `invites`;
 CREATE TABLE IF NOT EXISTS `invites` (
   `hash` text NOT NULL,
-  `tournament_id` int(10) unsigned NOT NULL,
   `team_id` int(10) unsigned NOT NULL,
-  KEY `tournament_id` (`tournament_id`),
   KEY `team_id` (`team_id`),
-  CONSTRAINT `invites.tournament_id` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `invites.team_id` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table ltglan.invites: ~4 rows (approximately)
 DELETE FROM `invites`;
 /*!40000 ALTER TABLE `invites` DISABLE KEYS */;
-INSERT INTO `invites` (`hash`, `tournament_id`, `team_id`) VALUES
-	('cfccf46490eef68d5bfa442b21308c77', 1, 19),
-	('c0974fa6a492d3d54db96ef4e468c32d', 1, 19),
-	('8ecd35b9147b6b342f9dec8416c89e16', 1, 19),
-	('5afc098187b1d2fbd581303c90394cac', 1, 19);
+INSERT INTO `invites` (`hash`, `team_id`) VALUES
+	('cfccf46490eef68d5bfa442b21308c77', 19),
+	('c0974fa6a492d3d54db96ef4e468c32d', 19),
+	('8ecd35b9147b6b342f9dec8416c89e16', 19),
+	('5afc098187b1d2fbd581303c90394cac', 19);
 /*!40000 ALTER TABLE `invites` ENABLE KEYS */;
 
 
@@ -153,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `teams` (
   CONSTRAINT `teams.leader_id` FOREIGN KEY (`leader_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.teams: ~0 rows (approximately)
+-- Dumping data for table ltglan.teams: ~1 rows (approximately)
 DELETE FROM `teams`;
 /*!40000 ALTER TABLE `teams` DISABLE KEYS */;
 INSERT INTO `teams` (`id`, `navn`, `leader_id`, `teamstatus`, `tournament_id`, `avatarpath`, `bord`) VALUES
