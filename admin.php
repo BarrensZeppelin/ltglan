@@ -16,6 +16,8 @@
 		?>
 		
 		<a href="admin.php?page=guests">Guests</a> <br/>
+		<a href="admin.php?page=deltagere">Deltagere</a> <br/>
+		<a href="admin.php?page=teams">Teams</a> <br/>
 		<a href="admin.php?page=brackets">Brackets & Tournaments</a>
 		
 		<?php
@@ -55,9 +57,10 @@
 			header("Location: ./admin.php?page=guests");
 			die();
 		} else {
+		
 			$tcontent = "<tr><th>id</th><th>billetnr</th><th>navn</th><th>klasse</th><th>slet</th><th>admin</th></tr>";
 			
-			$query = mysql_query("SELECT * FROM guests ORDER BY id ASC");
+			$query = mysql_query("SELECT * FROM guests ". (isset($_POST['query']) ? $_POST['query'] : "ORDER BY id ASC")) or die(mysql_error());
 			while( $guest = mysql_fetch_array($query) ) {
 				$tcontent .= "<tr>
 					<td>". $guest["id"] ."</td>
@@ -73,6 +76,7 @@
 			echo "<form action='./admin.php?page=guests' method='post'>
 					Billetnr: <input type='text' name='billetnr' />  Password: <input type='text' name='password' />  Navn: <input type='text' name='navn' />  Klasse: <input type='text' name='klasse' /> <input type='submit' value='Ny' />
 				</form><br/>";
+			echo "Custom query: <form action='./admin.php?page=guests' method='post'><span style='background-color:grey'>SELECT * FROM guests </span><input type='text' name='query' /><input type='submit' value='Submit' /></form>"; 
 			echo "Admins er i bold<br/>";
 			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
@@ -115,6 +119,83 @@
 			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
 	
+	} else if($_GET['page'] == "deltagere") {
+		if(isset($_POST['guest_id'])) {
+			
+			$guest_id = intval($_POST['guest_id']);
+			$team_id = intval($_POST['team_id']);
+			
+			if(mysql_num_rows(mysql_query("SELECT * FROM guests WHERE id=$guest_id")) == 0) {
+				header("Refresh: 2; ./admin.php?page=deltagere");
+				die("Gæsten eksisterer ikke");
+			}
+			
+			if(mysql_num_rows(mysql_query("SELECT * FROM teams WHERE id=$team_id")) == 0) {
+				header("Refresh: 2; ./admin.php?page=deltagere");
+				die("Holdet eksisterer ikke");
+			}
+			
+			$team = get_team($team_id);
+			if($team['teamstatus'] == "Accepted") {header("Refresh: 2; ./admin.php?page=deltagere"); die("Holdet er allerede fuldt.");}
+			
+			$pos = mysql_result(mysql_query("SELECT MAX(pos) FROM deltagere WHERE team_id=$team_id"), 0)+1;
+			
+			mysql_query("INSERT INTO deltagere (guest_id, team_id, pos) VALUES($guest_id, $team_id, $pos)");
+			
+			$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id=". $team['tournament_id']), 0);
+			if($pos == ($max_spillere - 1)) mysql_query("UPDATE teams SET teamstatus='Accepted' WHERE id=$team_id");
+			
+			header("Location: ./admin.php?page=deltagere");
+			
+		} else if(isset($_GET['del'])) {
+			
+			slet_deltager(intval($_GET['del']));
+			header("Location: ./admin.php?page=deltagere");
+			
+		} else {
+			$tcontent = "<tr><th>id</th><th>guest_id</th><th>team_id</th><th>pos</th><th>slet</th></tr>";
+			
+			$query = mysql_query("SELECT * FROM deltagere ". (isset($_POST['query']) ? $_POST['query'] : "ORDER BY id ASC")) or die(mysql_error());
+			while( $d = mysql_fetch_array($query) ) {
+				$tcontent .= "<tr style='text-align:center;". ($d['pos'] == 0 ? "font-weight:bold;" : "") ."'>
+								<td>". $d['id'] ."</td>
+								<td>". $d['guest_id'] ."</td>
+								<td>". $d['team_id'] ."</td>
+								<td>". $d['pos'] ."</td>
+								<td><a href='./admin.php?page=deltagere&del=". $d['id'] ."'>X</a></td>
+							</tr>";
+			}
+			
+			echo "<a href='./admin.php'>Back</a><br/><br/>";
+			echo "<form action='./admin.php?page=deltagere' method='post'>
+						guest_id: <input type='text' name='guest_id' />  team_id: <input type='text' name='team_id' /><input type='submit' value='Ny' />
+					</form><br/>";
+			echo "Custom query: <form action='./admin.php?page=deltagere' method='post'><span style='background-color:grey'>SELECT * FROM deltagere </span><input type='text' name='query' /><input type='submit' value='Submit' /></form>";
+			echo "Leaders står i bold (pos = 0)<br/>";
+			echo "<table><tbody>". $tcontent ."</tbody></table>";
+		}
+	} else if($_GET['page'] == "teams") {
+		
+		$tcontent = "<tr><th>id</th><th>navn</th><th>leader_id</th><th>tournament</th><th>bord</th><th>avatar</th></tr>";
+		
+		$query = mysql_query("SELECT * FROM teams ". (isset($_POST['query']) ? $_POST['query'] : "ORDER BY id ASC")) or die(mysql_error());
+		while( $t = mysql_fetch_array($query) ) {
+			$tournament = get_tournament($t['tournament_id']);
+			
+			$tcontent .= "<tr style='text-align:center'>
+							<td>". $t['id'] ."</td>
+							<td style='background-color: ". ($t['teamstatus'] == "Accepted" ? "green" : "yellow") ."'>". $t['navn'] ."</td>
+							<td>". $t['leader_id'] ."</td>
+							<td>". $tournament['navn'] ."</td>
+							<td>". $t['bord'] ."</td>
+							<td>". ($t['avatarpath'] == "" ? "" : "<a href='". $t['avatarpath'] ."'>". $t['avatarpath'] ."</a>") ."</td>
+						</tr>";
+		}
+		
+		echo "<a href='./admin.php'>Back</a><br/><br/>";
+		echo "Custom query: <form action='./admin.php?page=teams' method='post'><span style='background-color:grey'>SELECT * FROM teams </span><input type='text' name='query' /><input type='submit' value='Submit' /></form>";
+		echo "<table><tbody>". $tcontent ."</tbody></table>";
+		
 	} else {
 		header("Location: ./admin.php");
 	}

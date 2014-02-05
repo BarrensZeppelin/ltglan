@@ -27,6 +27,12 @@ function get_team($id) {
 	return mysql_fetch_array($teamquery);
 }
 
+function get_tournament($id) {
+	$tquery = mysql_query("SELECT * FROM tournaments WHERE id=$id");
+	
+	return mysql_fetch_array($tquery);
+}
+
 ////////////////////////////////
 
 

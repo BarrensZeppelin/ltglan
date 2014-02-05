@@ -40,7 +40,7 @@
 	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=$userid");
 	while( $deltager = mysql_fetch_array($query) ) {
 		$team = get_team($deltager['team_id']);
-		if($team['tournament_id' == $id) {
+		if($team['tournament_id'] == $id) {
 			header("Refresh: 2; ./");
 			die("Du deltager allerede i denne turnering.");
 		} 
