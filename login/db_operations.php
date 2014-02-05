@@ -1,5 +1,7 @@
 
 <?php 
+/* Denne fil er til for at lette koden, og for at slippe for at skrive kode der gentager sig selv om og om igen. */
+
 
 function send_message($modtager, $indhold) {
 	mysql_query("INSERT INTO beskeder (modtager_id, indhold)
@@ -20,6 +22,13 @@ function get_guest($id) {
 	
 	return mysql_fetch_array($guestquery);
 }
+
+function get_guest_wbilletnr($billetnr) {
+	$guestquery = mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr");
+	
+	return mysql_fetch_array($guestquery);
+}
+
 
 function get_team($id) {
 	$teamquery = mysql_query("SELECT * FROM teams WHERE id=$id");
@@ -42,9 +51,10 @@ function slet_hold($holdid) {
 	$team = get_team($holdid);
 
 	$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
-		
+	
 	if($team['avatarpath'] != null && $team['avatarpath'] != "") unlink($team['avatarpath']); // Slet avatar
 
+	// Slet alt der har med holdet at gøre
 	mysql_query("DELETE FROM deltagere WHERE team_id=". $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM invites WHERE team_id=" . $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM teams WHERE id=" . $team['id']) or die(mysql_error());
@@ -58,16 +68,18 @@ function slet_deltager($deltagerid) {
 	$team = get_team($deltager['team_id']);
 	if($deltager['pos'] == 0) {	
 		
+		// Hvis denne deltager er leder af et hold, kan vi bare slette hele holdet.
 		slet_hold($team['id']);
 		
 	} else {
+		// Ellers så slet den ene deltager og flyt rundt på de andre, så den sidste i holdet tager den slettedes plads
+	
 		$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
 	
 		mysql_query("DELETE FROM deltagere WHERE id=". $deltager['id']);
 		mysql_query("UPDATE teams SET teamstatus='Pending' WHERE id=". $team['id']) or die(mysql_error());
 		mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $team["navn"] . "%" . $turnering_navn . "%' AND modtager_id=". $deltager['guest_id']) or die(mysql_error());
 		
-		$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id=". $team['tournament_id']), 0);
 		$pos = $deltager['pos'];
 		
 		if($pos != (mysql_result(mysql_query("SELECT MAX(pos) FROM deltagere WHERE team_id=". $team['id']), 0)+1)) {

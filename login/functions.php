@@ -16,15 +16,16 @@
 		"));
 		
 		if($rows!=1) {
-			return false;
+			return false; //  Brugeren eksisterer ikke eller passwordet er forkert
 		}
 		
-		$row = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='" . $billetnr . "' AND pass_hashed='" . $pass . "'"));
+		$guest = get_guest_wbilletnr($billetnr);
 		
 		$_SESSION["billetnr"] = $billetnr;
 		$_SESSION["pass"]  = $pass;
 		
-		if(mysql_num_rows(mysql_query("SELECT * FROM admins WHERE guest_id=". $row['id'])) >= 1) $_SESSION["admin"] = true;
+		// Tjek om spilleren skulle være administrator for siden
+		if(mysql_num_rows(mysql_query("SELECT * FROM admins WHERE guest_id=". $guest['id'])) >= 1) $_SESSION["admin"] = true;
 		else $_SESSION["admin"] = false;
 		
 		header("Location: ./"); //Redirect til forsiden (index.php)

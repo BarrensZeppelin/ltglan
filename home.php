@@ -1,5 +1,5 @@
 <?php
-	$klassearray = array("1. a", "1. b", "1. c", "1. d", "1. e", "1. f", "2. a", "2. b", "2. c", "2. d", "2. e", "2. f", "3. a", "3. b", "3. c", "3. d", "3. e", "3. f", "Anden");
+	$klassearray = get_klasse_array();
 
 	// TEST MOED
 	//if(isset($_SESSION['billetnr'])) {if($_SESSION['billetnr'] != 000000 && $_SESSION['billetnr'] != 000001 && $_SESSION['billetnr'] != 000002) {die("Please come back later.");}}
@@ -9,7 +9,7 @@
 		if(!isset($_GET['p']) || !in_array($_GET['p'], $allowedpages)) { // $_GET['page'] bliver allerede brugt
 			header("Location: ./?p=tournaments");
 		}
-	} else { // Man må godt se galleriet hvis man er logget ind
+	} else { // Man må godt se galleriet hvis man ikke er logget ind
 		if($_GET['p']!="front" && $_GET['p']!="gallery") { header("Location: ./?p=front"); }
 	}
 ?>
@@ -22,6 +22,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Forside | LTG LAN-PARTY</title>
 		
+		<!--			Stylesheets				-->
 		<link rel="stylesheet" type="text/css" href="css/generelt-style.css"/>
 		<link rel="stylesheet" type="text/css" href="css/index-style.css"/>
 		<link rel="stylesheet" type="text/css" href="css/turnering-style.css"/>
@@ -43,6 +44,7 @@
 	
 	<body>
 		<div id="wrapper">
+			<!-- Inkludér Header, footer og den valgte side -->
 			<?php include 'header.php'; ?>
 			
 			<?php include $_GET['p'] . ".php"; ?>

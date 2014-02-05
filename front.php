@@ -21,7 +21,8 @@
 			</div>
 		</div>
 		
-		<div id="forside-h">                        
+		<div id="forside-h">             
+				<!-- 		Her er formen til at logge ind med		-->
 				<form action="./" method="post" id="login">
 					<label>
 						<span>Billetnummer:</span><input type="text" name="billetnr" />
@@ -36,6 +37,8 @@
 					</label>
 				</form>
 				
+				<!--		Her er formen til at oprette sig med
+								når formen submittes, bliver javascript funktionen: checkPass() kørt igennem, for at validere de indtastede data -->
 				<div><form name="opretForm" onsubmit="return checkPass()" action="./newuser.php" method="post" id="opret">
 					<label>
 						<span>Billetnummer:</span><input type="text" name="billetnr" />
@@ -67,7 +70,6 @@
 						<input type="submit" value="Opret Bruger" />
 					</label>
 				</form>
-			
 		</div>
 	</div>
 </div>

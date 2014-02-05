@@ -18,12 +18,9 @@
 
 
 	//tournament id
-	$id = $_GET["id"];
-	$id = intval($id);
+	$id = intval($_GET["id"]);
 
-
-	$max_turneringer = mysql_query("SELECT MAX(id) FROM tournaments");
-	$max_turneringer = mysql_result($max_turneringer,0);
+	$max_turneringer = mysql_result(mysql_query("SELECT MAX(id) FROM tournaments"),0);
 
 	//Se om spilleren allerede deltager i denne turnering
 	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=$userid");
@@ -37,7 +34,7 @@
 
 
 
-	$arr = mysql_fetch_array(mysql_query("SELECT * FROM tournaments WHERE id='" . $id . "'"));
+	$arr = mysql_fetch_array(mysql_query("SELECT * FROM tournaments WHERE id=$id"));
 
 	$turnering_navn = $arr["navn"];
 	$max_spillere = $arr["max_spillere"];

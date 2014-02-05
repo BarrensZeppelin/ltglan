@@ -1,6 +1,6 @@
 
 
-// Checks password on registration form on front page
+// Checks data on registration form on front page
 function checkPass() {
 	var bnr = document.forms["opretForm"]["billetnr"].value;
 	if(isNaN(bnr)) {alert("Dit billetnummer er ugyldigt."); return false;}
@@ -12,7 +12,7 @@ function checkPass() {
 	var x = document.forms["opretForm"]["pass"].value;
 	var y = document.forms["opretForm"]["check_pass"].value;
 	
-	if(x!=y || ((x=="" || x==null) || (y=="" || y==null))) {alert("Passwords do not match!"); return false;}
+	if(x!=y || ((x=="" || x==null) || (y=="" || y==null))) {alert("Dine passwords er ikke ens!"); return false;}
 }
 
 
