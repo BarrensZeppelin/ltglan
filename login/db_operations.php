@@ -45,9 +45,9 @@ function slet_hold($holdid) {
 		
 	if($team['avatarpath'] != null && $team['avatarpath'] != "") unlink($team['avatarpath']); // Slet avatar
 
-	mysql_query("DELETE FROM teams WHERE id=" . $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM deltagere WHERE team_id=". $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM invites WHERE team_id=" . $team['id']) or die(mysql_error());
+	mysql_query("DELETE FROM teams WHERE id=" . $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $team["navn"] . "%" . $turnering_navn . "%'") or die(mysql_error());
 }
 

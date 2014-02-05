@@ -10,7 +10,22 @@
 		header("Refresh: 2; ./");
 		die("Du er ikke admin. o:");
 	}
-	?> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <?php
+	?> 
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+		a:visited{
+			color:blue;
+		}
+		
+		a{
+			color:blue;
+			font-weight:normal;
+		}
+	</style>
+
+
+	<?php
 	
 	if(!isset($_GET["page"])) {
 		?>
@@ -61,6 +76,7 @@
 			$tcontent = "<tr><th>id</th><th>billetnr</th><th>navn</th><th>klasse</th><th>slet</th><th>admin</th></tr>";
 			
 			$query = mysql_query("SELECT * FROM guests ". (isset($_POST['query']) ? $_POST['query'] : "ORDER BY id ASC")) or die(mysql_error());
+			if(isset($_GET['id'])) $query = mysql_query("SELECT * FROM guests WHERE id=". $_GET['id']);
 			while( $guest = mysql_fetch_array($query) ) {
 				$tcontent .= "<tr>
 					<td>". $guest["id"] ."</td>
@@ -156,12 +172,15 @@
 			$tcontent = "<tr><th>id</th><th>guest_id</th><th>team_id</th><th>pos</th><th>slet</th></tr>";
 			
 			$query = mysql_query("SELECT * FROM deltagere ". (isset($_POST['query']) ? $_POST['query'] : "ORDER BY id ASC")) or die(mysql_error());
+			if(isset($_GET['team_id'])) $query = mysql_query("SELECT * FROM deltagere WHERE team_id=". $_GET['team_id'] ." ORDER BY pos ASC");
 			while( $d = mysql_fetch_array($query) ) {
+				$team = get_team($d['team_id']);
+				
 				$tcontent .= "<tr style='text-align:center;". ($d['pos'] == 0 ? "font-weight:bold;" : "") ."'>
 								<td>". $d['id'] ."</td>
-								<td>". $d['guest_id'] ."</td>
-								<td>". $d['team_id'] ."</td>
-								<td>". $d['pos'] ."</td>
+								<td><a href='./admin.php?page=guests&id=". $d['guest_id'] ."'>". $d['guest_id'] ."</a></td>
+								<td><a href='./admin.php?page=teams&id=". $d['team_id'] ."'>". $d['team_id'] ."</a></td>
+								<td style='background-color:". ($d['pos'] == 0 ? ($team['teamstatus'] == "Accepted" ? "green" : "yellow") : "white") ."'>". $d['pos'] ."</td>
 								<td><a href='./admin.php?page=deltagere&del=". $d['id'] ."'>X</a></td>
 							</tr>";
 			}
@@ -176,25 +195,36 @@
 		}
 	} else if($_GET['page'] == "teams") {
 		
-		$tcontent = "<tr><th>id</th><th>navn</th><th>leader_id</th><th>tournament</th><th>bord</th><th>avatar</th></tr>";
-		
-		$query = mysql_query("SELECT * FROM teams ". (isset($_POST['query']) ? $_POST['query'] : "ORDER BY id ASC")) or die(mysql_error());
-		while( $t = mysql_fetch_array($query) ) {
-			$tournament = get_tournament($t['tournament_id']);
+		if(isset($_GET['del'])) {
 			
-			$tcontent .= "<tr style='text-align:center'>
-							<td>". $t['id'] ."</td>
-							<td style='background-color: ". ($t['teamstatus'] == "Accepted" ? "green" : "yellow") ."'>". $t['navn'] ."</td>
-							<td>". $t['leader_id'] ."</td>
-							<td>". $tournament['navn'] ."</td>
-							<td>". $t['bord'] ."</td>
-							<td>". ($t['avatarpath'] == "" ? "" : "<a href='". $t['avatarpath'] ."'>". $t['avatarpath'] ."</a>") ."</td>
-						</tr>";
+			slet_hold($_GET['del']);
+			header("Location: ./admin.php?page=teams");
+			
+		} else {
+			$tcontent = "<tr><th>id</th><th>navn</th><th>leader_id</th><th>tournament</th><th>bord</th><th>avatar</th><th>spillere</th><th>slet</th></tr>";
+			
+			$query = mysql_query("SELECT * FROM teams ". (isset($_POST['query']) ? $_POST['query'] : "ORDER BY id ASC")) or die(mysql_error());
+			if(isset($_GET['id'])) $query = mysql_query("SELECT * FROM teams WHERE id=". $_GET['id']);
+			while( $t = mysql_fetch_array($query) ) {
+				$tournament = get_tournament($t['tournament_id']);
+				$spillere = mysql_num_rows(mysql_query("SELECT * FROM deltagere WHERE team_id=". $t['id']));
+				
+				$tcontent .= "<tr style='text-align:center'>
+								<td>". $t['id'] ."</td>
+								<td style='background-color: ". ($t['teamstatus'] == "Accepted" ? "green" : "yellow") ."'>". $t['navn'] ."</td>
+								<td><a href='./admin.php?page=guests&id=". $t['leader_id'] ."'>". $t['leader_id'] ."</a></td>
+								<td>(". $t['tournament_id'] .") ". $tournament['navn'] ."</td>
+								<td>". $t['bord'] ."</td>
+								<td>". ($t['avatarpath'] == "" ? "-" : "<a href='". $t['avatarpath'] ."'>". $t['avatarpath'] ."</a>") ."</td>
+								<td><a href='./admin.php?page=deltagere&team_id=". $t['id'] ."'>$spillere</a>/<b>". $tournament['max_spillere'] ."</b></td>
+								<td><a href='./admin.php?page=teams&del=". $t['id'] ."'>X</a></td>
+							</tr>";
+			}
+			
+			echo "<a href='./admin.php'>Back</a><br/><br/>";
+			echo "Custom query: <form action='./admin.php?page=teams' method='post'><span style='background-color:grey'>SELECT * FROM teams </span><input type='text' name='query' value='". (isset($_GET['id']) ? "WHERE id=". $_GET['id'] : ()) ."' /><input type='submit' value='Submit' /></form>";
+			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
-		
-		echo "<a href='./admin.php'>Back</a><br/><br/>";
-		echo "Custom query: <form action='./admin.php?page=teams' method='post'><span style='background-color:grey'>SELECT * FROM teams </span><input type='text' name='query' /><input type='submit' value='Submit' /></form>";
-		echo "<table><tbody>". $tcontent ."</tbody></table>";
 		
 	} else {
 		header("Location: ./admin.php");
