@@ -18,6 +18,10 @@
 			color:blue;
 		}
 		
+		a:hover{
+			cursor: pointer;
+		}
+		
 		a{
 			color:blue;
 			font-weight:normal;
@@ -73,7 +77,7 @@
 			die();
 		} else {
 		
-			$tcontent = "<tr><th>id</th><th>billetnr</th><th>navn</th><th>klasse</th><th>slet</th><th>admin</th></tr>";
+			$tcontent = "<tr><th><a onclick='document.forms[\"qform\"].elements[\"query\"].value=\"ORDER BY id ASC\";document.forms[\"qform\"].submit();'>id</a></th><th><a onclick='document.forms[\"qform\"].elements[\"query\"].value=\"ORDER BY billetnr ASC\";document.forms[\"qform\"].submit();'>billetnr</a></th><th>navn</th><th>klasse</th><th>slet</th><th>admin</th></tr>";
 			
 			$query = mysql_query("SELECT * FROM guests ". (isset($_POST['query']) ? $_POST['query'] : "ORDER BY id ASC")) or die(mysql_error());
 			if(isset($_GET['id'])) $query = mysql_query("SELECT * FROM guests WHERE id=". $_GET['id']);
@@ -92,7 +96,7 @@
 			echo "<form action='./admin.php?page=guests' method='post'>
 					Billetnr: <input type='text' name='billetnr' />  Password: <input type='text' name='password' />  Navn: <input type='text' name='navn' />  Klasse: <input type='text' name='klasse' /> <input type='submit' value='Ny' />
 				</form><br/>";
-			echo "Custom query: <form action='./admin.php?page=guests' method='post'><span style='background-color:grey'>SELECT * FROM guests </span><input type='text' name='query' /><input type='submit' value='Submit' /></form>"; 
+			echo "Custom query: <form name='qform' action='./admin.php?page=guests' method='post'><span style='background-color:grey'>SELECT * FROM guests </span><input type='text' name='query' value='". (isset($_GET['id']) ? "WHERE id=". $_GET['id'] : (isset($_POST['query']) ? $_POST['query'] : "")) ."' /><input type='submit' value='Submit' /></form>"; 
 			echo "Admins er i bold<br/>";
 			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
@@ -189,7 +193,7 @@
 			echo "<form action='./admin.php?page=deltagere' method='post'>
 						guest_id: <input type='text' name='guest_id' />  team_id: <input type='text' name='team_id' /><input type='submit' value='Ny' />
 					</form><br/>";
-			echo "Custom query: <form action='./admin.php?page=deltagere' method='post'><span style='background-color:grey'>SELECT * FROM deltagere </span><input type='text' name='query' /><input type='submit' value='Submit' /></form>";
+			echo "Custom query: <form action='./admin.php?page=deltagere' method='post'><span style='background-color:grey'>SELECT * FROM deltagere </span><input type='text' name='query' value='". (isset($_GET['team_id']) ? "WHERE team_id=". $_GET['team_id'] : (isset($_POST['query']) ? $_POST['query'] : "")) ."' /><input type='submit' value='Submit' /></form>";
 			echo "Leaders står i bold (pos = 0)<br/>";
 			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
@@ -222,7 +226,7 @@
 			}
 			
 			echo "<a href='./admin.php'>Back</a><br/><br/>";
-			echo "Custom query: <form action='./admin.php?page=teams' method='post'><span style='background-color:grey'>SELECT * FROM teams </span><input type='text' name='query' value='". (isset($_GET['id']) ? "WHERE id=". $_GET['id'] : ()) ."' /><input type='submit' value='Submit' /></form>";
+			echo "Custom query: <form action='./admin.php?page=teams' method='post'><span style='background-color:grey'>SELECT * FROM teams </span><input type='text' name='query' value='". (isset($_GET['id']) ? "WHERE id=". $_GET['id'] : (isset($_POST['query']) ? $_POST['query'] : "")) ."' /><input type='submit' value='Submit' /></form>";
 			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
 		

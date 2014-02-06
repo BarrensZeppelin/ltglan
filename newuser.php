@@ -1,17 +1,14 @@
 <?php
-	$klassearray = array("1. a", "1. b", "1. c", "1. d", "1. e", "1. f", "2. a", "2. b", "2. c", "2. d", "2. e", "2. f", "3. a", "3. b", "3. c", "3. d", "3. e", "3. f", "Anden");
-
-
-	
-		
 	
 	if(isset($_POST["billetnr"], $_POST["navn"], $_POST["pass"], $_POST["klasse"])) {
 		//alt info er indsat.
 		//tjek om info er ok
 		$allowIncludes = true;
-		require 'login/connect.php';
+		require 'login/includes.php';
 		
-		$billet_nr = mysql_real_escape_string($_POST["billetnr"]);
+		$klassearray = get_klasse_array();
+		
+		$billet_nr = intval($_POST["billetnr"]);
 		$navn = mysql_real_escape_string($_POST["navn"]);
 		$pass = mysql_real_escape_string($_POST["pass"]);
 		$klasse = mysql_real_escape_string($_POST["klasse"]);
@@ -28,12 +25,13 @@
 			die("Den klasse kunne ikke findes.");
 		}
 		
-		if(mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr='$billet_nr'"))!=0) {
+		if(mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billet_nr"))!=0) {
 			header("refresh: 2; ./");
 			die("Dette billetnummer er allerede blevet registreret.");
 		}
 		
-		/*if(mysql_num_rows(mysql_query("SELECT * FROM billetnr WHERE billetnr='$billet_nr'"))==0) {
+		// FOR AT GØRE DET NEMMERE AT TESTE SIDEN
+		/*if(mysql_num_rows(mysql_query("SELECT * FROM billetnr WHERE billetnr=$billet_nr"))==0) {
 			header("refresh: 2; ./");
 			die("Dette billetnummer kunne ikke findes i databasen.");
 		}*/

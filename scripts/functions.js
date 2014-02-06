@@ -8,6 +8,7 @@ function checkPass() {
 	
 	var navn = document.forms["opretForm"]["navn"].value;
 	if((navn.length) > 30) {alert("Dit navn er for langt, det må højst være på 30 bogstaver."); return false;}
+	if(navn == "") {alert("Skriv dit navn"); return false;}
 
 	var x = document.forms["opretForm"]["pass"].value;
 	var y = document.forms["opretForm"]["check_pass"].value;

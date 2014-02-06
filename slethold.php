@@ -18,11 +18,11 @@
 	$team = get_team(id);
 	
 	
-	$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_SESSION['billetnr']));
+	$bruger = get_guest_wbilletnr($_SESSION['billetnr']);
 	if($team['leader_id'] == $bruger['id']) {
 		slet_hold($id);
 		
-		header("refresh: 2; ./");
+		header("Location: ./");
 		die("Dit hold er blevet slettet. Du omdirigeres til hovedsiden om 2 sekunder.");
 	}
 	

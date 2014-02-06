@@ -24,7 +24,7 @@
 		$_SESSION["billetnr"] = $billetnr;
 		$_SESSION["pass"]  = $pass;
 		
-		// Tjek om spilleren skulle være administrator for siden
+		// Tjek om spilleren skulle vÃ¦re administrator for siden
 		if(mysql_num_rows(mysql_query("SELECT * FROM admins WHERE guest_id=". $guest['id'])) >= 1) $_SESSION["admin"] = true;
 		else $_SESSION["admin"] = false;
 		

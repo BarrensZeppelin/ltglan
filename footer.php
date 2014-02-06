@@ -14,13 +14,13 @@
 			 LTG LAN-Gruppen | Akademivej 451
 			</p>
 		<?php } else {
-			echo "<p align='center'><a href='./admin.php'>Vær Admin :D</a></p>";
+			echo "<p align='center'><a target='blank' href='./admin.php'>Vær Admin :D</a></p>";
 		} ?>
 	</div>
 		
 	 <div id="footer-box3">
 		<div id="facebook">
-			<a href="https://www.facebook.com/events/632966440097615/"><img align="right" src="imgs/facebook_48.png" width="48" height="48" alt="facebook" /></a>
+			<a target="_blank" href="https://www.facebook.com/events/632966440097615/"><img align="right" src="imgs/facebook_48.png" width="48" height="48" alt="facebook" /></a>
 		</div>
 	</div>
 </div>
