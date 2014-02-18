@@ -38,7 +38,7 @@
 	while( $deltager = mysql_fetch_array($query) ) {
 		$team = get_team($deltager['team_id']);
 		if($team['tournament_id'] == $tournament_id) {
-			header("refresh: 3; ./");
+			header("refresh: 2; ./");
 			die("Du er allerede en del af et hold, og kan derfor ikke acceptere invationer.");
 		}
 	}
@@ -46,7 +46,7 @@
 	
 	//Tjek så om holdet er fyldt op
 	if(mysql_num_rows(mysql_query("SELECT * FROM deltagere WHERE team_id=$team_id"))==$max_spillere) {
-		header("refresh: 3; ./");
+		header("refresh: 2; ./");
 		die("Dette hold er allerede fyldt op.");
 	}
 	
@@ -64,6 +64,6 @@
 					WHERE id=$team_id");
 	}
 	
-	header("refresh: 3; ./");
+	header("Location: ./");
 	die("Du er nu medlem af holdet $team_navn");
 ?>

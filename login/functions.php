@@ -40,13 +40,10 @@
 				$billetnr = $_SESSION["billetnr"];
 				$pass = $_SESSION["pass"];
 				
-				$rows = mysql_num_rows(mysql_query("
-					SELECT * FROM guests
-					WHERE billetnr='" . $billetnr . "' AND pass_hashed='" . $pass . "'
-				"));
+				$rows = mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr AND pass_hashed='$pass'"));
 				
 				if($rows==1) {
-					$row = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='" . $billetnr . "' AND pass_hashed='" . $pass . "'"));
+					$row = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr AND pass_hashed='$pass'"));
 					
 					if(mysql_num_rows(mysql_query("SELECT * FROM admins WHERE guest_id=". $row['id'])) >= 1) $_SESSION["admin"] = true;
 					else $_SESSION["admin"] = false;
@@ -71,7 +68,7 @@
 		$u_agent = $_SERVER['HTTP_USER_AGENT'];
 		if(preg_match('/MSIE/i',$u_agent) || preg_match('/Trident/', $u_agent) || preg_match('/Opera/', $u_agent)) {
 			return true;
-		} else return false;;
+		} else return false;
 	}
 	
 	

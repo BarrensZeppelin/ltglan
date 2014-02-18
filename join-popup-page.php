@@ -8,7 +8,7 @@
 	
 	$klassearray = get_klasse_array();
 	$billetnr = $_GET['billetnr'];
-	$query = mysql_query("SELECT * FROM guests WHERE billetnr='$billetnr'");
+	$query = mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr");
 	$row = mysql_fetch_array($query);
 
 

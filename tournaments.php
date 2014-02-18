@@ -237,7 +237,8 @@
 						while($row = mysql_fetch_array($query)) {
 							$class = "";
 							if($row['laest'] == 0) {$class = "unread";} else {$class = "read";}
-							$afsender = get_guest($row['afsender_id'])['navn'];
+							$afsender = get_guest($row['afsender_id']);
+							$afsender = $afsender['navn'] . " - " . $afsender['klasse'];
 							
 							echo "<div class='besked ". $class ."' id='". $row['id'] ."'>
 									<div class='top'>

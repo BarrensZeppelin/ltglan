@@ -4,7 +4,8 @@
 
 
 function send_message($modtager, $indhold) {
-	$afsender = get_guest_wbilletnr($_SESSION['billetnr'])['id'];
+	$afsender = get_guest_wbilletnr($_SESSION['billetnr']);
+	$afsender = $afsender['id'];
 	mysql_query("INSERT INTO beskeder (modtager_id, afsender_id, indhold)
 				 VALUES ($modtager, $afsender, '$indhold')") or die(mysql_error());
 }
