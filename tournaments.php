@@ -33,7 +33,7 @@
 						//Lav en ny invitation
 						$hash = md5(time() . rand());
 						mysql_query("INSERT INTO invites
-									 VALUES('" .  $hash . "', '" . $_GET['id'] . "')");
+									 VALUES('" .  $hash . "', '" . $_GET['id'] . "')") or die(mysql_error());
 									 
 						//send en besked til hver spiller som er inviteret.	
 						
@@ -71,6 +71,11 @@
 		} else die("Du er ikke admin for dette hold.");
 		
 		die("Done.");
+	} else if(isset($_GET['delmsg'])) {
+		require 'login/includes.php';
+	
+		mysql_query("DELETE FROM beskeder WHERE id=". $_GET['delmsg']) or die(mysql_error());
+		die();
 	}
 ?>
 
@@ -153,6 +158,13 @@
 		$( "#dialog" ).dialog( "open" );
 	}
 	
+	function delete_msg(id) {
+		var child = document.getElementById(id);
+		child.parentNode.removeChild(child);
+		
+		$.post("tournaments.php?delmsg=" + id);
+	}
+	
 </script>
 
 <div id="dialog">
@@ -214,7 +226,7 @@
                                 <span>Beskeder</span>
                             </div>
                         </div>                       
-                        <div class="turnering-info">';
+                        <div class="turnering-info" id="turnering-info">';
 						
 						
 					if(verify_login()) {
@@ -224,10 +236,16 @@
 						$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id='" . $bruger['id'] . "' ORDER BY laest ASC");
 						while($row = mysql_fetch_array($query)) {
 							$class = "";
-							if($row['laest'] == 0) {$class = "besked-unread";} else {$class = "besked-read";}
+							if($row['laest'] == 0) {$class = "unread";} else {$class = "read";}
+							$afsender = get_guest($row['afsender_id'])['navn'];
 							
-							echo "<div class='". $class ."'>
-									" . $row['indhold'] . "
+							echo "<div class='besked ". $class ."' id='". $row['id'] ."'>
+									<div class='top'>
+										<span style='float:left'>$afsender</span><span style='float:right;font-size:11px'><a onclick='delete_msg(". $row['id'] .");'>x</a></span>
+									</div>
+									<div class='content'>
+										" . $row['indhold'] . "
+									</div>
 								</div><br />";
 								
 							mysql_query("UPDATE beskeder SET laest=1

@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               5.5.24-log - MySQL Community Server (GPL)
--- Server OS:                    Win64
+-- Server version:               5.6.12-log - MySQL Community Server (GPL)
+-- Server OS:                    Win32
 -- HeidiSQL Version:             8.3.0.4694
 -- --------------------------------------------------------
 
@@ -37,16 +37,20 @@ DROP TABLE IF EXISTS `beskeder`;
 CREATE TABLE IF NOT EXISTS `beskeder` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `modtager_id` int(10) unsigned NOT NULL,
+  `afsender_id` int(10) unsigned NOT NULL,
   `indhold` mediumtext CHARACTER SET utf8 COLLATE utf8_danish_ci,
   `laest` tinyint(4) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `modtager` (`modtager_id`),
-  CONSTRAINT `beskeder.modtager_id` FOREIGN KEY (`modtager_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+  KEY `guest_ids` (`modtager_id`),
+  KEY `afsender_id` (`afsender_id`),
+  CONSTRAINT `FK_beskeder_guests` FOREIGN KEY (`modtager_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table ltglan.beskeder: ~0 rows (approximately)
 DELETE FROM `beskeder`;
 /*!40000 ALTER TABLE `beskeder` DISABLE KEYS */;
+INSERT INTO `beskeder` (`id`, `modtager_id`, `afsender_id`, `indhold`, `laest`) VALUES
+	(5, 12, 1, 'Du er blevet inviteret til at spille for holdet Sygt Hold 420 i League of Legends-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=c82e581146b32db57ee80bfe9eabaf7d\'>her</a>', 1);
 /*!40000 ALTER TABLE `beskeder` ENABLE KEYS */;
 
 
@@ -71,19 +75,22 @@ CREATE TABLE IF NOT EXISTS `deltagere` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `guest_id` int(10) unsigned NOT NULL,
   `team_id` int(10) unsigned NOT NULL,
-  `pos` tinyint(3) unsigned NOT NULL,
+  `pos` tinyint(3) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `guest_id` (`guest_id`),
   KEY `team_id` (`team_id`),
-  CONSTRAINT `deltagere.team_id` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `deltagere.guest_id` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
+  CONSTRAINT `deltagere.guest_id` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `deltagere.team_id` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.deltagere: ~1 rows (approximately)
+-- Dumping data for table ltglan.deltagere: ~3 rows (approximately)
 DELETE FROM `deltagere`;
 /*!40000 ALTER TABLE `deltagere` DISABLE KEYS */;
 INSERT INTO `deltagere` (`id`, `guest_id`, `team_id`, `pos`) VALUES
-	(7, 1, 19, 0);
+	(7, 1, 19, 0),
+	(22, 3, 19, 1),
+	(24, 1, 21, 0),
+	(25, 3, 21, 1);
 /*!40000 ALTER TABLE `deltagere` ENABLE KEYS */;
 
 
@@ -96,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `navn` mediumtext NOT NULL COMMENT 'personens navn (Oskar V.)',
   `klasse` char(7) NOT NULL COMMENT 'personens klasse (2. MI / 2. b)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table ltglan.guests: ~8 rows (approximately)
 DELETE FROM `guests`;
@@ -109,7 +116,8 @@ INSERT INTO `guests` (`id`, `pass_hashed`, `billetnr`, `navn`, `klasse`) VALUES
 	(7, '21232f297a57a5a743894a0e4a801fc3', 123123, 'Hans Henrik', 'Anden'),
 	(8, '21232f297a57a5a743894a0e4a801fc3', 666666, 'Hans Henrik', '3. c'),
 	(10, '81dc9bdb52d04dc20036dbd8313ed055', 182751, 'Kanf', '1. a'),
-	(11, 'c6f057b86584942e415435ffb1fa93d4', 567876, 'ååå', '1. a');
+	(11, 'c6f057b86584942e415435ffb1fa93d4', 567876, 'ååå', '1. a'),
+	(12, '1a1dc91c907325c69271ddf0c944bc72', 000002, 'Admin2', '1. b');
 /*!40000 ALTER TABLE `guests` ENABLE KEYS */;
 
 
@@ -122,14 +130,13 @@ CREATE TABLE IF NOT EXISTS `invites` (
   CONSTRAINT `invites.team_id` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.invites: ~4 rows (approximately)
+-- Dumping data for table ltglan.invites: ~0 rows (approximately)
 DELETE FROM `invites`;
 /*!40000 ALTER TABLE `invites` DISABLE KEYS */;
 INSERT INTO `invites` (`hash`, `team_id`) VALUES
-	('cfccf46490eef68d5bfa442b21308c77', 19),
-	('c0974fa6a492d3d54db96ef4e468c32d', 19),
-	('8ecd35b9147b6b342f9dec8416c89e16', 19),
-	('5afc098187b1d2fbd581303c90394cac', 19);
+	('a6677b3d507850826d2baecfc00d0581', 21),
+	('5925ed4e751a3785b14d1eaeac744a62', 19),
+	('c82e581146b32db57ee80bfe9eabaf7d', 19);
 /*!40000 ALTER TABLE `invites` ENABLE KEYS */;
 
 
@@ -146,15 +153,16 @@ CREATE TABLE IF NOT EXISTS `teams` (
   PRIMARY KEY (`id`),
   KEY `tournament_id` (`tournament_id`),
   KEY `leader_id` (`leader_id`),
-  CONSTRAINT `teams.tournament_id` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `teams.leader_id` FOREIGN KEY (`leader_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
+  CONSTRAINT `teams.leader_id` FOREIGN KEY (`leader_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `teams.tournament_id` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
 -- Dumping data for table ltglan.teams: ~1 rows (approximately)
 DELETE FROM `teams`;
 /*!40000 ALTER TABLE `teams` DISABLE KEYS */;
 INSERT INTO `teams` (`id`, `navn`, `leader_id`, `teamstatus`, `tournament_id`, `avatarpath`, `bord`) VALUES
-	(19, 'Sygt Hold 420', 1, 'Pending', 1, '', 2);
+	(19, 'Sygt Hold 420', 1, 'Pending', 1, '', 2),
+	(21, 'asd', 1, 'Accepted', 2, '', 2);
 /*!40000 ALTER TABLE `teams` ENABLE KEYS */;
 
 

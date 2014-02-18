@@ -86,7 +86,7 @@ p#t-overskrift{
 	margin:auto;
 	background-image:url(../imgs/login-baggrund.jpg);
 	font:Arial, Helvetica, sans-serif;
-	font-weight:bold;
+	/*font-weight:bold;*/
 	font-size:14px;
 	color: #000;
 	text-decoration:none;
@@ -103,23 +103,64 @@ p#t-overskrift{
 
 /**********************************************/
 
-.besked-unread {
-	border: 3px solid black;
+.besked {
 	text-align: left;
-	padding: 5px;
+	padding-top: 0;
 	width: 230px;
 	margin: 5px;
 	background-color: rgba(100,100,100,0.5);
 }
 
-.besked-read {
+.besked a{
+	color: #FFFFFF;
+	text-decoration:none;
+	
+	text-shadow:1px 1px 2px #6F6965,
+				-1px -1px 2px #6F6965,
+				1px -1px 2px #6F6965,
+				-1px 1px 2px #6F6965,
+				0px 1px 2px #6F6965,
+				1px 0px 2px #6F6965,
+				0px -1px 2px #6F6965,
+				-1px 0px 2px #6F6965;
+}
+
+.besked a:hover {
+	text-shadow:1px 1px 2px #FFFFFF,
+				-1px -1px 2px #FFFFFF,
+				1px -1px 2px #FFFFFF,
+				-1px 1px 2px #FFFFFF,
+				0px 1px 2px #FFFFFF,
+				1px 0px 2px #FFFFFF,
+				0px -1px 2px #FFFFFF,
+				-1px 0px 2px #FFFFFF;
+				
+	cursor: pointer;
+}
+
+.besked .top {
+	height: 15px;
+	background-color: rgba(80, 80, 80, 0.5);
+	font-size: 12px;
+	padding: 0 5px;
+}
+
+.besked .content {
+	padding:5px;
+}
+
+.unread {
+	border: 3px solid black;
+	font-weight: bold;
+	
+}
+
+.read {
 	border: 1px solid black;
 	border-radius: 5px;
-	text-align: left;
-	padding: 5px;
-	width: 230px;
-	margin:5px;
-	background-color: rgba(100,100,100,0.5);
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+	font-weight: normal;
 }
 
 

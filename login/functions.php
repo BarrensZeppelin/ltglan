@@ -11,9 +11,7 @@
 		$billetnr = mysql_real_escape_string($_POST["billetnr"]);
 		$pass = md5($_POST["pass"]);
 		
-		$rows = mysql_num_rows(mysql_query("
-			SELECT * FROM guests WHERE billetnr='" . $billetnr . "' AND pass_hashed='" . $pass . "'
-		"));
+		$rows = mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr AND pass_hashed='$pass'"));
 		
 		if($rows!=1) {
 			return false; //  Brugeren eksisterer ikke eller passwordet er forkert
