@@ -3,9 +3,12 @@
 /* Denne fil er til for at lette koden, og for at slippe for at skrive kode der gentager sig selv om og om igen. */
 
 
-function send_message($modtager, $indhold) {
-	$afsender = get_guest_wbilletnr($_SESSION['billetnr']);
-	$afsender = $afsender['id'];
+function send_message($modtager, $indhold, $afsender = 0) {
+	if($afsender != -1) {
+		$afsender = get_guest_wbilletnr($_SESSION['billetnr']);
+		$afsender = $afsender['id'];
+	}
+	
 	mysql_query("INSERT INTO beskeder (modtager_id, afsender_id, indhold)
 				 VALUES ($modtager, $afsender, '$indhold')") or die(mysql_error());
 }

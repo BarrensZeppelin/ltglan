@@ -37,20 +37,22 @@ DROP TABLE IF EXISTS `beskeder`;
 CREATE TABLE IF NOT EXISTS `beskeder` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `modtager_id` int(10) unsigned NOT NULL,
-  `afsender_id` int(10) unsigned NOT NULL,
+  `afsender_id` int(10) NOT NULL,
   `indhold` mediumtext CHARACTER SET utf8 COLLATE utf8_danish_ci,
   `laest` tinyint(4) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `guest_ids` (`modtager_id`),
   KEY `afsender_id` (`afsender_id`),
   CONSTRAINT `FK_beskeder_guests` FOREIGN KEY (`modtager_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.beskeder: ~0 rows (approximately)
+-- Dumping data for table ltglan.beskeder: ~3 rows (approximately)
 DELETE FROM `beskeder`;
 /*!40000 ALTER TABLE `beskeder` DISABLE KEYS */;
 INSERT INTO `beskeder` (`id`, `modtager_id`, `afsender_id`, `indhold`, `laest`) VALUES
-	(5, 12, 1, 'Du er blevet inviteret til at spille for holdet Sygt Hold 420 i League of Legends-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=c82e581146b32db57ee80bfe9eabaf7d\'>her</a>', 1);
+	(5, 12, 1, 'Du er blevet inviteret til at spille for holdet Sygt Hold 420 i League of Legends-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=c82e581146b32db57ee80bfe9eabaf7d\'>her</a>', 1),
+	(6, 13, 0, 'Velkommen til LTGLANs turneringsside! Her finder du alle de aktive turneringer, dine hold og mulighed for tilmelding, klik blot på din favoritturninger for at komme i gang. ;)', 1),
+	(7, 13, 0, 'I dette felt finder du invitationer til turneringer fra andre spillere, opdateringer og generelle beskeder mm.<br/>Du kan slette en besked ved at trykke på krydset i øverste højre hjørne', 1);
 /*!40000 ALTER TABLE `beskeder` ENABLE KEYS */;
 
 
@@ -83,14 +85,15 @@ CREATE TABLE IF NOT EXISTS `deltagere` (
   CONSTRAINT `deltagere.team_id` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.deltagere: ~3 rows (approximately)
+-- Dumping data for table ltglan.deltagere: ~5 rows (approximately)
 DELETE FROM `deltagere`;
 /*!40000 ALTER TABLE `deltagere` DISABLE KEYS */;
 INSERT INTO `deltagere` (`id`, `guest_id`, `team_id`, `pos`) VALUES
 	(7, 1, 19, 0),
 	(22, 3, 19, 1),
 	(24, 1, 21, 0),
-	(25, 3, 21, 1);
+	(25, 3, 21, 1),
+	(26, 12, 19, 2);
 /*!40000 ALTER TABLE `deltagere` ENABLE KEYS */;
 
 
@@ -103,9 +106,9 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `navn` mediumtext NOT NULL COMMENT 'personens navn (Oskar V.)',
   `klasse` char(7) NOT NULL COMMENT 'personens klasse (2. MI / 2. b)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.guests: ~8 rows (approximately)
+-- Dumping data for table ltglan.guests: ~9 rows (approximately)
 DELETE FROM `guests`;
 /*!40000 ALTER TABLE `guests` DISABLE KEYS */;
 INSERT INTO `guests` (`id`, `pass_hashed`, `billetnr`, `navn`, `klasse`) VALUES
@@ -117,7 +120,8 @@ INSERT INTO `guests` (`id`, `pass_hashed`, `billetnr`, `navn`, `klasse`) VALUES
 	(8, '21232f297a57a5a743894a0e4a801fc3', 666666, 'Hans Henrik', '3. c'),
 	(10, '81dc9bdb52d04dc20036dbd8313ed055', 182751, 'Kanf', '1. a'),
 	(11, 'c6f057b86584942e415435ffb1fa93d4', 567876, 'ååå', '1. a'),
-	(12, '1a1dc91c907325c69271ddf0c944bc72', 000002, 'Admin2', '1. b');
+	(12, '1a1dc91c907325c69271ddf0c944bc72', 000002, 'Admin2', '1. b'),
+	(13, '1a1dc91c907325c69271ddf0c944bc72', 000004, 'Ny Bruger', '1. a');
 /*!40000 ALTER TABLE `guests` ENABLE KEYS */;
 
 
@@ -130,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `invites` (
   CONSTRAINT `invites.team_id` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.invites: ~0 rows (approximately)
+-- Dumping data for table ltglan.invites: ~2 rows (approximately)
 DELETE FROM `invites`;
 /*!40000 ALTER TABLE `invites` DISABLE KEYS */;
 INSERT INTO `invites` (`hash`, `team_id`) VALUES

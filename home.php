@@ -39,6 +39,15 @@
 		<!--	Egne javascript funktioner 		-->	
 		<script src="scripts/functions.js"></script>
 		
+		<?php
+			if($loginfailed != 0) { ?>
+				<script type="text/javascript">
+					$(document).ready(function () {
+						alert("<?php if($loginfailed == 1) echo "En bruger med dette billetnr eksisterer ikke."; else echo "Passwordet passer ikke til denne bruger."; ?>");
+					});
+				</script>
+		<?php } ?>
+		
 		<link rel="shortcut icon" href="imgs/favicon.ico" />
 	</head>
 	

@@ -95,14 +95,14 @@
 		if(holdnavn == "") {alert("Du skal indtaste et holdnavn"); return false;}
 	
 		var bordnr = document.forms["nytHold"]["bordnr"].value;
-		if(isNaN(bordnr)) {alert("Indtast et fucking tal i bordnr."); return false;}
+		if(isNaN(bordnr)) {alert("Indtast et tal i bordnr."); return false;}
 		if(bordnr == "") {alert("Indtast bordnr."); return false;}
 		if(bordnr > 16) {alert("Indtast et eksisterende bord."); return false;}
 	
 		var bool = document.forms["nytHold"]["rulesCheckbox"].checked;
 		if(bool==false) {alert("Du skal acceptere reglerne"); return false;}
 		
-		document.getElementById("jsenabled").value="true";
+		document.getElementById("jsenabled").value="true"; // Gør join.php klar over, at formen blev checket igennem med javascript
 		return true;
 	}
 	

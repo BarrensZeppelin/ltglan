@@ -6,15 +6,17 @@
 	
 	
 	// Funktion til at logge ind i systemet
-	function login() {
-		
-		$billetnr = mysql_real_escape_string($_POST["billetnr"]);
-		$pass = md5($_POST["pass"]);
-		
+	function login($billetnr, $pass) {			
 		$rows = mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr AND pass_hashed='$pass'"));
 		
 		if($rows!=1) {
-			return false; //  Brugeren eksisterer ikke eller passwordet er forkert
+			//  Brugeren eksisterer ikke eller passwordet er forkert
+			
+			if(mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr")) == 0) {
+				return 1; // Brugeren eksisterer ikke
+			}
+			
+			return 2; // Passwordet er forkert
 		}
 		
 		$guest = get_guest_wbilletnr($billetnr);
@@ -26,8 +28,7 @@
 		if(mysql_num_rows(mysql_query("SELECT * FROM admins WHERE guest_id=". $guest['id'])) >= 1) $_SESSION["admin"] = true;
 		else $_SESSION["admin"] = false;
 		
-		header("Location: ./"); //Redirect til forsiden (index.php)
-		return true;
+		return 0;
 	}
 	
 	

@@ -23,7 +23,7 @@
 		
 		<div id="forside-h">             
 				<!-- 		Her er formen til at logge ind med		-->
-				<form action="./" method="post" id="login">
+				<form action="./?p=front" method="post" id="login">
 					<label>
 						<span>Billetnummer:</span><input type="text" name="billetnr" />
 					</label>

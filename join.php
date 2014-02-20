@@ -4,17 +4,18 @@
 
 	if(!verify_login()) {header("Location: ./");}
 
+	// Vi tjekker om javascript var enabled da formen fra join-popup-page.php blev submittet
+	// Var den ikke det, bliver dataene ikke tjekket, og der kan opstå problemer
 	if($_POST["jsenabled"]!="true") {header("refresh: 2; ./"); die("JavaScript er disabled, ingen adgang.");}
 
 	$klassearray = get_klasse_array();
 	$billetnr = $_SESSION['billetnr'];
-	$query = mysql_query("SELECT * FROM guests WHERE billetnr='$billetnr'");
-	$row = mysql_fetch_array($query);
+	$guest = get_guest_wbilletnr($billetnr);
 	
 	
-	$user_klasse = $row["klasse"];
-	$navn = $row["navn"];
-	$userid = $row["id"];
+	$user_klasse = $guest["klasse"];
+	$navn = $guest["navn"];
+	$userid = $guest["id"];
 	
 	
 	//tournament id
@@ -28,7 +29,7 @@
 		die("Denne turnering findes ikke.");
 	}
 	
-	$turnering = mysql_fetch_array($query);
+	$turnering = get_tournament($id);
 	
 	if($turnering['active'] != 1) {
 		header("refresh: 2; ./");
@@ -53,8 +54,6 @@
 	
 	
 	
-	
-	
 	$turnering_navn = $turnering["navn"];
 	$max_spillere = $turnering["max_spillere"];
 	$rules = $turnering['rules'];
@@ -65,9 +64,7 @@
 		$holdnavn = $_POST["holdnavn"];
 		$holdnavn = mysql_real_escape_string($holdnavn);
 		
-		$bordnr = $_POST["bordnr"];
-		$bordnr = mysql_real_escape_string($bordnr);
-		$bordnr = intval($bordnr);
+		$bordnr = intval($_POST["bordnr"]);
 		
 		if($max_spillere>1) {
 			$status = "Pending";
@@ -75,22 +72,9 @@
 			$status = "Accepted";
 		}
 		
-		/*$target_path="";
-		if(isset($_FILES["fileupload"]) && $_FILES["fileupload"]["size"]!=0) {
-			if($_FILES["fileupload"]["size"]<=5000000) {
-				$target_path = "./imgs/avatars/";
-				
-				$target_path = $target_path . "avatar-".$id."-".$max_id.".png";
-				move_uploaded_file($_FILES['fileupload']['tmp_name'], $target_path);
-			} else {
-				header("refresh: 2; ./");
-				die("Jeres avatar er for stor (maks. 5mb).");
-			}
-		}*/
-		
-		///// IMG KODE FRA AUTCHAN
 		
 		
+		// Behandl billedet så det bliver resizet korrekt //
 		$extension = null;
 		$max_file_size = 5000000; // 5MB
 		$target_path = "./imgs/avatars/";
@@ -147,10 +131,7 @@
 			$target_path = null;
 			$size = null;
 		}
-		
-		
-		
-		///////////////////////////
+		///////////////////////////////////////
 		
 		
 		
@@ -173,26 +154,30 @@
 		mysql_query("INSERT INTO deltagere (guest_id, team_id, pos)
 					VALUES (". $userid .", ". $team_id .", 0)");
 		
+		
+		// Inviter de valgte brugere
 		for($i=2; $i<=$spillerantal; $i++) {
-			if(!isset($_POST["navn" . $i])) continue;
+			if(!isset($_POST["navn" . $i])) continue; // Der er ikke valgt nogen bruger til denne position
 			
 			$modtager = $_POST["navn" . $i];
 			$modtager = mysql_real_escape_string($modtager);
 			
-			if($modtager == $userid) continue;
+			if($modtager == $userid) continue; // Burde ikke kunne ske, men for sikkerheds skyld skal man ikke kunne invitere sig selv
 			
 			//Lav en ny invitation
 			$hash = md5(time() . rand());
 			mysql_query("INSERT INTO invites
 						 VALUES('" .  $hash . "', '" . $team_id . "')");
 						 
+						 
+			$guest = get_guest($modtager);
+			
 			//send en besked til hver spiller som er inviteret.
 			send_message($modtager, "Du er blevet inviteret til at spille for holdet $holdnavn i ". $turnering_navn ."-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=" . $hash . "\'>her</a>");			
+			send_message($userid, "Du inviterede ". $guest['navn'] ." til $holdnavn i ". $turnering_navn ."-turneringen.", -1);
 		}
 		
-		echo mysql_error();
-		
-		header("refresh: 3; ./");
+		header("Location: ./");
 		die("Dit hold er blevet oprettet og der er blevet sendt invites ud til dem du har inviteret. Du vil automatisk blive redirected.");
 	}
 ?>
