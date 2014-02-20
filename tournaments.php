@@ -127,7 +127,7 @@
 			async: false,
 			timeout: 10000,
 			error: function(X, textStatus, error){
-				alert("error");
+				alert("Error! Check your internet connection.");
 			}
 		});
 	
@@ -143,10 +143,10 @@
 				effect: "fade",
 				duration: 400
 			},
-			hide: {
+			/*hide: {
 				effect: "puff",
 				duration: 200
-			},
+			},*/
 			close: function() {document.getElementById("dialog").innerHTML = "";}
 		});
 	});
