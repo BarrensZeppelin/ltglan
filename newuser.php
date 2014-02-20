@@ -46,7 +46,7 @@
 		// Send velkomstbesked
 		$gid = get_guest_wbilletnr($billet_nr);
 		$gid = $gid['id'];
-		send_message($gid, "Velkommen til LTGLANs turneringsside! Her finder du alle de aktive turneringer, dine hold og mulighed for tilmelding, klik blot på din favoritturninger for at komme i gang. ;)", -1);
+		send_message($gid, "Velkommen til LTGLANs turneringsside! Her finder du alle de aktive turneringer, dine hold og mulighed for tilmelding, klik blot på din favoritturning for at komme i gang. Vi ønsker dig et godt LAN!", -1);
 		send_message($gid, "I dette felt finder du invitationer til turneringer fra andre spillere, opdateringer og generelle beskeder mm.<br/>Du kan slette en besked ved at trykke på krydset i øverste højre hjørne.", -1);
 		
 		

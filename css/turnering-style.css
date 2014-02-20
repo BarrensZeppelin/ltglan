@@ -109,6 +109,8 @@ p#t-overskrift{
 	width: 230px;
 	margin: 5px;
 	background-color: rgba(100,100,100,0.5);
+	border-radius: 0 0 5px 5px;
+	font-weight: normal;
 }
 
 .besked a{
@@ -147,20 +149,15 @@ p#t-overskrift{
 
 .besked .content {
 	padding:5px;
+	font-size: 12px;
 }
 
 .unread {
 	border: 3px solid black;
-	font-weight: bold;
-	
 }
 
 .read {
 	border: 1px solid black;
-	border-radius: 5px;
-	border-top-right-radius: 0px;
-	border-top-left-radius: 0px;
-	font-weight: normal;
 }
 
 

@@ -1,7 +1,6 @@
 <?php
 	if(!isset($_GET["id"]) || is_nan($_GET["id"])) {
-		header("Location: ./");
-		exit;
+		toIndex();
 	}
 	
 	require "login/includes.php";
@@ -27,8 +26,7 @@
 	while( $deltager = mysql_fetch_array($query) ) {
 		$team = get_team($deltager['team_id']);
 		if($team['tournament_id'] == $id) {
-			header("Location: ./");
-			exit;
+			toIndex();
 		} 
 	}
 

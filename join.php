@@ -52,7 +52,7 @@
 	
 	
 	
-	
+	$extramessage = "";
 	
 	$turnering_navn = $turnering["navn"];
 	$max_spillere = $turnering["max_spillere"];
@@ -125,7 +125,7 @@
 			imagecopyresampled($image, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 			
 		} else {
-			echo "Du har ikke valgt et billede.<br/>";
+			$extramessage .= "Du har ikke valgt et billede.<br/>";
 		
 			$extension = null;
 			$target_path = null;
@@ -144,7 +144,7 @@
 		// Læg billedet op
 		if($extension != null) {
 			imagepng($image, $target_path . "avatar-$team_id.png");
-			echo "<img src='". $target_path . "avatar-$team_id.png' /><br/>";
+			$extramessage .= "<img src='". $target_path . "avatar-$team_id.png' /><br/>";
 			
 			mysql_query("UPDATE teams SET avatarpath='". $target_path . "avatar-$team_id.png' WHERE id=$team_id");
 		}
@@ -178,7 +178,6 @@
 		}
 		
 		header("Location: ./");
-		die("Dit hold er blevet oprettet og der er blevet sendt invites ud til dem du har inviteret. Du vil automatisk blive redirected.");
+		die($extramessage . "Dit hold er blevet oprettet og der er blevet sendt invites ud til dem du har inviteret. Du vil automatisk blive redirected.");
 	}
 ?>
-		

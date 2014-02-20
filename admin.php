@@ -1,5 +1,3 @@
-
-
 <?php
 
 	require 'login/includes.php';
@@ -10,26 +8,6 @@
 		header("Refresh: 2; ./");
 		die("Du er ikke admin. o:");
 	}
-	?> 
-	
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<style>
-		a:visited{
-			color:blue;
-		}
-		
-		a:hover{
-			cursor: pointer;
-		}
-		
-		a{
-			color:blue;
-			font-weight:normal;
-		}
-	</style>
-
-
-	<?php
 	
 	if(!isset($_GET["page"])) {
 		?>
@@ -117,12 +95,13 @@
 			
 		} else {
 
-			$tcontent = "<tr><th>Navn</th><th>bracket link</th><th>Activate/Deactivate</th></tr>";
+			$tcontent = "<tr><th>navn</th><th>short</th><th>bracket link</th><th>Activate/Deactivate</th></tr>";
 			
 			$t_query = mysql_query("SELECT * FROM tournaments ORDER BY id ASC");
 			while($t = mysql_fetch_array($t_query)) {
 				$tcontent .= "<tr>
-								<td><span style='". ($t['active'] == 0 ? "font-style: italic;" : "font-weight: bold;") ."'> ". $t['navn'] ."</span></td>";
+								<td><span style='". ($t['active'] == 0 ? "font-style: italic;" : "font-weight: bold;") ."'> ". $t['navn'] ."</span></td>
+								<td>". $t['short'] ."</td>";
 				
 				if($t['bracketlink'] == "") {
 					$tcontent .= "<td><form style='margin:0' action='./admin.php?page=brackets&tid=". $t['id'] ."' method='post'>Link: <input type='text' name='link' /> <input type='submit' value='Submit' /></form></td>";
@@ -235,3 +214,24 @@
 	}
 	
 ?>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+	a:visited{
+		color:blue;
+	}
+	
+	a:hover{
+		cursor: pointer;
+	}
+	
+	a{
+		color:blue;
+		font-weight:normal;
+	}
+	
+	table {
+		border-spacing: 10px 5px;
+	}
+</style>

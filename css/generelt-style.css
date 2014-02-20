@@ -121,7 +121,7 @@ body{
 } 
 
 li{
-	background-image:url(../menu-baggrund.png);
+	background-image:url(../imgs/menu-baggrund.png);
 	float: left; /*Stiller dem op på række*/
 	cursor:default;
 }
@@ -269,7 +269,8 @@ li#servere img{
 .wrapper-midten{
 	width:1024px;
 	margin-top:1px;
-	font: 30px "Trebuchet MS", Helvetica, sans-serif;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	font-size: 30px;
 	color:#FFFFFF;
 	margin:auto;
 }

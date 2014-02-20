@@ -1,4 +1,3 @@
-
 <?php 
 /* Denne fil er til for at lette koden, og for at slippe for at skrive kode der gentager sig selv om og om igen. */
 

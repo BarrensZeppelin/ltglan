@@ -4,13 +4,24 @@
 	// TEST MOED
 	//if(isset($_SESSION['billetnr'])) {if($_SESSION['billetnr'] != 000000 && $_SESSION['billetnr'] != 000001 && $_SESSION['billetnr'] != 000002) {die("Please come back later.");}}
 
+	if(isset($_GET['cmms'])) {
+		if(!isset($_SESSION['cmms'])) {
+			$_SESSION['cmms'] = true;
+		} else {
+			if($_SESSION['cmms']) $_SESSION['cmms'] = false;
+			else $_SESSION['cmms'] = true;
+		}
+		
+		header("Location: ./");
+	}
+	
 	if(verify_login()) {
 		$allowedpages = array("tournaments", "about", "gallery", "servers");
 		if(!isset($_GET['p']) || !in_array($_GET['p'], $allowedpages)) { // $_GET['page'] bliver allerede brugt
 			header("Location: ./?p=tournaments");
 		}
 	} else { // Man må godt se galleriet hvis man ikke er logget ind
-		if($_GET['p']!="front" && $_GET['p']!="gallery") { header("Location: ./?p=front"); }
+		if(!isset($_GET['p']) || ($_GET['p']!="front" && $_GET['p']!="gallery")) { header("Location: ./?p=front"); }
 	}
 ?>
 
@@ -47,6 +58,26 @@
 					});
 				</script>
 		<?php } ?>
+		
+		<?php
+			if(isset($_SESSION['cmms'])) {
+				if($_SESSION['cmms']) {
+					echo "<style>
+						body div{ 
+							font-family: \"Comic Sans MS\" !important;
+						}
+						
+						body div a{ 
+							font-family: \"Comic Sans MS\" !important;
+						}
+						
+						body div p{ 
+							font-family: \"Comic Sans MS\" !important;
+						}
+						</style>";
+				}
+			}
+		?>
 		
 		<link rel="shortcut icon" href="imgs/favicon.ico" />
 	</head>

@@ -1,4 +1,7 @@
 <?php
+	ini_set("display_errors", "1");
+	error_reporting(E_ALL);
+	
 	require "login/includes.php";
 	
 	// Siden er ikke funktionel i Internet Explorer og Opera, derfor beder jeg brugeren om at hente en af de to browsere til at navigere siden med i stedet
@@ -14,11 +17,8 @@
 	
 	$loginfailed = 0;
 	if(isset($_POST["billetnr"], $_POST["pass"])) { //Brugeren prøver at logge ind - så kør login funktionen
-		if(!empty($_POST["billetnr"]) && !empty($_POST["pass"])) {
-			$billetnr = intval($_POST['billetnr']); $pass = md5($_POST['pass']);
-			$loginfailed = login($billetnr, $pass);
-			//die($loginfailed);
-		}
+		$billetnr = intval($_POST['billetnr']); $pass = md5($_POST['pass']);
+		$loginfailed = login($billetnr, $pass);
 	}
 
 	include "home.php";

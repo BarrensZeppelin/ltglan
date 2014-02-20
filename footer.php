@@ -1,6 +1,6 @@
 <div id="footer">
 	 <div id="footer-box1">
-		 <p id="alle-rettigheder">&copy; 2013 Bravo Computing<br />
+		 <p id="alle-rettigheder"><a href="./?cmms=1">&copy;</a> 2013 Bravo Computing<br />
 		Alle rettigheder forbeholdes</p>
 		</div>
 		

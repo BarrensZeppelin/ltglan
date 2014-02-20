@@ -7,6 +7,7 @@
 		
 		$turnering = mysql_fetch_array(mysql_query("SELECT * FROM tournaments WHERE id=".$_GET['tid']));
 		
+		$message = "";
 		
 		
 		for($i=2; $i<=$turnering['max_spillere']; $i++) {
@@ -24,7 +25,7 @@
 							$test = 1;
 							
 							$deltagernavn = mysql_result(mysql_query("SELECT navn FROM guests WHERE id=". $_POST['navn'.$i]), 0);
-							echo "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende eller allerede er medlem af dit hold.<br/>";
+							$nessage .= "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende eller allerede er medlem af dit hold.<br/>";
 						}
 						
 					}
@@ -46,14 +47,14 @@
 						
 						//send_message($leaderid, "Du inviterede $modtagernavn til $holdnavn");
 						send_message($modtager, "Du er blevet inviteret til at spille for holdet $holdnavn i ". $turnering['navn'] ."-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=" . $hash . "\'>her</a>");	
-						echo "$modtagernavn blev inviteret til $holdnavn.<br/>";
+						$message .= "$modtagernavn blev inviteret til $holdnavn.<br/>";
 					}
 				}
 			}
 		}
 		
 		header("refresh: 2; ./");
-		exit;
+		die($message);
 		
 	} else if(isset($_POST['del'])) {
 		require 'login/includes.php';
@@ -279,8 +280,8 @@
 	require 'login/includes.php';
 	
 	if($_GET['page'] == "team") {
-		if(!isset($_GET['tid'])) {header("Location: ./");}
-		if(!isset($_GET['billetnr'])) {header("Location: ./");}
+		if(!isset($_GET['tid'])) { toIndex(); }
+		if(!isset($_GET['billetnr'])) { toIndex(); }
 		else {$_GET['billetnr'] = mysql_real_escape_string($_GET['billetnr']);}
 		
 		$_GET['tid'] = mysql_real_escape_string($_GET['tid']);
@@ -302,7 +303,7 @@
 							$_GET['id'] = mysql_real_escape_string($_GET['id']);
 							
 							$query = mysql_query("SELECT * FROM teams WHERE id = ". $_GET['id']);
-							if(mysql_num_rows($query) != 1) {header("Location: ./");}
+							if(mysql_num_rows($query) != 1) { toIndex(); }
 							
 							$team = mysql_fetch_array($query);
 							?>
@@ -337,7 +338,7 @@
 										if(($bruger['id'] == $team['leader_id']) || ($bruger['id'] == $player['id'])) $tcontent .= "<a onclick='$.post(\"tournaments.php\", { del: \"". $deltager['id'] ."\" });". ($bruger['id'] == $player['id'] ? "window.location=\"./\";" : "createDialog(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $_GET['id'] ."&billetnr=". $_SESSION['billetnr'] ."\");") ."'><span class='delico'>x</span></a>";
 										$tcontent .= "<b>Spiller ". ($i+1) ."</b></td>";
 									}
-									$tcontent = $tcontent . "<td><span style='padding-left: 10px;". ($player['id'] == $bruger['id'] ? "font-weight:bold;font-style:italic;" : "") ."' id='spiller$i'>". $player['navn'] ."</span><span style='visibility:hidden;float:right;margin-left: 5px;' id='spiller$i"."klasse'><b> // ". $player['klasse'] ."</b></span></td></tr>";
+									$tcontent = $tcontent . "<td style='display:inline-block;'><span style='padding-left: 10px;". ($player['id'] == $bruger['id'] ? "font-weight:bold;font-style:italic;" : "") ."' id='spiller$i'>". $player['navn'] ."</span><span style='visibility:hidden;float:right;margin-left: 5px;' id='spiller$i"."klasse'><b> // ". $player['klasse'] ."</b></span></td></tr>";
 									
 									$playersinteam++;
 								}
@@ -498,7 +499,7 @@
 		
 		
 	} else if($_GET["page"] == "bracket") {
-		if(!isset($_GET["turl"])) {header("Location: ./"); die();}
+		if(!isset($_GET["turl"])) { toIndex(); }
 		$challonge_url = $_GET["turl"];
 		//echo '<iframe src="'. $challonge_url .'/module" style="width:925px;height:580px;margin:0px;" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>';
 		
@@ -513,6 +514,6 @@
 		</script>
 		
 		<?php	
-	} else {header("Location: ./");}
+	} else {toIndex();}
 }
 ?>
