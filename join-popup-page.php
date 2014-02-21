@@ -1,9 +1,15 @@
 <?php
+	require "login/includes.php";
+	
+	if(isset($_POST['tid'])) {
+		if(mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $_POST['tid'] ." AND navn=". $_POST['name'])) != 0)
+			echo "taken";
+		die();
+	}
+	
 	if(!isset($_GET["id"]) || is_nan($_GET["id"])) {
 		toIndex();
 	}
-	
-	require "login/includes.php";
 	
 	$klassearray = get_klasse_array();
 	$billetnr = $_GET['billetnr'];
@@ -92,6 +98,27 @@
 		var holdnavn = document.forms["nytHold"]["holdnavn"].value;
 		if(holdnavn == "") {alert("Du skal indtaste et holdnavn"); return false;}
 	
+		// Check name in DB //
+		
+		// Jeg bruger AJAX til at sende en php request, der tjekker databasen for mig, og ser om navnet allerede er taget
+		// (se øverst i denne fil)
+		var suc = false
+		$.ajax({
+			type: "POST",
+			url: "join-popup-page.php",
+			async: false,
+			data: {
+				tid: "<?php echo $id; ?>",
+				name: document.forms['nytHold']['holdnavn'].value
+			},
+			success: function(data, textStatus, jqXHR) {
+				if(data == "taken") {alert("Navnet er allerede taget.");}
+				else suc = true;
+			}
+		});
+		if(suc == false) return false;
+		//////////////////////
+	
 		var bordnr = document.forms["nytHold"]["bordnr"].value;
 		if(isNaN(bordnr)) {alert("Indtast et tal i bordnr."); return false;}
 		if(bordnr == "") {alert("Indtast bordnr."); return false;}
@@ -99,6 +126,7 @@
 	
 		var bool = document.forms["nytHold"]["rulesCheckbox"].checked;
 		if(bool==false) {alert("Du skal acceptere reglerne"); return false;}
+		
 		
 		document.getElementById("jsenabled").value="true"; // Gør join.php klar over, at formen blev checket igennem med javascript
 		return true;

@@ -62,6 +62,21 @@
 	if(($pos+1) == $max_spillere) {
 		mysql_query("UPDATE teams SET teamstatus='Accepted'
 					WHERE id=$team_id");
+					
+		// Opdater challonge
+		$link = mysql_result(mysql_query("SELECT bracketlink FROM tournaments WHERE id=$tournament_id"), 0);
+		if($link != "") {
+			
+			$c = connect_challonge();
+			
+			$ct = $c->makeCall("tournaments/" . $link, array("include_matches" => 0), "get");
+			
+			$params = array(
+				"participant[name]" => $team_navn,
+			);
+			
+			$c->createParticipant($ct->id, $params);
+		}
 	}
 	
 	header("Location: ./");

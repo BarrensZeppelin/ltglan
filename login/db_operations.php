@@ -54,6 +54,30 @@ function get_tournament($id) {
 function slet_hold($holdid) {
 	$team = get_team($holdid);
 
+	// Delete challonge participant  //
+	$t = get_tournament($team['tournament_id']);
+	
+	if(isset($t['bracketlink']) && $t['bracketlink'] != "") {
+		
+		$c = connect_challonge();
+		
+		$ct = $c->makeCall("tournaments/". $t['bracketlink'], array(), "get");
+		$participants = $c->makeCall("tournaments/". $t['bracketlink'] ."/participants");
+		
+		for($i = 0; $i < $ct->{'participants-count'}; $i++) {
+			//echo $participants->participant[$i]->name . "<br/>";
+			if($participants->participant[$i]->name == $team['navn']) {
+				$c->makeCall("tournaments/". $t['bracketlink'] ."/participants/". $participants->participant[$i]->id, array(), "delete");
+				
+				echo $participants->participant[$i]->id . "<br/>";
+				break;
+			}
+		}
+	}
+	///////////////////////////////////
+	
+	
+	
 	$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
 	
 	if($team['avatarpath'] != null && $team['avatarpath'] != "") unlink($team['avatarpath']); // Slet avatar

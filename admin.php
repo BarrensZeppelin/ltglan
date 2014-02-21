@@ -82,20 +82,77 @@
 		
 		if(isset($_GET['tid'])) {
 			
-			if(isset($_POST['link'])) {
-				mysql_query("UPDATE tournaments SET bracketlink='". $_POST['link'] ."' WHERE id=". $_GET['tid']) or die(mysql_error());
-			} else if(isset($_GET['rm'])) { // Remove link
-				mysql_query("UPDATE tournaments SET bracketlink='' WHERE id=". $_GET['tid']) or die(mysql_error());
-			} else if(isset($_GET['activate'])) {
+			if(isset($_GET['activate'])) {
 				$current = mysql_result(mysql_query("SELECT active FROM tournaments WHERE id=". $_GET['tid']), 0);
 				mysql_query("UPDATE tournaments SET active=". ($current == 0 ? 1 : 0) ." WHERE id=". $_GET['tid']) or die(mysql_error());
+			} else if(isset($_GET['del_bracket'])) {
+			
+				$tid = intval($_GET['tid']);
+				
+				$mt = get_tournament($tid);
+				if(isset($mt['bracketlink']) && $mt['bracketlink'] != "") {
+				
+					$c = connect_challonge();
+				
+					// Delete tourny
+					$c->makeCall("tournaments/". $mt['bracketlink'], array(), "delete");
+					
+					mysql_query("UPDATE tournaments SET bracketlink='' WHERE id=". $mt['id']) or die(mysql_error());
+				}
+			
+			} else if(isset($_GET['create_bracket'])) {
+				
+				$tid = intval($_GET['tid']);
+				
+				$mt = get_tournament($tid);
+				if(!isset($mt['bracketlink']) || $mt['bracketlink'] == "") {
+					$c = connect_challonge();
+					
+					$mons = array(1 => "January", 2 => "February", 3 => "March", 4 => "April", 5 => "May", 6 => "June", 7 => "July", 8 => "August", 9 => "September", 10 => "October", 11 => "November", 12 => "December");
+
+					$date = getdate();
+					$month = $date['mon'];
+
+					$month_name = $mons[$month];
+
+				
+					$params = array(
+					  "tournament[name]" => "LTGLAN " . strtoupper($mt['short']) . " $month_name " . date("Y"),
+					  "tournament[tournament_type]" => $mt['tournament_style'],
+					  "tournament[url]" => "ltglan_" . $mt['short'] . "_" . strtolower($month_name) . "_" . date('y'),
+					  "tournament[description]" => "LTGLANs " . $mt['navn'] . "-turnering $month_name ". date('Y'),
+					  "tournament[open_signup]" => "false"
+					);
+					
+					if($mt['tournament_style'] == "single elimination") $params['tournament[hold_third_place_match]'] = "true";
+					
+					$ct = $c->createTournament($params);
+					
+					// Add Teams
+					$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $mt['id'] ." AND teamstatus='Accepted'");
+					while($team = mysql_fetch_array($query)) {
+						
+						$params = array(
+							"participant[name]" => $team['navn'],
+						);
+						
+						$c->createParticipant($ct->id, $params);
+					}
+					
+					
+					mysql_query("UPDATE tournaments SET bracketlink='". $ct->url ."' WHERE id=". $mt['id']) or die(mysql_error()); 
+					
+					
+					
+					print_r($c->errors); echo "<br/>";
+				}	
 			}
 			
 			header("Location: ./admin.php?page=brackets");
 			
 		} else {
 
-			$tcontent = "<tr><th>navn</th><th>short</th><th>bracket link</th><th>Activate/Deactivate</th></tr>";
+			$tcontent = "<tr><th>navn</th><th>short</th><th>bracket link</th><th>Activate / <br/>Deactivate</th></tr>";
 			
 			$t_query = mysql_query("SELECT * FROM tournaments ORDER BY id ASC");
 			while($t = mysql_fetch_array($t_query)) {
@@ -104,9 +161,11 @@
 								<td>". $t['short'] ."</td>";
 				
 				if($t['bracketlink'] == "") {
-					$tcontent .= "<td><form style='margin:0' action='./admin.php?page=brackets&tid=". $t['id'] ."' method='post'>Link: <input type='text' name='link' /> <input type='submit' value='Submit' /></form></td>";
+					if($t['tournament_style'] == "") $tcontent .= "<td></td>";
+					else $tcontent .= "<td><a href='./admin.php?page=brackets&tid=". $t['id'] ."&create_bracket'>create bracket</a></td>";
 				} else {
-					$tcontent .= "<td><a href='http://challonge.com/". $t['bracketlink'] ."' target='_blank'>". $t['bracketlink'] ."</a> <a href='./admin.php?page=brackets&tid=". $t['id'] ."&rm'>X</a></td>";
+					$tcontent .= "<td><a href='http://challonge.com/". $t['bracketlink'] ."' target='_blank'>". $t['bracketlink'] ."</a>
+									<a href='./admin.php?page=brackets&tid=". $t['id'] ."&del_bracket'>X</a></td>";
 				}
 				
 				$tcontent .= "<td style='text-align: center;'><a href='./admin.php?page=brackets&tid=". $t['id'] ."&activate'>X</a></td>";

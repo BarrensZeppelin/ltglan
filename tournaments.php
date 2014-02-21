@@ -234,7 +234,7 @@
 						$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='". $_SESSION['billetnr'] ."'"));
 						
 						
-						$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id='" . $bruger['id'] . "' ORDER BY laest ASC");
+						$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id='" . $bruger['id'] . "' ORDER BY laest,id ASC");
 						while($row = mysql_fetch_array($query)) {
 							$class = "";
 							if($row['laest'] == 0) {$class = "unread";} else {$class = "read";}

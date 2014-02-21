@@ -73,6 +73,13 @@
 	}
 	
 	
+	function connect_challonge() {
+		$c = new ChallongeAPI("QUPtf1z5iD6ZbJpIh7Id5hbRgENzvf45K6Qne2rB");
+		$c->verify_ssl = false;
+		
+		return $c;
+	}
+	
 	
 	// Kode fra: http://stackoverflow.com/questions/1217824/post-to-another-page-within-a-php-script
 	// Oprette en POST-request til en ny side

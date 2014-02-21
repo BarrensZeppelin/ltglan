@@ -11,7 +11,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping database structure for ltglan
-DROP DATABASE IF EXISTS `ltglan`;
 CREATE DATABASE IF NOT EXISTS `ltglan` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_danish_ci */;
 USE `ltglan`;
 
@@ -24,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   CONSTRAINT `admins.guest_id` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.admins: ~1 rows (approximately)
+-- Dumping data for table ltglan.admins: ~0 rows (approximately)
 DELETE FROM `admins`;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
 INSERT INTO `admins` (`guest_id`) VALUES
@@ -44,15 +43,15 @@ CREATE TABLE IF NOT EXISTS `beskeder` (
   KEY `guest_ids` (`modtager_id`),
   KEY `afsender_id` (`afsender_id`),
   CONSTRAINT `FK_beskeder_guests` FOREIGN KEY (`modtager_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table ltglan.beskeder: ~3 rows (approximately)
 DELETE FROM `beskeder`;
 /*!40000 ALTER TABLE `beskeder` DISABLE KEYS */;
 INSERT INTO `beskeder` (`id`, `modtager_id`, `afsender_id`, `indhold`, `laest`) VALUES
 	(5, 12, 1, 'Du er blevet inviteret til at spille for holdet Sygt Hold 420 i League of Legends-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=c82e581146b32db57ee80bfe9eabaf7d\'>her</a>', 1),
-	(6, 13, 0, 'Velkommen til LTGLANs turneringsside! Her finder du alle de aktive turneringer, dine hold og mulighed for tilmelding, klik blot på din favoritturninger for at komme i gang. ;)', 1),
-	(7, 13, 0, 'I dette felt finder du invitationer til turneringer fra andre spillere, opdateringer og generelle beskeder mm.<br/>Du kan slette en besked ved at trykke på krydset i øverste højre hjørne', 1);
+	(6, 13, -1, 'Velkommen til LTGLANs turneringsside! Her finder du alle de aktive turneringer, dine hold og mulighed for tilmelding, klik blot på din favoritturninger for at komme i gang. ;)', 1),
+	(7, 13, -1, 'I dette felt finder du invitationer til turneringer fra andre spillere, opdateringer og generelle beskeder mm.<br/>Du kan slette en besked ved at trykke på krydset i øverste højre hjørne', 1);
 /*!40000 ALTER TABLE `beskeder` ENABLE KEYS */;
 
 
@@ -83,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `deltagere` (
   KEY `team_id` (`team_id`),
   CONSTRAINT `deltagere.guest_id` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `deltagere.team_id` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
 -- Dumping data for table ltglan.deltagere: ~5 rows (approximately)
 DELETE FROM `deltagere`;
@@ -108,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `guests` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.guests: ~9 rows (approximately)
+-- Dumping data for table ltglan.guests: ~10 rows (approximately)
 DELETE FROM `guests`;
 /*!40000 ALTER TABLE `guests` DISABLE KEYS */;
 INSERT INTO `guests` (`id`, `pass_hashed`, `billetnr`, `navn`, `klasse`) VALUES
@@ -134,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `invites` (
   CONSTRAINT `invites.team_id` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.invites: ~2 rows (approximately)
+-- Dumping data for table ltglan.invites: ~3 rows (approximately)
 DELETE FROM `invites`;
 /*!40000 ALTER TABLE `invites` DISABLE KEYS */;
 INSERT INTO `invites` (`hash`, `team_id`) VALUES
@@ -159,9 +158,9 @@ CREATE TABLE IF NOT EXISTS `teams` (
   KEY `leader_id` (`leader_id`),
   CONSTRAINT `teams.leader_id` FOREIGN KEY (`leader_id`) REFERENCES `guests` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `teams.tournament_id` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_danish_ci;
 
--- Dumping data for table ltglan.teams: ~1 rows (approximately)
+-- Dumping data for table ltglan.teams: ~2 rows (approximately)
 DELETE FROM `teams`;
 /*!40000 ALTER TABLE `teams` DISABLE KEYS */;
 INSERT INTO `teams` (`id`, `navn`, `leader_id`, `teamstatus`, `tournament_id`, `avatarpath`, `bord`) VALUES
@@ -175,31 +174,34 @@ DROP TABLE IF EXISTS `tournaments`;
 CREATE TABLE IF NOT EXISTS `tournaments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `navn` text CHARACTER SET utf8 COLLATE utf8_danish_ci,
+  `short` text,
   `max_spillere` int(11) DEFAULT NULL,
   `rules` text CHARACTER SET utf8 COLLATE utf8_danish_ci,
   `bracketlink` text NOT NULL,
-  `active` int(11) NOT NULL DEFAULT '1',
+  `active` int(10) unsigned NOT NULL DEFAULT '1',
+  `reg_open` int(10) unsigned NOT NULL DEFAULT '1',
+  `tournament_style` text NOT NULL COMMENT 'single elemination / double elemination / round robin / swiss (challonge)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
--- Dumping data for table ltglan.tournaments: ~14 rows (approximately)
+-- Dumping data for table ltglan.tournaments: ~10 rows (approximately)
 DELETE FROM `tournaments`;
 /*!40000 ALTER TABLE `tournaments` DISABLE KEYS */;
-INSERT INTO `tournaments` (`id`, `navn`, `max_spillere`, `rules`, `bracketlink`, `active`) VALUES
-	(1, 'League of Legends', 5, 'Format: 5v5 Tournament Draft på SR<br />\r\nFinalen og semi-finale spilles som BO3<br />\r\nSyndra er banned i alle kampe.<br />\r\n\r\n/pause kan benyttes i alle tilfælde<br />\r\n af netværks- eller computerproblemer.', 'ltglanlol', 1),
-	(2, 'Minecraft Build-Off', 2, 'Opgaven: at bygge et hus & en båd.<br />\r\nHuset bliver første challenge,<br />\r\nog båden bliver nummer to.<br />\r\nHver challenge har en deadline 90 minutter,<br />\r\nog bliver bedømt af 4 mennesker fra selve lanet.', '', 1),
-	(3, 'Counter-Strike: Source', 5, 'Format: 5v5<br />\r\n13 runder spilles som hver faction (T/CT)<br />\r\n\r\nKnife-fight for at bestemme hvem der starter<br />\r\n på hvilken faction. Vinderen bestemmer.', '', 0),
-	(4, 'Trackmania Nations', 1, 'Format: Time attack', '', 0),
-	(5, 'Bloodline Champions', 3, 'Format: 3v3 Arena BO3<br/>Finalen spilles som BO5', '', 0),
-	(6, 'Ultimate Marvel vs. Capcom 3', 1, 'Format: 1v1 BO3 Random Maps', '', 0),
-	(7, 'Starcraft II', 1, 'Format: 1v1 BO3<br/>Første map er bestemt af admins,<br/>taberen bestemmer næste map', '', 0),
-	(8, 'Warlock i WC3', 2, 'Format: 2v2 BO1, Finals: BO5<br />\r\nv. 093<br />\r\nmodes:<br />\r\n-league<br />\r\n-teams (preset)<br />\r\n-11<br />', '', 1),
-	(9, 'Left 4 Dead 2', 4, 'Format: 4v4 Versus<br/>3 random map', '', 0),
-	(10, 'Audiosurf', 2, 'Format: 2v2', '', 0),
-	(11, 'Super Smash Brother Brawl', 2, '2v2 turnering<br/>\r\nItems: only smash balls<br/>\r\nAll characters available<br/>\r\nBO3<br />\r\n5 stock/life matches<br/>\r\n', '', 1),
-	(12, 'CS:GO', 5, 'Format: 5v5 Competetive', '', 1),
-	(13, 'Hearthstone', 1, NULL, '', 1),
-	(14, 'Team Fortress 2', 5, NULL, '', 1);
+INSERT INTO `tournaments` (`id`, `navn`, `short`, `max_spillere`, `rules`, `bracketlink`, `active`, `reg_open`, `tournament_style`) VALUES
+	(1, 'League of Legends', 'lol', 5, 'Format: 5v5 Tournament Draft på SR<br />\r\nFinalen og semi-finale spilles som BO3<br />\r\nSyndra er banned i alle kampe.<br />\r\n\r\n/pause kan benyttes i alle tilfælde<br />\r\n af netværks- eller computerproblemer.', 'ltglan_lol_february_14', 1, 1, 'double elimination'),
+	(2, 'Minecraft Build-Off', 'mc', 2, 'Opgaven: at bygge et hus & en båd.<br />\r\nHuset bliver første challenge,<br />\r\nog båden bliver nummer to.<br />\r\nHver challenge har en deadline 90 minutter,<br />\r\nog bliver bedømt af 4 mennesker fra selve lanet.', '', 1, 1, ''),
+	(3, 'Counter-Strike: Source', 'css', 5, 'Format: 5v5<br />\r\n13 runder spilles som hver faction (T/CT)<br />\r\n\r\nKnife-fight for at bestemme hvem der starter<br />\r\n på hvilken faction. Vinderen bestemmer.', '', 0, 1, 'single elimination'),
+	(4, 'Trackmania Nations', 'tmn', 1, 'Format: Time attack', '', 0, 1, ''),
+	(5, 'Bloodline Champions', 'blc', 3, 'Format: 3v3 Arena BO3<br/>Finalen spilles som BO5', '', 0, 1, ''),
+	(6, 'Ultimate Marvel vs. Capcom 3', 'umvc', 1, 'Format: 1v1 BO3 Random Maps', '', 0, 1, ''),
+	(7, 'Starcraft II', 'sc2', 1, 'Format: 1v1 BO3<br/>Første map er bestemt af admins,<br/>taberen bestemmer næste map', '', 0, 1, ''),
+	(8, 'Warlock i WC3', 'wc3', 2, 'Format: 2v2 BO1, Finals: BO5<br />\r\nv. 093<br />\r\nmodes:<br />\r\n-league<br />\r\n-teams (preset)<br />\r\n-11<br />', '', 1, 1, ''),
+	(9, 'Left 4 Dead 2', 'l4d2', 4, 'Format: 4v4 Versus<br/>3 random map', '', 0, 1, ''),
+	(10, 'Audiosurf', 'asurf', 2, 'Format: 2v2', '', 0, 1, ''),
+	(11, 'Super Smash Brother Brawl', 'ssbb', 2, '2v2 turnering<br/>\r\nItems: only smash balls<br/>\r\nAll characters available<br/>\r\nBO3<br />\r\n5 stock/life matches<br/>\r\n', 'ltglan_ssbb_february_14', 1, 1, 'single elimination'),
+	(12, 'CS:GO', 'csgo', 5, 'Format: 5v5 Competetive', '', 1, 1, 'single elimination'),
+	(13, 'Hearthstone', 'hs', 1, NULL, '', 1, 1, ''),
+	(14, 'Team Fortress 2', 'tf2', 5, NULL, '', 1, 1, 'round robin');
 /*!40000 ALTER TABLE `tournaments` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
