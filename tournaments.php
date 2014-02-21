@@ -213,10 +213,14 @@
 					break;
 				}
 			}
+			
+			if(!$inteam && $tournament['reg_open'] == 0) {
+				$besked = '<a onclick="createDialog(\'tournaments.php\', \'page=team&tid='.$i.'&billetnr='. $_SESSION['billetnr'] .'\');">';
+			}
 		
 		
 			echo '<div class="turnerings-billede" id="tournament-' . $i . '" style="'. ($i==0 ? "padding-top:9px !important;" : "")  .'">
-					'. $besked .'<img style="width:540px;height:100px;box-shadow: 0px 0px 15px 5px '. ($inteam ? ($status=="Pending" ? 'yellow' : "green") : 'red') .';" src="./imgs/tournament-'. $i .'.png" alt="'. $tournament['navn'] .'" /></a>
+					'. $besked .'<img style="width:540px;height:100px;box-shadow: 0px 0px 15px 5px '. ($inteam ? ($status=="Pending" ? 'yellow' : "green") : ($tournament['reg_open'] == 1 ? 'red' : 'gray')) .';" src="./imgs/tournament-'. $i .'.png" alt="'. $tournament['navn'] .'" /></a>
 				</div>';
 		}
 		
@@ -289,7 +293,8 @@
 		$klassearray = get_klasse_array();
 		$max_players = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id = ". $_GET['tid']),0);
 		
-		$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_GET['billetnr']));
+		$bruger = get_guest_wbilletnr($_GET['billetnr']);
+		$tournament = get_tournament($_GET['tid']);
 		
 		?>
 		
@@ -335,7 +340,7 @@
 										$tcontent = $tcontent . "<tr><td style='text-align:right;'><b>Leader</b></td>";
 									} else {
 										$tcontent = $tcontent . "<tr><td style='text-align:right;'>";
-										if(($bruger['id'] == $team['leader_id']) || ($bruger['id'] == $player['id'])) $tcontent .= "<a onclick='$.post(\"tournaments.php\", { del: \"". $deltager['id'] ."\" });". ($bruger['id'] == $player['id'] ? "window.location=\"./\";" : "createDialog(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $_GET['id'] ."&billetnr=". $_SESSION['billetnr'] ."\");") ."'><span class='delico'>x</span></a>";
+										if((($bruger['id'] == $team['leader_id']) || ($bruger['id'] == $player['id'])) && $tournament['reg_open'] == 1) $tcontent .= "<a onclick='$.post(\"tournaments.php\", { del: \"". $deltager['id'] ."\" });". ($bruger['id'] == $player['id'] ? "window.location=\"./\";" : "createDialog(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $_GET['id'] ."&billetnr=". $_SESSION['billetnr'] ."\");") ."'><span class='delico'>x</span></a>";
 										$tcontent .= "<b>Spiller ". ($i+1) ."</b></td>";
 									}
 									$tcontent = $tcontent . "<td style='display:inline-block;'><span style='padding-left: 10px;". ($player['id'] == $bruger['id'] ? "font-weight:bold;font-style:italic;" : "") ."' id='spiller$i'>". $player['navn'] ."</span><span style='visibility:hidden;float:right;margin-left: 5px;' id='spiller$i"."klasse'><b> // ". $player['klasse'] ."</b></span></td></tr>";
@@ -471,7 +476,19 @@
 								
 								<div id='team-container'>
 										". $tcontent ."
-								</div>";
+								</div><br/>";
+								
+								// Lad spilleren signe op hvis han ikke er tilmeldt:
+								$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=". $bruger['id']);
+								$signedup = false;
+								while( $deltager = mysql_fetch_array($query) ) {
+									$team = get_team($deltager['team_id']);
+									if($team['tournament_id'] == $_GET['tid']) {
+										$signedup = true;
+										break;
+									}
+								}
+								if(!$signedup && $tournament['reg_open'] == 1) echo "<div style='display:inline-block;width:100%;margin-top:5px;'><span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"join-popup-page.php\", \"id=". $_GET['tid'] ."&billetnr=". $_GET['billetnr'] ."\")'>Signup</a></div>";
 						}
 					} else {
 						//Rems alle spillere op (til 1-mands turneringer)

@@ -38,7 +38,7 @@
 				</form>
 				
 				<!--		Her er formen til at oprette sig med
-								når formen submittes, bliver javascript funktionen: checkPass() kørt igennem, for at validere de indtastede data -->
+								når formen submittes, bliver javascript funktionen: checkPass() kørt igennem (functions.js), for at validere de indtastede data -->
 				<div><form name="opretForm" onsubmit="return checkPass()" action="./newuser.php" method="post" id="opret">
 					<label>
 						<span>Billetnummer:</span><input type="text" name="billetnr" />

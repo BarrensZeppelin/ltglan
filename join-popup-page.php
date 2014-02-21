@@ -1,6 +1,8 @@
 <?php
 	require "login/includes.php";
 	
+	// Database tjek for at se om navnet er taget
+	// Bruges kun af javascript koden længere nede
 	if(isset($_POST['tid'])) {
 		if(mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $_POST['tid'] ." AND navn=". $_POST['name'])) != 0)
 			echo "taken";
@@ -13,8 +15,7 @@
 	
 	$klassearray = get_klasse_array();
 	$billetnr = $_GET['billetnr'];
-	$query = mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr");
-	$row = mysql_fetch_array($query);
+	$row = get_guest_wbilletnr($billetnr);
 
 
 	$user_klasse = $row["klasse"];
@@ -224,6 +225,7 @@
 							</tbody>
 						</table>
 					</form>
+					<?php echo "<div style='display:inline-block;width:100%;margin-top:5px;'><span style='float:left;'><a onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=team&tid=". $_GET['id'] ."&billetnr=". $_GET['billetnr'] ."\")'>Alle Hold</a></div>"; ?>
 				</div>
 			</div>
 		</div>

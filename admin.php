@@ -80,6 +80,16 @@
 		}
 	} else if($_GET["page"] == "brackets") {
 		
+		if(isset($_POST['name'])) {
+			$id = mysql_result(mysql_query("SELECT MAX(id) FROM tournaments"), 0) + 1;
+		
+			mysql_query("INSERT INTO tournaments (id, navn, short, max_spillere, tournament_style)
+						VALUES($id,'". $_POST['name'] ."','". $_POST['short'] ."',". $_POST['max_spillere'] .",'". $_POST['tstyle'] ."')") or die(mysql_error());
+			
+			header("Location: ./admin.php?page=brackets");
+			exit;
+		}
+		
 		if(isset($_GET['tid'])) {
 			
 			if(isset($_GET['activate'])) {
@@ -149,6 +159,7 @@
 			}
 			
 			header("Location: ./admin.php?page=brackets");
+			exit;
 			
 		} else {
 
@@ -174,6 +185,36 @@
 			}
 			
 			echo "<a href='./admin.php'>Back</a><br/><br/>";
+			echo "<form name='new_tournament' method='post' action='./admin.php?page=brackets'>
+					navn: <input type='text' name='name' /> short: <input type='text' name='short' /> teamsize: <input type='number' name='max_spillere' />
+					<select name='tstyle'>
+						<option value=''>no brackets</option><option value='single elimination'>single elimination</option>
+						<option value='double elimination'>double elimination</option><option value='round robin'>round robin</option><option value='swiss'>swiss</option>
+					</select>
+					<input type='submit' />
+				</form>";
+			echo "<b>Artwork:</b><br/>
+					<div style='display:inline-block;margin-left:20px;'>
+						Tournament banners:   <i>./imgs/tournament-<b>id</b>.png</i>          (540x100)<br/>
+						Tournament backdrops: <i>./imgs/tournament-<b>id</b>-backdrop.png</i> (960x610)
+					</div><br/><br/>";
+			?>
+			
+			<script type='text/javascript'>
+				function showChallonge() {
+					document.getElementById("challonge").innerHTML = "<div style='display:inline-block;float:left;'>username: <i>ltglan</i><br/>password: <i>challonge</i></div><div style='display:inline-block;margin-left:20px;margin-top:7px;'><a href='http://challonge.com/'>challonge.com</a> - <a href='#' onclick='hideChallonge()'>hide</a></div>";
+				}
+				
+				function hideChallonge() {
+					document.getElementById("challonge").innerHTML = "<a href='#' onclick='showChallonge()'><i>Show LTGLAN Challonge Login</i></a>";
+				}
+			</script>
+			
+			<?php
+			echo "<b>Report winners and manage brackets further with Challonge:</b><br/>
+				<div id='challonge' style='display:inline-block;margin-left:20px;'>
+					<a href='#' onclick='showChallonge()'><i>Show LTGLAN Challonge Login</i></a>
+				</div><br/>";
 			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
 	
@@ -217,13 +258,14 @@
 			if(isset($_GET['team_id'])) $query = mysql_query("SELECT * FROM deltagere WHERE team_id=". $_GET['team_id'] ." ORDER BY pos ASC");
 			while( $d = mysql_fetch_array($query) ) {
 				$team = get_team($d['team_id']);
+				$tournament = get_tournament($team['tournament_id']);
 				
 				$tcontent .= "<tr style='text-align:center;". ($d['pos'] == 0 ? "font-weight:bold;" : "") ."'>
 								<td>". $d['id'] ."</td>
 								<td><a href='./admin.php?page=guests&id=". $d['guest_id'] ."'>". $d['guest_id'] ."</a></td>
 								<td><a href='./admin.php?page=teams&id=". $d['team_id'] ."'>". $d['team_id'] ."</a></td>
 								<td style='background-color:". ($d['pos'] == 0 ? ($team['teamstatus'] == "Accepted" ? "green" : "yellow") : "white") ."'>". $d['pos'] ."</td>
-								<td><a href='./admin.php?page=deltagere&del=". $d['id'] ."'>X</a></td>
+								<td>". ($tournament['reg_open'] == 1 ? "<a href='./admin.php?page=deltagere&del=". $d['id'] ."'>X</a>" : "") ."</td>
 							</tr>";
 			}
 			

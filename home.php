@@ -19,9 +19,18 @@
 		$allowedpages = array("tournaments", "about", "gallery", "servers");
 		if(!isset($_GET['p']) || !in_array($_GET['p'], $allowedpages)) { // $_GET['page'] bliver allerede brugt
 			header("Location: ./?p=tournaments");
+			exit;
 		}
-	} else { // Man må godt se galleriet hvis man ikke er logget ind
-		if(!isset($_GET['p']) || ($_GET['p']!="front" && $_GET['p']!="gallery")) { header("Location: ./?p=front"); }
+	} else { // Man må godt se frontsiden, galleriet og omkring hvis man ikke er logget ind
+		if(!isset($_GET['p']) || ($_GET['p']!="front" && $_GET['p']!="gallery" && $_GET['p']!="about")) { 
+			$w = "";
+			if($_GET['p'] == "tournaments" || $_GET['p'] == "servers") {
+				$w = "&w=" . $_GET['p'];
+			}
+			
+			header("Location: ./?p=front" . $w); 
+			exit;
+		}
 	}
 ?>
 
@@ -51,15 +60,21 @@
 		<script src="scripts/functions.js"></script>
 		
 		<?php
-			if($loginfailed != 0) { ?>
+			if($loginfailed != 0 || isset($_GET['w'])) { ?>
 				<script type="text/javascript">
 					$(document).ready(function () {
-						alert("<?php if($loginfailed == 1) echo "En bruger med dette billetnr eksisterer ikke."; else echo "Passwordet passer ikke til denne bruger."; ?>");
+						<?php if($loginfailed != 0) { ?>
+							alert("<?php if($loginfailed == 1) echo "En bruger med dette billetnr eksisterer ikke."; else echo "Passwordet passer ikke til denne bruger."; ?>");
+						<?php } else { ?>
+							alert("Opret en bruger og log ind først. :)");
+						<?php } ?>
 					});
 				</script>
 		<?php } ?>
 		
+		
 		<?php
+			// Denne kode gør alle fonts på hjemmesiden til Comic Sans MS (For sjov)
 			if(isset($_SESSION['cmms'])) {
 				if($_SESSION['cmms']) {
 					echo "<style>
