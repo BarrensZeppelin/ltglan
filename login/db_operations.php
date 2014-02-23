@@ -54,7 +54,7 @@ function get_tournament($id) {
 function slet_hold($holdid) {
 	$team = get_team($holdid);
 
-	// Delete challonge participant  //
+	// Delete challonge participant (Sker kun hvis holdet findes pÃ¥ challonge) //
 	$t = get_tournament($team['tournament_id']);
 	
 	if(isset($t['bracketlink']) && $t['bracketlink'] != "") {
@@ -65,11 +65,8 @@ function slet_hold($holdid) {
 		$participants = $c->makeCall("tournaments/". $t['bracketlink'] ."/participants");
 		
 		for($i = 0; $i < $ct->{'participants-count'}; $i++) {
-			//echo $participants->participant[$i]->name . "<br/>";
 			if($participants->participant[$i]->name == $team['navn']) {
 				$c->makeCall("tournaments/". $t['bracketlink'] ."/participants/". $participants->participant[$i]->id, array(), "delete");
-				
-				echo $participants->participant[$i]->id . "<br/>";
 				break;
 			}
 		}
@@ -82,7 +79,7 @@ function slet_hold($holdid) {
 	
 	if($team['avatarpath'] != null && $team['avatarpath'] != "") unlink($team['avatarpath']); // Slet avatar
 
-	// Slet alt der har med holdet at gøre
+	// Slet alt der har med holdet at gÃ¸re
 	mysql_query("DELETE FROM deltagere WHERE team_id=". $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM invites WHERE team_id=" . $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM teams WHERE id=" . $team['id']) or die(mysql_error());
@@ -100,7 +97,28 @@ function slet_deltager($deltagerid) {
 		slet_hold($team['id']);
 		
 	} else {
-		// Ellers så slet den ene deltager og flyt rundt på de andre, så den sidste i holdet tager den slettedes plads
+		// Ellers sÃ¥ slet den ene deltager og flyt rundt pÃ¥e andre, sÃ¥ den sidste i holdet tager den slettedes plads
+	
+		// Delete challonge participant //
+		$t = get_tournament($team['tournament_id']);
+		
+		if(isset($t['bracketlink']) && $t['bracketlink'] != "" && $team['teamstatus'] == "Accepted") {
+			
+			$c = connect_challonge();
+			
+			$ct = $c->makeCall("tournaments/". $t['bracketlink'], array(), "get");
+			$participants = $c->makeCall("tournaments/". $t['bracketlink'] ."/participants");
+			
+			for($i = 0; $i < $ct->{'participants-count'}; $i++) {
+				if($participants->participant[$i]->name == $team['navn']) {
+					$c->makeCall("tournaments/". $t['bracketlink'] ."/participants/". $participants->participant[$i]->id, array(), "delete");
+					
+					send_message($team['leader_id'], "Dit hold: <i>". $team['navn'] ."</i> er midlertidigt fjernet fra brackets, da det ikke lÃ¦ngere er fyldt.<br/>Skynd dig at fÃ¥ de sidste spiller med inden turneringen starter!", -1);
+					break;
+				}
+			}
+		}
+		///////////////////////////////////
 	
 		$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
 	

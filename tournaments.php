@@ -25,7 +25,8 @@
 							$test = 1;
 							
 							$deltagernavn = mysql_result(mysql_query("SELECT navn FROM guests WHERE id=". $_POST['navn'.$i]), 0);
-							$nessage .= "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende eller allerede er medlem af dit hold.<br/>";
+							send_message($leaderid, "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende eller allerede er medlem af dit hold.", -1);
+							$message .= "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende eller allerede er medlem af dit hold.<br/>";
 						}
 						
 					}
@@ -47,13 +48,14 @@
 						
 						//send_message($leaderid, "Du inviterede $modtagernavn til $holdnavn");
 						send_message($modtager, "Du er blevet inviteret til at spille for holdet $holdnavn i ". $turnering['navn'] ."-turneringen. Hvis du ønsker at acceptere, så klik <a href=\'accept_invite.php?hash=" . $hash . "\'>her</a>");	
+						send_message($leaderid, "$modtagernavn blev inviteret til $holdnavn.", -1);
 						$message .= "$modtagernavn blev inviteret til $holdnavn.<br/>";
 					}
 				}
 			}
 		}
 		
-		header("refresh: 2; ./");
+		header("Location: ./?p=tournaments");
 		die($message);
 		
 	} else if(isset($_POST['del'])) {
@@ -234,34 +236,48 @@
                         <div class="turnering-info" id="turnering-info">';
 						
 						
-					if(verify_login()) {
-						$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='". $_SESSION['billetnr'] ."'"));
-						
-						
-						$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id='" . $bruger['id'] . "' ORDER BY laest,id ASC");
-						while($row = mysql_fetch_array($query)) {
-							$class = "";
-							if($row['laest'] == 0) {$class = "unread";} else {$class = "read";}
-							
-							$afsender = "System";
-							if($row['afsender_id'] != -1) {
-								$afsender = get_guest($row['afsender_id']);
-								$afsender = $afsender['navn'] . " - " . $afsender['klasse'];
-							}
-							
-							echo "<div class='besked ". $class ."' id='". $row['id'] ."'>
-									<div class='top'>
-										<span style='float:left'>$afsender</span><span style='float:right;font-size:11px'><a onclick='delete_msg(". $row['id'] .");'>x</a></span>
-									</div>
-									<div class='content'>
-										" . $row['indhold'] . "
-									</div>
-								</div><br />";
-								
-							mysql_query("UPDATE beskeder SET laest=1
-										WHERE id=". $row['id']);
+					$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='". $_SESSION['billetnr'] ."'"));
+					
+					
+					$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id='" . $bruger['id'] . "' AND laest=0 ORDER BY id DESC");
+					while($row = mysql_fetch_array($query)) {
+						$afsender = "System";
+						if($row['afsender_id'] != -1) {
+							$afsender = get_guest($row['afsender_id']);
+							$afsender = $afsender['navn'] . " - " . $afsender['klasse'];
 						}
+						
+						echo "<div class='besked unread' id='". $row['id'] ."'>
+								<div class='top'>
+									<span style='float:left'>$afsender</span><span style='float:right;font-size:11px'><a onclick='delete_msg(". $row['id'] .");'>x</a></span>
+								</div>
+								<div class='content'>
+									" . $row['indhold'] . "
+								</div>
+							</div>";
 					}
+					
+					$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id='" . $bruger['id'] . "' AND laest=1 ORDER BY id DESC");
+					while($row = mysql_fetch_array($query)) {
+						$afsender = "System";
+						if($row['afsender_id'] != -1) {
+							$afsender = get_guest($row['afsender_id']);
+							$afsender = $afsender['navn'] . " - " . $afsender['klasse'];
+						}
+						
+						echo "<div class='besked read' id='". $row['id'] ."'>
+								<div class='top'>
+									<span style='float:left'>$afsender</span><span style='float:right;font-size:11px'><a onclick='delete_msg(". $row['id'] .");'>x</a></span>
+								</div>
+								<div class='content'>
+									" . $row['indhold'] . "
+								</div>
+							</div>";
+					}
+					
+												
+					mysql_query("UPDATE beskeder SET laest=1");
+					
 						
 		echo '			</div>
 						<div id="sponsor-logo" hidden>
@@ -372,12 +388,12 @@
 									</tbody>
 								</table>";
 							$bracketlink = mysql_result(mysql_query("SELECT bracketlink FROM tournaments WHERE id=". $_GET['tid']), 0);
-							if($bracketlink != "") {
+							if($bracketlink != "" && mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $_GET['tid'] ." AND teamstatus='Accepted'")) >= 2) {
 								echo "<a href='#' onclick='$(\"#dialog\").html(\"Loading...\").load(\"tournaments.php\", \"page=bracket&turl=". $bracketlink ."\")'><img height='50px' src='./imgs/brackets.png' /></a>";
 							}
 							
-							if($team['leader_id'] == $bruger['id'] && $team["teamstatus"] != "Pending") {
-								if($bracketlink != "") echo "<br/>";
+							if($team['leader_id'] == $bruger['id'] && $team["teamstatus"] != "Pending" && $tournament['reg_open']==1) {
+								if($bracketlink != "" && mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $_GET['tid'])) >= 2) echo "<br/>";
 								echo "<a href='./slethold.php?tid=" . $_GET["tid"] . "&id=" . $_GET["id"] . "'><img src='./imgs/slet_hold.png' alt='Slet hold' style='height: 50px;' /></a>";
 							}
 							echo "</div>";

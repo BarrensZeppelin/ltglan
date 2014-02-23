@@ -82,7 +82,7 @@ p#t-overskrift{
 
 .turnering-info{
 	width:250px;
-	height:331px;
+	height:341px;
 	margin:auto;
 	background-image:url(../imgs/login-baggrund.jpg);
 	font:Arial, Helvetica, sans-serif;
@@ -92,8 +92,8 @@ p#t-overskrift{
 	text-decoration:none;
 	padding-left:22px;
 	padding-right:26px;
-	padding-top:15px;
-	padding-bottom:15px;
+	padding-top:10px;
+	padding-bottom:10px;
 	box-shadow: 0px 0px 15px 5px #333;
 	border-radius:10px;
 	margin-top:10px;
@@ -107,7 +107,7 @@ p#t-overskrift{
 	text-align: left;
 	padding-top: 0;
 	width: 230px;
-	margin: 5px;
+	margin: 10px 5px;
 	background-color: rgba(100,100,100,0.5);
 	border-radius: 0 0 5px 5px;
 	font-weight: normal;

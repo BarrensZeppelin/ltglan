@@ -149,13 +149,42 @@
 						$c->createParticipant($ct->id, $params);
 					}
 					
+					// Send besked til alle teams i turneringen
+					$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $mt['id']);
+					while($team = mysql_fetch_array($query)) {
+						send_message($team['leader_id'], "En midlertidig bracket er blevet oprettet for ". $mt['navn'] ."-turneringen. Er dit hold ikke fyldt (Accepteret/Grønt) når turneringen starter, bliver dit hold slettet og holdet deltager ikke i turneringen.", -1);
+						if($team['teamstatus'] == "Pending") send_message($team['leader_id'], "Du vil først kunne se dit hold i turneringsbracket\'en, når det er fyldt helt op.", -1);
+					}
+					
 					
 					mysql_query("UPDATE tournaments SET bracketlink='". $ct->url ."' WHERE id=". $mt['id']) or die(mysql_error()); 
 					
-					
-					
-					print_r($c->errors); echo "<br/>";
 				}	
+			} else if(isset($_GET['start'])) {
+				$tid = intval($_GET['tid']);
+				$mt = get_tournament($tid);
+				if(isset($mt['bracketlink']) && $mt['bracketlink'] != "" && mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $mt['id'] ." AND teamstatus='Accepted'")) >= 2) {
+					// Get and start tournament
+					$c = connect_challonge();
+					
+					$ct = $c->makeCall("tournaments/" . $mt['bracketlink'], array("include_matches" => 0), "get");
+					
+					$c->startTournament($ct->id, array());
+					
+					// Send messages
+					$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $mt['id']);
+					while($team = mysql_fetch_array($query)) {
+						if($team['teamstatus'] == "Pending") {
+							send_message($team['leader_id'], $mt['navn'] ."-turneringen er startet og dit hold var ikke fyldt, det betyder, at I desværre ikke kommer med i turneringen.", -1);
+							slet_hold($team['id']);
+						} else {
+							send_message($team['leader_id'], $mt['navn'] ."-turneringen er startet og I kan se de endelige brackets nu. Held og lykke!", -1);
+						}
+					}
+					
+					// Update reg_open
+					mysql_query("UPDATE tournaments SET reg_open=0 WHERE id=". $mt['id']) or die(mysql_error());
+				}
 			}
 			
 			header("Location: ./admin.php?page=brackets");
@@ -175,8 +204,13 @@
 					if($t['tournament_style'] == "") $tcontent .= "<td></td>";
 					else $tcontent .= "<td><a href='./admin.php?page=brackets&tid=". $t['id'] ."&create_bracket'>create bracket</a></td>";
 				} else {
-					$tcontent .= "<td><a href='http://challonge.com/". $t['bracketlink'] ."' target='_blank'>". $t['bracketlink'] ."</a>
-									<a href='./admin.php?page=brackets&tid=". $t['id'] ."&del_bracket'>X</a></td>";
+					if($t['reg_open'] == 1)
+						$tcontent .= "<td><a href='http://challonge.com/". $t['bracketlink'] ."' target='_blank'>". $t['bracketlink'] ."</a>";
+					else $tcontent .= "<td><a href='http://challonge.com/". $t['bracketlink'] ."' target='_blank'><b>". $t['bracketlink'] ."</b></a>";
+					
+					if(mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $t['id'] ." AND teamstatus='Accepted'")) >= 2 && $t['reg_open'] == 1) $tcontent .= " <a href='./admin.php?page=brackets&tid=". $t['id'] ."&start'><b>START</b></a>";
+					if($t['reg_open'] == 1) $tcontent .= " <a href='./admin.php?page=brackets&tid=". $t['id'] ."&del_bracket'><i>DELETE</i></a></td>";
+					else $tcontent .= "</td>";
 				}
 				
 				$tcontent .= "<td style='text-align: center;'><a href='./admin.php?page=brackets&tid=". $t['id'] ."&activate'>X</a></td>";
@@ -274,7 +308,7 @@
 						guest_id: <input type='text' name='guest_id' />  team_id: <input type='text' name='team_id' /><input type='submit' value='Ny' />
 					</form><br/>";
 			echo "Custom query: <form action='./admin.php?page=deltagere' method='post'><span style='background-color:grey'>SELECT * FROM deltagere </span><input type='text' name='query' value='". (isset($_GET['team_id']) ? "WHERE team_id=". $_GET['team_id'] : (isset($_POST['query']) ? $_POST['query'] : "")) ."' /><input type='submit' value='Submit' /></form>";
-			echo "Leaders står i bold (pos = 0)<br/>";
+			echo "Leaders står i bold (pos = 0)<br/>Du kan ikke slette deltagere fra hold i turneringer der allerede er gået i gang.<br/>";
 			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
 	} else if($_GET['page'] == "teams") {
@@ -301,7 +335,7 @@
 								<td>". $t['bord'] ."</td>
 								<td>". ($t['avatarpath'] == "" ? "-" : "<a href='". $t['avatarpath'] ."'>". $t['avatarpath'] ."</a>") ."</td>
 								<td><a href='./admin.php?page=deltagere&team_id=". $t['id'] ."'>$spillere</a>/<b>". $tournament['max_spillere'] ."</b></td>
-								<td><a href='./admin.php?page=teams&del=". $t['id'] ."'>X</a></td>
+								<td>". ($tournament['reg_open'] == 1 ? "<a href='./admin.php?page=teams&del=". $t['id'] ."'>X</a>" : "") ."</td>
 							</tr>";
 			}
 			

@@ -12,7 +12,7 @@
 	}
 	
 	// Hvis man prøver at logge ud, så opret en ny session og start forfra
-	if(isset($_GET['logoff']) || isset($_GET['logout'])) {session_destroy(); header("Location: ./");}
+	if(isset($_GET['logoff']) || isset($_GET['logout'])) {session_destroy(); header("Location: ./?p=front"); exit;}
 
 	
 	$loginfailed = 0;
