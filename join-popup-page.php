@@ -4,9 +4,10 @@
 	// Database tjek for at se om navnet er taget
 	// Bruges kun af javascript koden længere nede
 	if(isset($_POST['tid'])) {
-		if(mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $_POST['tid'] ." AND navn=". $_POST['name'])) != 0)
+		if(mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $_POST['tid'] ." AND navn='". $_POST['name'] ."'")) != 0)
 			echo "taken";
-		die();
+		else echo "fine";
+		die(mysql_error());
 	}
 	
 	if(!isset($_GET["id"]) || is_nan($_GET["id"])) {
@@ -114,7 +115,8 @@
 			},
 			success: function(data, textStatus, jqXHR) {
 				if(data == "taken") {alert("Navnet er allerede taget.");}
-				else suc = true;
+				else if(data == "fine") suc = true;
+				else alert(data);
 			}
 		});
 		if(suc == false) return false;

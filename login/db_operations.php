@@ -57,7 +57,7 @@ function slet_hold($holdid) {
 	// Delete challonge participant (Sker kun hvis holdet findes på challonge) //
 	$t = get_tournament($team['tournament_id']);
 	
-	if(isset($t['bracketlink']) && $t['bracketlink'] != "") {
+	if(isset($t['bracketlink']) && $t['bracketlink'] != "" && $team['teamstatus'] == "Accepted") {
 		
 		$c = connect_challonge();
 		
