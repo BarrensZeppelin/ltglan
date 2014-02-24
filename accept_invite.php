@@ -10,8 +10,7 @@
 	if(!verify_login()) {header("Location: ./");exit;}
 	
 	
-	$hash = $_GET["hash"];
-	$hash = mysql_real_escape_string($hash);
+	$hash = mysql_real_escape_string($_GET["hash"]);
 	
 	
 	
@@ -21,7 +20,7 @@
 		die("Denne invitation kunne ikke findes i databasen. Du bliver sendt tilbage til hovedsiden.");
 	}
 	
-	$billetnr = $_SESSION['billetnr'];
+	$billetnr = intval($_SESSION['billetnr']);
 	$userid = mysql_result(mysql_query("SELECT id FROM guests WHERE billetnr=$billetnr"), 0);
 	
 	
@@ -66,7 +65,6 @@
 		// Opdater challonge
 		$link = mysql_result(mysql_query("SELECT bracketlink FROM tournaments WHERE id=$tournament_id"), 0);
 		if($link != "") {
-			
 			$c = connect_challonge();
 			
 			$ct = $c->makeCall("tournaments/" . $link, array("include_matches" => 0), "get");
@@ -76,6 +74,9 @@
 			);
 			
 			$c->createParticipant($ct->id, $params);
+			
+			$leader = mysql_result(mysql_query("SELECT leader_id FROM teams WHERE id=$team_id"), 0);
+			send_message($leader, "Dit hold er nu fyldt og tilføjet til brackets.", -1);
 		}
 	}
 	

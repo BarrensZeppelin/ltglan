@@ -24,7 +24,7 @@
 	} else { // Man må godt se frontsiden, galleriet og omkring hvis man ikke er logget ind
 		if(!isset($_GET['p']) || ($_GET['p']!="front" && $_GET['p']!="gallery" && $_GET['p']!="about")) { 
 			$w = "";
-			if($_GET['p'] == "tournaments" || $_GET['p'] == "servers") {
+			if(isset($_GET['p']) && ($_GET['p'] == "tournaments" || $_GET['p'] == "servers")) {
 				$w = "&w=" . $_GET['p'];
 			}
 			

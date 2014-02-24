@@ -5,7 +5,7 @@
 
 		$klassearray = get_klasse_array();
 		
-		$turnering = mysql_fetch_array(mysql_query("SELECT * FROM tournaments WHERE id=".$_GET['tid']));
+		$turnering = mysql_fetch_array(mysql_query("SELECT * FROM tournaments WHERE id=". intval($_GET['tid']) ));
 		
 		$message = "";
 		
@@ -17,14 +17,16 @@
 					$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id=".$_POST['navn'.$i]);
 					$test = 0;
 					
-					$holdnavn = mysql_result(mysql_query("SELECT navn FROM teams WHERE id='". $_GET['id']."'"),0);
-					$leaderid = mysql_result(mysql_query("SELECT leader_id FROM teams WHERE id=". $_GET['id']),0);
+					$id = intval($_GET['id']);
+					
+					$holdnavn = mysql_result(mysql_query("SELECT navn FROM teams WHERE id=$id"),0);
+					$leaderid = mysql_result(mysql_query("SELECT leader_id FROM teams WHERE id=$id"),0);
 					
 					while($row = mysql_fetch_array($query)) {
 						if(strpos($row['indhold'], $turnering['navn'])!=false and strpos($row['indhold'], $holdnavn)!=false) {
 							$test = 1;
 							
-							$deltagernavn = mysql_result(mysql_query("SELECT navn FROM guests WHERE id=". $_POST['navn'.$i]), 0);
+							$deltagernavn = mysql_result(mysql_query("SELECT navn FROM guests WHERE id=". intval($_POST['navn'.$i]) ), 0);
 							send_message($leaderid, "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende eller allerede er medlem af dit hold.", -1);
 							$message .= "$deltagernavn blev ikke inviteret, fordi han allerede har et invite liggende eller allerede er medlem af dit hold.<br/>";
 						}
@@ -35,12 +37,11 @@
 						//Lav en ny invitation
 						$hash = md5(time() . rand());
 						mysql_query("INSERT INTO invites
-									 VALUES('" .  $hash . "', '" . $_GET['id'] . "')") or die(mysql_error());
+									 VALUES('" .  $hash . "', '" . intval($_GET['id']) ."')") or die(mysql_error());
 									 
 						//send en besked til hver spiller som er inviteret.	
 						
-						$modtager = $_POST["navn" . $i];
-						$modtager = mysql_real_escape_string($modtager);
+						$modtager = intval($_POST["navn" . $i]);
 						
 						$modtagernavn = mysql_result(mysql_query("SELECT navn FROM guests WHERE id=$modtager"), 0);
 						
@@ -65,7 +66,7 @@
 		$deltager = get_deltager($delid);
 		
 		
-		$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". $_SESSION['billetnr']));
+		$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". intval($_SESSION['billetnr']) ));
 		$team = get_team($deltager['team_id']);
 		
 		
@@ -77,8 +78,8 @@
 	} else if(isset($_GET['delmsg'])) {
 		require 'login/includes.php';
 	
-		mysql_query("DELETE FROM beskeder WHERE id=". $_GET['delmsg']) or die(mysql_error());
-		die();
+		mysql_query("DELETE FROM beskeder WHERE id=". intval($_GET['delmsg']) );
+		die(mysql_error());
 	}
 ?>
 
@@ -98,7 +99,7 @@
 			
 			echo "brugere['" . $klassearray[$i] . "'] = new Array();\n			";
 			
-			$query = mysql_query("SELECT * FROM guests WHERE klasse='" . $klassearray[$i] . "' AND billetnr!='". $_SESSION['billetnr'] ."'");
+			$query = mysql_query("SELECT * FROM guests WHERE klasse='" . $klassearray[$i] . "' AND billetnr!=". intval($_SESSION['billetnr']));
 			while($r = mysql_fetch_array($query)) {
 				
 				echo "brugere['" . $klassearray[$i] . "'][" . $c . "] = '" . $r["navn"] . "-" . $r["id"] . "';\n			";
@@ -193,8 +194,8 @@
 			
 			$max_spillere = $tournament["max_spillere"];
 			
-			$billetnr = $_SESSION['billetnr'];
-			$row = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='$billetnr'"));
+			$billetnr = intval($_SESSION['billetnr']);
+			$row = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr"));
 			$userid = $row["id"];
 			
 			$besked = '<a onclick="createDialog(\'join-popup-page.php\', \'id='.$i.'&billetnr='.$billetnr.'\');">';
@@ -208,7 +209,7 @@
 				if($team['tournament_id'] == $i) {
 				
 					$teamid = $team["id"];
-					$besked = '<a onclick="createDialog(\'tournaments.php\', \'page=team&tid='.$i.'&id='.$teamid.'&billetnr='. $_SESSION['billetnr'] .'\');">';
+					$besked = '<a onclick="createDialog(\'tournaments.php\', \'page=team&tid='.$i.'&id='.$teamid.'&billetnr='. intval($_SESSION['billetnr']) .'\');">';
 					$inteam = true;
 					$status = mysql_result(mysql_query("SELECT teamstatus FROM teams WHERE id=$teamid"),0);
 				
@@ -217,7 +218,7 @@
 			}
 			
 			if(!$inteam && $tournament['reg_open'] == 0) {
-				$besked = '<a onclick="createDialog(\'tournaments.php\', \'page=team&tid='.$i.'&billetnr='. $_SESSION['billetnr'] .'\');">';
+				$besked = '<a onclick="createDialog(\'tournaments.php\', \'page=team&tid='.$i.'&billetnr='. intval($_SESSION['billetnr']) .'\');">';
 			}
 		
 		
@@ -236,7 +237,7 @@
                         <div class="turnering-info" id="turnering-info">';
 						
 						
-					$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr='". $_SESSION['billetnr'] ."'"));
+					$bruger = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE billetnr=". intval($_SESSION['billetnr'])));
 					
 					
 					$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id='" . $bruger['id'] . "' AND laest=0 ORDER BY id DESC");
@@ -302,9 +303,9 @@
 	if($_GET['page'] == "team") {
 		if(!isset($_GET['tid'])) { toIndex(); }
 		if(!isset($_GET['billetnr'])) { toIndex(); }
-		else {$_GET['billetnr'] = mysql_real_escape_string($_GET['billetnr']);}
+		else {$_GET['billetnr'] = intval($_GET['billetnr']);}
 		
-		$_GET['tid'] = mysql_real_escape_string($_GET['tid']);
+		$_GET['tid'] = intval($_GET['tid']);
 		
 		$klassearray = get_klasse_array();
 		$max_players = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id = ". $_GET['tid']),0);
@@ -321,12 +322,12 @@
 					<?php
 					if($max_players > 1) {
 						if(isset($_GET['id'])) {
-							$_GET['id'] = mysql_real_escape_string($_GET['id']);
+							$_GET['id'] = intval($_GET['id']);
 							
 							$query = mysql_query("SELECT * FROM teams WHERE id = ". $_GET['id']);
 							if(mysql_num_rows($query) != 1) { toIndex(); }
 							
-							$team = mysql_fetch_array($query);
+							$team = get_team($_GET['id']);
 							?>
 				
 							<script src="scripts/functions.js"></script>
@@ -356,7 +357,7 @@
 										$tcontent = $tcontent . "<tr><td style='text-align:right;'><b>Leader</b></td>";
 									} else {
 										$tcontent = $tcontent . "<tr><td style='text-align:right;'>";
-										if((($bruger['id'] == $team['leader_id']) || ($bruger['id'] == $player['id'])) && $tournament['reg_open'] == 1) $tcontent .= "<a onclick='$.post(\"tournaments.php\", { del: \"". $deltager['id'] ."\" });". ($bruger['id'] == $player['id'] ? "window.location=\"./\";" : "createDialog(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $_GET['id'] ."&billetnr=". $_SESSION['billetnr'] ."\");") ."'><span class='delico'>x</span></a>";
+										if((($bruger['id'] == $team['leader_id']) || ($bruger['id'] == $player['id'])) && $tournament['reg_open'] == 1) $tcontent .= "<a onclick='$.post(\"tournaments.php\", { del: \"". $deltager['id'] ."\" });". ($bruger['id'] == $player['id'] ? "window.location=\"./\";" : "createDialog(\"tournaments.php\", \"page=team&tid=". $_GET['tid'] ."&id=". $_GET['id'] ."&billetnr=". intval($_SESSION['billetnr']) ."\");") ."'><span class='delico'>x</span></a>";
 										$tcontent .= "<b>Spiller ". ($i+1) ."</b></td>";
 									}
 									$tcontent = $tcontent . "<td style='display:inline-block;'><span style='padding-left: 10px;". ($player['id'] == $bruger['id'] ? "font-weight:bold;font-style:italic;" : "") ."' id='spiller$i'>". $player['navn'] ."</span><span style='visibility:hidden;float:right;margin-left: 5px;' id='spiller$i"."klasse'><b> // ". $player['klasse'] ."</b></span></td></tr>";

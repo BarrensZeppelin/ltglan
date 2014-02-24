@@ -4,7 +4,7 @@
 	// Database tjek for at se om navnet er taget
 	// Bruges kun af javascript koden længere nede
 	if(isset($_POST['tid'])) {
-		if(mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". $_POST['tid'] ." AND navn='". $_POST['name'] ."'")) != 0)
+		if(mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=". intval($_POST['tid']) ." AND navn='". mysql_real_escape_string($_POST['name'])´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´ ."'")) != 0)
 			echo "taken";
 		else echo "fine";
 		die(mysql_error());
@@ -15,7 +15,7 @@
 	}
 	
 	$klassearray = get_klasse_array();
-	$billetnr = $_GET['billetnr'];
+	$billetnr = íntval($_GET['billetnr']);
 	$row = get_guest_wbilletnr($billetnr);
 
 
@@ -66,7 +66,7 @@
 			
 			echo "brugere['" . $klassearray[$i] . "'] = new Array();\n			";
 			
-			$query = mysql_query("SELECT * FROM guests WHERE klasse='" . $klassearray[$i] . "' AND billetnr!='". $_GET['billetnr'] ."'");
+			$query = mysql_query("SELECT * FROM guests WHERE klasse='" . $klassearray[$i] . "' AND billetnr!=$billetnr");
 			while($r = mysql_fetch_array($query)) {
 				
 				echo "brugere['" . $klassearray[$i] . "'][" . $c . "] = '" . $r["navn"] . "-" . $r["id"] . "';\n			";

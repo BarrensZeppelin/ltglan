@@ -9,7 +9,7 @@
 	if($_POST["jsenabled"]!="true") {header("refresh: 2; ./"); die("JavaScript er disabled, ingen adgang.");}
 
 	$klassearray = get_klasse_array();
-	$billetnr = $_SESSION['billetnr'];
+	$billetnr = intval($_SESSION['billetnr']);
 	$guest = get_guest_wbilletnr($billetnr);
 	
 	
@@ -19,8 +19,7 @@
 	
 	
 	//tournament id
-	$id = $_GET["id"];
-	$id = mysql_real_escape_string($id);
+	$id = intval($_GET['id']);
 	
 	$query = mysql_query("SELECT * FROM tournaments WHERE id=$id");
 	
@@ -159,8 +158,7 @@
 		for($i=2; $i<=$spillerantal; $i++) {
 			if(!isset($_POST["navn" . $i])) continue; // Der er ikke valgt nogen bruger til denne position
 			
-			$modtager = $_POST["navn" . $i];
-			$modtager = mysql_real_escape_string($modtager);
+			$modtager = intval($_POST["navn" . $i]);
 			
 			if($modtager == $userid) continue; // Burde ikke kunne ske, men for sikkerheds skyld skal man ikke kunne invitere sig selv
 			
