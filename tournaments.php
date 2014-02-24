@@ -14,7 +14,7 @@
 			if(isset($_POST['navn'.$i])) {
 				if($_POST['navn'.$i]!=0 && $_POST['navn'.$i]!="") {
 					//Tjek om der allerede findes en besked til denne spiller
-					$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id=".$_POST['navn'.$i]);
+					$query = mysql_query("SELECT * FROM beskeder WHERE modtager_id=". intval($_POST['navn'.$i]));
 					$test = 0;
 					
 					$id = intval($_GET['id']);

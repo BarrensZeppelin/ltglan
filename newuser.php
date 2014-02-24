@@ -9,7 +9,7 @@
 		$klassearray = get_klasse_array();
 		
 		$billet_nr = intval($_POST["billetnr"]);
-		$navn = mysql_real_escape_string($_POST["navn"]);
+		$navn = mysql_real_escape_string(htmlspecialchars($_POST["navn"]));
 		$pass = mysql_real_escape_string($_POST["pass"]);
 		$klasse = mysql_real_escape_string($_POST["klasse"]);
 		

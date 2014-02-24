@@ -18,7 +18,7 @@
 	$team = get_team(id);
 	
 	
-	$bruger = get_guest_wbilletnr($_SESSION['billetnr']);
+	$bruger = get_guest_wbilletnr(intval($_SESSION['billetnr']));
 	if($team['leader_id'] == $bruger['id']) {
 		slet_hold($id);
 		

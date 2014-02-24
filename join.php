@@ -58,10 +58,9 @@
 	$rules = $turnering['rules'];
 	
 	if(isset($_POST["playercounter"])) {
-		$spillerantal = $_POST["playercounter"];
-		
-		$holdnavn = $_POST["holdnavn"];
-		$holdnavn = mysql_real_escape_string($holdnavn);
+		$spillerantal = intval($_POST["playercounter"]);
+
+		$holdnavn = mysql_real_escape_string(htmlspecialchars($_POST["holdnavn"]));
 		
 		$bordnr = intval($_POST["bordnr"]);
 		

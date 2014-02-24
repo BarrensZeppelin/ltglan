@@ -4,7 +4,7 @@
 
 function send_message($modtager, $indhold, $afsender = 0) {
 	if($afsender != -1) {
-		$afsender = get_guest_wbilletnr($_SESSION['billetnr']);
+		$afsender = get_guest_wbilletnr(intval($_SESSION['billetnr']));
 		$afsender = $afsender['id'];
 	}
 	

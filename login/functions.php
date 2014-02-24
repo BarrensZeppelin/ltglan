@@ -38,8 +38,8 @@
 			if(!$checkMySQL) {
 				return true;
 			} else {
-				$billetnr = $_SESSION["billetnr"];
-				$pass = $_SESSION["pass"];
+				$billetnr = intval($_SESSION["billetnr"]);
+				$pass = mysql_real_escape_string($_SESSION["pass"]);
 				
 				$rows = mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billetnr AND pass_hashed='$pass'"));
 				
