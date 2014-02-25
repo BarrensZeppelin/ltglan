@@ -68,7 +68,7 @@
 						<?php } else if(isset($_GET['w'])) { ?>
 							alert("Opret en bruger og log ind først. :)");
 						<?php } else {
-							echo "alert('". $_POST['alert'] ."');";
+							echo "alert('". htmlspecialchars($_POST['alert']) ."');";
 						} ?>
 					});
 				</script>
