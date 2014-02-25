@@ -277,7 +277,7 @@
 					}
 					
 												
-					mysql_query("UPDATE beskeder SET laest=1");
+					mysql_query("UPDATE beskeder SET laest=1 WHERE modtager_id=". $bruger['id']);
 					
 						
 		echo '			</div>

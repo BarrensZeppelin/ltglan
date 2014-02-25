@@ -24,15 +24,13 @@
 	$query = mysql_query("SELECT * FROM tournaments WHERE id=$id");
 	
 	if(mysql_num_rows($query) != 1) {
-		header("refresh: 2; ./");
-		die("Denne turnering findes ikke.");
+		post_to("./?p=tournaments", array("alert" => "Denne turnering findes ikke."));
 	}
 	
 	$turnering = get_tournament($id);
 	
 	if($turnering['active'] != 1) {
-		header("refresh: 2; ./");
-		die("Denne turnering er ikke aktiv.");
+		post_to("./?p=tournaments", array("alert" => "Denne turnering er ikke aktiv."));
 	}
 	
 	
@@ -41,8 +39,7 @@
 	while( $deltager = mysql_fetch_array($query) ) {
 		$team = get_team($deltager['team_id']);
 		if($team['tournament_id'] == $id) {
-			header("Refresh: 2; ./");
-			die("Du deltager allerede i denne turnering.");
+			post_to("./?p=tournaments", array("alert" => "Du deltager allerede i denne turnering."));
 		} 
 	}
 	
@@ -87,11 +84,9 @@
 			  && ($extension !== ".png")
 			  && ($extension !== ".jpg")
 			  && ($extension !== ".jpeg"))) {
-				header("refresh: 2; ./");
-				die("Image filetype is not valid");
+				post_to("./?p=tournaments", array("alert" => "Image filetype is not valid"));
 			} else if($_FILES["fileupload"]["size"] > $max_file_size) {
-				header("refresh: 2; ./");
-				die("Filesize is too large (Max: $max_file_size bytes.)"); //Filen er for stor
+				post_to("./?p=tournaments", array("alert" => "Filesize is too large (Max: $max_file_size bytes.)")); //Filen er for stor
 			}
 			$size = $_FILES["fileupload"]["size"];
 			

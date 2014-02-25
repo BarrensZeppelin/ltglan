@@ -81,35 +81,15 @@
 	}
 	
 	
-	// Kode fra: http://stackoverflow.com/questions/1217824/post-to-another-page-within-a-php-script
-	// Oprette en POST-request til en ny side
-	function php_post($url, $fields) {
-		$postvars='';
-		$sep='';
-		foreach($fields as $key=>$value) 
-		{ 
-		   $postvars.= $sep.urlencode($key).'='.urlencode($value); 
-		   $sep='&'; 
-		}
-
-
-		//open connection
-		$ch = curl_init();
-
-		//set the url, number of POST vars, POST data
-		curl_setopt($ch,CURLOPT_URL,$url);
-		curl_setopt($ch,CURLOPT_POST,count($fields));
-		curl_setopt($ch,CURLOPT_POSTFIELDS,$postvars);
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
-		//execute post
-		$result = curl_exec($ch);
-
-		//close connection
-		curl_close($ch);
+	function post_to($url, $data) {
+		echo "<form action='$url' method='POST' name='post_form' hidden>";
 		
+		foreach ($data as $key => $value)
+			echo "<input type='text' name='$key' value='$value' />";	
 		
-		return $result;
+		echo "</form>";
+		
+		die("<script type='text/javascript'>document.forms[\"post_form\"].submit();</script>");
 	}
 	
 	

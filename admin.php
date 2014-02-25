@@ -2,11 +2,10 @@
 
 	require 'login/includes.php';
 	
-	if(!verify_login()) {header("Refresh: 2; ./"); die("Log ind først. :D");}
+	if(!verify_login()) {post_to("./?p=front", array("Log ind først. :D"));}
 	
 	if(!isset($_SESSION['admin']) || $_SESSION["admin"] == false) {
-		header("Refresh: 2; ./");
-		die("Du er ikke admin. o:");
+		post_to("./?p=tournaments", array("Du er ikke admin. o:"));
 	}
 	
 	if(!isset($_GET["page"])) {

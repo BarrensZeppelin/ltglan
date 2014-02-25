@@ -21,19 +21,16 @@
 		
 		// Brugeren har leget rundt med javascriptet på client-siden
 		if(!in_array($klasse, $klassearray)) {
-			header("refresh: 5; ./");
-			die("Den klasse kunne ikke findes.");
+			post_to("./?p=front", array("alert" => "Den klasse kunne ikke findes."));
 		}
 		
 		if(mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billet_nr"))!=0) {
-			header("refresh: 2; ./");
-			die("Dette billetnummer er allerede blevet registreret.");
+			post_to("./?p=front", array("Dette billetnummer er allerede blevet registreret."));
 		}
 		
 		// FOR AT GØRE DET NEMMERE AT TESTE SIDEN
 		/*if(mysql_num_rows(mysql_query("SELECT * FROM billetnr WHERE billetnr=$billet_nr"))==0) {
-			header("refresh: 2; ./");
-			die("Dette billetnummer kunne ikke findes i databasen.");
+			post_to("./?p=front", array("Dette billetnummer kunne ikke findes i databasen."));
 		}*/
 		
 		

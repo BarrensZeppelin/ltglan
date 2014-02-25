@@ -16,8 +16,7 @@
 	
 	
 	if(mysql_num_rows(mysql_query("SELECT * FROM invites WHERE hash='$hash'"))==0) {
-		header("refresh: 2; ./");
-		die("Denne invitation kunne ikke findes i databasen. Du bliver sendt tilbage til hovedsiden.");
+		post_to("./?p=tournaments", array("alert" => "Invitationen kunne ikke findes i databasen."));
 	}
 	
 	$billetnr = intval($_SESSION['billetnr']);
@@ -37,16 +36,14 @@
 	while( $deltager = mysql_fetch_array($query) ) {
 		$team = get_team($deltager['team_id']);
 		if($team['tournament_id'] == $tournament_id) {
-			header("refresh: 2; ./");
-			die("Du er allerede en del af et hold, og kan derfor ikke acceptere invationer.");
+			post_to("./?p=tournaments", array("alert" => "Du er allerede en del af et hold, og kan derfor ikke acceptere invationer."));
 		}
 	}
 	
 	
 	//Tjek så om holdet er fyldt op
-	if(mysql_num_rows(mysql_query("SELECT * FROM deltagere WHERE team_id=$team_id"))==$max_spillere) {
-		header("refresh: 2; ./");
-		die("Dette hold er allerede fyldt op.");
+	if(mysql_num_rows(mysql_query("SELECT * FROM deltagere WHERE team_id=$team_id")) == $max_spillere) {
+		post_to("./?p=tournaments", array("alert" >= "Dette hold er allerede fyldt op."));
 	}
 	
 	
@@ -57,6 +54,13 @@
 	//Tilføj den nye spiller til holdet
 	mysql_query("INSERT INTO deltagere (guest_id, team_id, pos)
 				VALUES ($userid, $team_id, $pos)") or die(mysql_error());
+	
+	// Slet invite og besked(er) til spilleren
+	$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=$tournament_id"), 0);
+	$leaderid = mysql_result(mysql_query("SELECT leader_id FROM teams WHERE id=$team_id"), 0);
+	
+	mysql_query("DELETE FROM invites WHERE hash='$hash' LIMIT 1") or die(mysql_query());
+	mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%$turnering_navn%' AND modtager_id=$userid AND afsender_id=$leaderid") or die(mysql_error());
 	
 	if(($pos+1) == $max_spillere) {
 		mysql_query("UPDATE teams SET teamstatus='Accepted'
@@ -78,6 +82,7 @@
 			$leader = mysql_result(mysql_query("SELECT leader_id FROM teams WHERE id=$team_id"), 0);
 			send_message($leader, "Dit hold er nu fyldt og tilføjet til brackets.", -1);
 		}
+		//////////////////////////
 	}
 	
 	header("Location: ./");

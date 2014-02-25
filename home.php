@@ -60,14 +60,16 @@
 		<script src="scripts/functions.js"></script>
 		
 		<?php
-			if($loginfailed != 0 || isset($_GET['w'])) { ?>
+			if($loginfailed != 0 || isset($_GET['w']) || isset($_POST['alert'])) { ?>
 				<script type="text/javascript">
 					$(document).ready(function () {
 						<?php if($loginfailed != 0) { ?>
 							alert("<?php if($loginfailed == 1) echo "En bruger med dette billetnr eksisterer ikke."; else echo "Passwordet passer ikke til denne bruger."; ?>");
-						<?php } else { ?>
+						<?php } else if(isset($_GET['w'])) { ?>
 							alert("Opret en bruger og log ind først. :)");
-						<?php } ?>
+						<?php } else {
+							echo "alert('". $_POST['alert'] ."');";
+						} ?>
 					});
 				</script>
 		<?php } ?>

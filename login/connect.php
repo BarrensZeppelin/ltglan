@@ -6,7 +6,7 @@
 
 
 
-	/*$mconnect = mysql_connect("localhost", "ltglan", "Kodeordet123"); //
+	/*$mconnect = mysql_connect("localhost", "ltglanweblogin", "godtpass"); //
 	if(!$mconnect) {
 		die("ERROR! Unable to connect to MySQL.");
 	}
