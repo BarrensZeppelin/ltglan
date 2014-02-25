@@ -2,7 +2,7 @@
 	$allowIncludes = true;
 	require "login/includes.php";
 
-	if(!verify_login()) {header("refresh 2; ./");die("Du er ikke logget ind.");}
+	if(!verify_login()) {post_to("./?p=front", array("alert" => "Du er ikke logget ind."));}
 	
 	
 	if(!isset($_GET["tid"], $_GET["id"])) {
