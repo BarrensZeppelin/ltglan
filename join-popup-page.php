@@ -27,8 +27,6 @@
 	//tournament id
 	$id = intval($_GET["id"]);
 
-	$max_turneringer = mysql_result(mysql_query("SELECT MAX(id) FROM tournaments"),0);
-
 	//Se om spilleren allerede deltager i denne turnering
 	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=$userid");
 	while( $deltager = mysql_fetch_array($query) ) {
@@ -40,7 +38,7 @@
 
 
 
-	$arr = mysql_fetch_array(mysql_query("SELECT * FROM tournaments WHERE id=$id"));
+	$arr = get_tournament($id);
 
 	$turnering_navn = $arr["navn"];
 	$max_spillere = $arr["max_spillere"];
@@ -135,6 +133,10 @@
 		return true;
 	}
 	
+	function showSeedArea() {
+		document.getElementById("seedArea").innerHTML = '<div style="margin-left:10px;display:inline-block;float:left;"> <b>Seed:</b> </div> <div style="display:inline-block;margin-left:5px;float:left;"><input maxlength="2" style="width:20px;height:20px" type="text" name="seed" value="' + (Math.floor(Math.random()*100)) + '" /></div>';
+	}
+	
 </script>
 		<link rel="stylesheet" href="css/turnering-style.css" />
 		<div class="join-page" id="outer" style="text-align:center;background-image: url(imgs/tournament-<?php echo $id; ?>-backdrop.png);">
@@ -158,7 +160,38 @@
 										<input style="width:100%;height:20px" type="text" name="holdnavn" />
 									</td>
 									<td>
-										<div style="margin-left:50px;display:inline-block;float:left;"> <b>Bordnr:</b> </div> <div style="display:inline-block;margin-left:5px;float:left;"><input style="width:20px;height:20px" type="text" name="bordnr" /></div>
+										<div style="margin-left:50px;display:inline-block;float:left;"> <b>Bordnr:</b> </div> 
+											<div style="display:inline-block;margin-left:5px;float:left;"><input style="width:20px;height:20px" type="text" name="bordnr" /></div>
+										
+										<?php
+										if($arr['allow_seeding']) {
+											if($arr['id'] == 1) { // LoL
+											
+											?>
+												<select name="seed">
+													<option value="0">Wood</option>
+													<option value="1">Bronze</option>
+													<option value="2">Silver</option>
+													<option value="3">Gold</option>
+													<option value="4">Platinum</option>
+													<option value="5">Diamond</option>
+													<option value="6">Challenger</option>
+												</select>
+											<?php
+												
+												
+											} else {
+											
+											?>
+												<div id="seedArea" style="display:inline-block">
+													<span style="font-size:10px"><a onclick="showSeedArea();">Sæt Seed</a></span>
+												</div>
+											<?php
+											
+											} 
+										}
+										?>
+									
 									</td>
 								</tr>
 								

@@ -24,7 +24,7 @@
 	$query = mysql_query("SELECT * FROM tournaments WHERE id=$id");
 	
 	if(mysql_num_rows($query) != 1) {
-		post_to("./?p=tournaments", array("alert" => "Denne turnering findes ikke."));
+		toIndex();
 	}
 	
 	$turnering = get_tournament($id);
@@ -60,6 +60,12 @@
 		$holdnavn = mysql_real_escape_string(htmlspecialchars($_POST["holdnavn"]));
 		
 		$bordnr = intval($_POST["bordnr"]);
+		$seed = rand(0, 99);
+		
+		if(isset($_POST["seed"])) {
+			// Lav mere her
+		}
+		
 		
 		if($max_spillere>1) {
 			$status = "Pending";

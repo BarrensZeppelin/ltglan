@@ -74,7 +74,7 @@
 	
 	
 	function connect_challonge() {
-		$c = new ChallongeAPI("d6qM4NpKrmg0ZqcOXRheQsz2HVB1VNzuaOihwBXV");
+		$c = new ChallongeAPI("wePbQTGsdZry67dzOdRWHL1slE7hzjGlYTrVCcju");
 		$c->verify_ssl = false;
 		
 		return $c;

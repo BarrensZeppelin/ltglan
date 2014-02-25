@@ -17,7 +17,35 @@
 		<a href="admin.php?page=brackets">Brackets & Tournaments</a>
 		
 		<?php
-	} else if($_GET["page"] == "guests") {
+	} else {
+	?>
+	
+	
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style>
+			a:visited{
+				color:blue;
+			}
+			
+			a:hover{
+				cursor: pointer;
+			}
+			
+			a{
+				color:blue;
+				font-weight:normal;
+			}
+			
+			table {
+				border-spacing: 10px 5px;
+			}
+		</style>
+	
+	<?php
+	
+	
+	if($_GET["page"] == "guests") {
 		if(isset($_GET["del"])) {
 			$id = $_GET["del"];
 			$guest = mysql_fetch_array(mysql_query("SELECT * FROM guests WHERE id=$id"));
@@ -82,16 +110,21 @@
 		if(isset($_POST['name'])) {
 			$id = mysql_result(mysql_query("SELECT MAX(id) FROM tournaments"), 0) + 1;
 		
-			mysql_query("INSERT INTO tournaments (id, navn, short, max_spillere, tournament_style)
-						VALUES($id,'". $_POST['name'] ."','". $_POST['short'] ."',". $_POST['max_spillere'] .",'". $_POST['tstyle'] ."')") or die(mysql_error());
+			mysql_query("INSERT INTO tournaments (id, navn, short, max_spillere)
+						VALUES($id,'". $_POST['name'] ."','". $_POST['short'] ."',". $_POST['max_spillere'] .")") or die(mysql_error());
 			
 			header("Location: ./admin.php?page=brackets");
 			exit;
 		}
 		
 		if(isset($_GET['tid'])) {
-			
-			if(isset($_GET['activate'])) {
+			if(isset($_POST['tstyle'])) {
+				if($_POST['tstyle'] != "") {
+					mysql_query("UPDATE tournaments SET tournament_style='". $_POST['tstyle'] ."' WHERE id=". $_GET['tid']);
+				}
+			} else if(isset($_GET['rmtstyle'])) {
+				mysql_query("UPDATE tournaments SET tournament_style='' WHERE id=". $_GET['tid']);
+			} else if(isset($_GET['activate'])) {
 				$current = mysql_result(mysql_query("SELECT active FROM tournaments WHERE id=". $_GET['tid']), 0);
 				mysql_query("UPDATE tournaments SET active=". ($current == 0 ? 1 : 0) ." WHERE id=". $_GET['tid']) or die(mysql_error());
 			} else if(isset($_GET['del_bracket'])) {
@@ -110,7 +143,6 @@
 				}
 			
 			} else if(isset($_GET['create_bracket'])) {
-				
 				$tid = intval($_GET['tid']);
 				
 				$mt = get_tournament($tid);
@@ -200,8 +232,16 @@
 								<td>". $t['short'] ."</td>";
 				
 				if($t['bracketlink'] == "") {
-					if($t['tournament_style'] == "") $tcontent .= "<td></td>";
-					else $tcontent .= "<td><a href='./admin.php?page=brackets&tid=". $t['id'] ."&create_bracket'>create bracket</a></td>";
+					if($t['tournament_style'] == "") {
+						$tcontent .= "<td><form action='./admin.php?page=brackets&tid=". $t['id'] ."' method='post' style='margin:0'>
+							<select name='tstyle'>
+								<option value=''></option><option value='single elimination'>single elimination</option><option value='double elimination'>double elimination</option>
+								<option value='round robin'>round robin</option><option value='swiss'>swiss</option>
+							</select>
+							<input type='submit' value='X' />
+						</form></td>";
+					}
+					else $tcontent .= "<td><a href='./admin.php?page=brackets&tid=". $t['id'] ."&create_bracket'>create bracket</a> <a href='./admin.php?page=brackets&tid=". $t['id'] ."&rmtstyle'>X</a></td>";
 				} else {
 					if($t['reg_open'] == 1)
 						$tcontent .= "<td><a href='http://challonge.com/". $t['bracketlink'] ."' target='_blank'>". $t['bracketlink'] ."</a>";
@@ -342,30 +382,7 @@
 			echo "Custom query: <form action='./admin.php?page=teams' method='post'><span style='background-color:grey'>SELECT * FROM teams </span><input type='text' name='query' value='". (isset($_GET['id']) ? "WHERE id=". $_GET['id'] : (isset($_POST['query']) ? $_POST['query'] : "")) ."' /><input type='submit' value='Submit' /></form>";
 			echo "<table><tbody>". $tcontent ."</tbody></table>";
 		}
-		
-	} else {
-		header("Location: ./admin.php");
+	} else header("Location: ./admin.php");
 	}
 	
 ?>
-
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style>
-	a:visited{
-		color:blue;
-	}
-	
-	a:hover{
-		cursor: pointer;
-	}
-	
-	a{
-		color:blue;
-		font-weight:normal;
-	}
-	
-	table {
-		border-spacing: 10px 5px;
-	}
-</style>
