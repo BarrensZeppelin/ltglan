@@ -25,12 +25,12 @@
 		}
 		
 		if(mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billet_nr"))!=0) {
-			post_to("./?p=front", array("Dette billetnummer er allerede blevet registreret."));
+			post_to("./?p=front", array("alert" => "Dette billetnummer er allerede blevet registreret."));
 		}
 		
 		// FOR AT GØRE DET NEMMERE AT TESTE SIDEN
 		/*if(mysql_num_rows(mysql_query("SELECT * FROM billetnr WHERE billetnr=$billet_nr"))==0) {
-			post_to("./?p=front", array("Dette billetnummer kunne ikke findes i databasen."));
+			post_to("./?p=front", array("alert" => "Dette billetnummer kunne ikke findes i databasen."));
 		}*/
 		
 		
