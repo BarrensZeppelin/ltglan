@@ -121,10 +121,29 @@ function slet_deltager($deltagerid) {
 		///////////////////////////////////
 	
 		$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
-	
+		
+		// Slet deltageren, opdater holdet, slet beskeder
 		mysql_query("DELETE FROM deltagere WHERE id=". $deltager['id']);
 		mysql_query("UPDATE teams SET teamstatus='Pending' WHERE id=". $team['id']) or die(mysql_error());
 		mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $team["navn"] . "%" . $turnering_navn . "%' AND modtager_id=". $deltager['guest_id']) or die(mysql_error());
+		
+		
+		/*
+			Koden herunder flytter spillere rundt
+		
+			1. Leder
+			2. Del 1
+			3. Del 2 <- skal slettes
+			4. Del 3
+			
+				|
+				|
+				v
+			
+			1. Leder
+			2. Del 1
+			3. Del 3
+		*/
 		
 		$pos = $deltager['pos'];
 		
