@@ -18,33 +18,7 @@
 		
 		<?php
 	} else {
-	?>
-	
-	
 
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<style>
-			a:visited{
-				color:blue;
-			}
-			
-			a:hover{
-				cursor: pointer;
-			}
-			
-			a{
-				color:blue;
-				font-weight:normal;
-			}
-			
-			table {
-				border-spacing: 10px 5px;
-			}
-		</style>
-	
-	<?php
-	
-	
 	if($_GET["page"] == "guests") {
 		if(isset($_GET["del"])) {
 			$id = $_GET["del"];
@@ -382,3 +356,23 @@
 	}
 	
 ?>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+	a:visited{
+		color:blue;
+	}
+	
+	a:hover{
+		cursor: pointer;
+	}
+	
+	a{
+		color:blue;
+		font-weight:normal;
+	}
+	
+	table {
+		border-spacing: 10px 5px;
+	}
+</style>
