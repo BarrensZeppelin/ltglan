@@ -170,14 +170,18 @@
 					$ct = $c->createTournament($params);
 					
 					// Add Teams
-					$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $mt['id'] ." AND teamstatus='Accepted'");
+					$i = 1;
+					$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $mt['id'] ." AND teamstatus='Accepted' ORDER BY seed ASC, id ASC");
 					while($team = mysql_fetch_array($query)) {
 						
 						$params = array(
 							"participant[name]" => $team['navn'],
+							"participant[seed]" => $i
 						);
 						
 						$c->createParticipant($ct->id, $params);
+					
+						$i++;
 					}
 					
 					// Send besked til alle teams i turneringen
@@ -307,15 +311,7 @@
 				die("Holdet eksisterer ikke");
 			}
 			
-			$team = get_team($team_id);
-			if($team['teamstatus'] == "Accepted") {header("Refresh: 2; ./admin.php?page=deltagere"); die("Holdet er allerede fuldt.");}
-			
-			$pos = mysql_result(mysql_query("SELECT MAX(pos) FROM deltagere WHERE team_id=$team_id"), 0)+1;
-			
-			mysql_query("INSERT INTO deltagere (guest_id, team_id, pos) VALUES($guest_id, $team_id, $pos)");
-			
-			$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id=". $team['tournament_id']), 0);
-			if($pos == ($max_spillere - 1)) mysql_query("UPDATE teams SET teamstatus='Accepted' WHERE id=$team_id");
+			ny_deltager($guest_id, $team_id);
 			
 			header("Location: ./admin.php?page=deltagere");
 			

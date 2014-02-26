@@ -169,13 +169,13 @@
 											
 											?>
 												<select name="seed">
-													<option value="0">Wood</option>
-													<option value="1">Bronze</option>
-													<option value="2">Silver</option>
+													<option value="6">Wood</option>
+													<option value="5">Bronze</option>
+													<option value="4">Silver</option>
 													<option value="3">Gold</option>
-													<option value="4">Platinum</option>
-													<option value="5">Diamond</option>
-													<option value="6">Challenger</option>
+													<option value="2">Platinum</option>
+													<option value="1">Diamond</option>
+													<option value="0">Challenger</option>
 												</select>
 											<?php
 												

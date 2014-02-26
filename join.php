@@ -60,10 +60,19 @@
 		$holdnavn = mysql_real_escape_string(htmlspecialchars($_POST["holdnavn"]));
 		
 		$bordnr = intval($_POST["bordnr"]);
-		$seed = rand(0, 99);
+		$seed = rand(0, ($id == 1 ? 6 : 99));
 		
 		if(isset($_POST["seed"])) {
-			// Lav mere her
+			$newseed = $_POST["seed"];
+			if(is_numeric($newseed)) {
+				$newseed = floor($newseed);
+				
+				if($id != 1) { // Ikke LoL
+					if($newseed >= 0 && $newseed <= 99) $seed = $newseed;
+				} else {
+					if($newseed >= 0 && $newseed <= 6) $seed = $newseed;
+				}
+			}
 		}
 		
 		
@@ -135,8 +144,8 @@
 		
 		
 		//Holdet er oprettet
-		mysql_query("INSERT INTO teams (navn, leader_id, teamstatus, avatarpath, tournament_id, bord)
-					 VALUES ('" . $holdnavn . "', '" . $userid . "', '" . $status . "', '" . $target_path . "', ". $id . ", ". $bordnr .") ") or die(mysql_error());
+		mysql_query("INSERT INTO teams (navn, leader_id, teamstatus, avatarpath, tournament_id, bord, seed)
+					 VALUES ('$holdnavn', $userid, '$status', '$target_path', $id, $bordnr, $seed) ") or die(mysql_error());
 		
 		$team_id = mysql_result(mysql_query("SELECT id FROM teams WHERE leader_id=$userid AND tournament_id=$id"), 0) or die(mysql_error());
 		
@@ -165,7 +174,7 @@
 			//Lav en ny invitation
 			$hash = md5(time() . rand());
 			mysql_query("INSERT INTO invites
-						 VALUES('" .  $hash . "', '" . $team_id . "')");
+						 VALUES('" .  $hash . "', " . $team_id . ")");
 						 
 						 
 			$guest = get_guest($modtager);

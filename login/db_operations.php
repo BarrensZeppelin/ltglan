@@ -135,4 +135,72 @@ function slet_deltager($deltagerid) {
 	}
 }
 
+function ny_deltager($guest_id, $team_id, $hash = "") {
+	$tournament_id = mysql_result(mysql_query("SELECT tournament_id FROM teams WHERE id=$team_id"), 0);
+	
+	//hvis spilleren allerede er i et hold, die
+	$query = mysql_query("SELECT * FROM deltagere WHERE guest_id=$guest_id");
+	while( $deltager = mysql_fetch_array($query) ) {
+		$team = get_team($deltager['team_id']);
+		if($team['tournament_id'] == $tournament_id) {
+			post_to("./?p=tournaments", array("alert" => "Du er allerede en del af et hold, og kan derfor ikke acceptere invationer."));
+		}
+	}
+	
+	
+	//Tjek så om holdet er fyldt op
+	$max_spillere = mysql_result(mysql_query("SELECT max_spillere FROM tournaments WHERE id=$tournament_id"), 0);
+	
+	if(mysql_num_rows(mysql_query("SELECT * FROM deltagere WHERE team_id=$team_id")) == $max_spillere) {
+		post_to("./?p=tournaments", array("alert" >= "Dette hold er allerede fyldt op."));
+	}
+	
+	
+	//Find pladsen hvor brugeren skal skrives ind
+	$positionquery = mysql_query("SELECT MAX(pos) FROM deltagere WHERE team_id=$team_id");
+	$pos = mysql_result($positionquery,0)+1;
+	
+	//Tilføj den nye spiller til holdet
+	mysql_query("INSERT INTO deltagere (guest_id, team_id, pos)
+				VALUES ($guest_id, $team_id, $pos)") or die(mysql_error());
+	
+	// Slet invite og besked(er) til spilleren
+	$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=$tournament_id"), 0);
+	$leaderid = mysql_result(mysql_query("SELECT leader_id FROM teams WHERE id=$team_id"), 0);
+	
+	if($hash != "") mysql_query("DELETE FROM invites WHERE hash='$hash' LIMIT 1") or die(mysql_query());
+	mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%$turnering_navn%' AND modtager_id=$guest_id AND afsender_id=$leaderid") or die(mysql_error());
+	
+	if(($pos+1) == $max_spillere) {
+		mysql_query("UPDATE teams SET teamstatus='Accepted'
+					WHERE id=$team_id");
+					
+					
+		$team_navn = mysql_result(mysql_query("SELECT navn FROM teams WHERE id=$team_id"), 0);
+		$seed = mysql_result(mysql_query("SELECT seed FROM teams WHERE id=$team_id"), 0);
+		
+		
+		// Opdater challonge
+		$link = mysql_result(mysql_query("SELECT bracketlink FROM tournaments WHERE id=$tournament_id"), 0);
+		if($link != "") {
+			$c = connect_challonge();
+			
+			$ct = $c->makeCall("tournaments/" . $link, array("include_matches" => 0), "get");
+			
+			$seedpos = mysql_num_rows(mysql_query("SELECT * FROM teams WHERE tournament_id=$tournament_id AND teamstatus='Accepted' AND seed < $seed")) + 1;
+			
+			$params = array(
+				"participant[name]" => $team_navn,
+				"participant[seed]" => $seedpos
+			);
+			
+			$c->createParticipant($ct->id, $params);
+			
+			$leader = mysql_result(mysql_query("SELECT leader_id FROM teams WHERE id=$team_id"), 0);
+			send_message($leader, "Dit hold er nu fyldt og tilføjet til brackets.", -1);
+		}
+		//////////////////////////
+	}
+}
+
 ?>
