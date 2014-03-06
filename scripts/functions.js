@@ -21,9 +21,12 @@ function checkPass() {
 function changeSponsor() {
 	if(state == 0) {
 		document.getElementById("logo-js").innerHTML = '<a href="http://www.dominos.dk/" target="_blank"><img src="imgs/sponsorer/dominos.png" height="80px" border="1" alt="Dominos" /></a>';
-		state = 1;
-	} else {
+		state = 2; // NB: hopper til føniks, unqhosting er nede
+	} else if(state == 1) {
 		document.getElementById("logo-js").innerHTML = '<a href="http://unqhosting.com/" target="_blank"><img src="imgs/sponsorer/unqhosting.png" height="80px" border="1" alt="UNQHosting" /></a>';
+		state = 2;
+	} else {
+		document.getElementById("logo-js").innerHTML = '<a href="http://fcomputer.dk/" target="_blank"><img src="imgs/sponsorer/foeniks.png" height="80px" border="1" alt="Føniks" /></a>';
 		state = 0;
 	}
 }

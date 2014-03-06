@@ -13,10 +13,10 @@
 
 					Herfra er der ikke så meget mere at sige andet end at vi håber i får det hyggeligt, og få så gamet igennem!<br/><br/>
 					
-					I år takker vi mange gange til <a href="https://unqhosting.com/">UniqueHosting</a>, der har sponsoreret alle gameservers + webserver til Lan-Gruppen.<br/><br/>
+					I år takker vi <a href="http://fcomputer.dk/">Føniks</a> for at være så venlige at sponsorere præmier til os, tjek dem ud!<br/><br/> 
 					
-					Desuden takker vi også <a href="http://dominos.dk/">Domino's</a> for et flot tilbud på pizza lørdag aften, mere info følger i velkomsttalen og på <a href="https://www.facebook.com/events/611963642157710/">event-siden</a> på facebook.
-					Vinderne af CSS & LoL-turneringerne kan også glæde sig over 200,- gavekort til Domino's restauranter. (;
+					Desuden takker vi <a href="http://dominos.dk/">Domino's</a> for et flot tilbud på pizza lørdag aften, mere info følger i velkomsttalen og på <a href="https://www.facebook.com/events/611963642157710/">event-siden</a> på facebook.
+					Vinderne af CS:GO & LoL-turneringerne kan også glæde sig over 200,- gavekort til Domino's restauranter. (;
 				</span>
 			</div>
 		</div>
