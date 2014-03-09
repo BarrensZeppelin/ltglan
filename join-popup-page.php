@@ -143,7 +143,7 @@
 			<div class="join-page" id="middle">
 				<div class="join-page" id="inner">
 					<span style="font-size:xx-large;">Signup til <?php echo $turnering_navn; ?></span><br />
-					<span style="font-size:x-large;"> Lav et nyt hold:</span><br/>
+					<span style="font-size:x-large;"><?php if($max_spillere > 1) echo "Lav et nyt hold:"; else echo "Tilmeld dig turneringen:"; ?></span><br/>
 					<?php if($max_spillere > 1) {echo "<span>(Denne turninering kræver ". $max_spillere ." spillere. Du kan invitere alle sammen nu, eller vente til senere)</span>";} ?>
 					<br/>
 					<form name="nytHold" action="./join.php?id=<?php echo $id; ?>" method="post" onsubmit="return checkRules()" enctype="multipart/form-data" style="display:inline-block;">
