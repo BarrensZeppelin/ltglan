@@ -356,14 +356,40 @@ p#footer-kontakt{
 }
 
 #footer-box3{
- width:300px;
+ width:290px;
  height:60px;
  float:left;
+ padding-right:10px;
 }
 
-#facebook{
+.facebook{
  width:50px;
  height:50px;
- margin-left:230px;
  margin-top:6px;
+ float:right;
+}
+
+.dogelink{
+	color: #FFFFFF;
+	text-decoration:none;
+	
+	text-shadow:1px 1px 2px #6F6965,
+				-1px -1px 2px #6F6965,
+				1px -1px 2px #6F6965,
+				-1px 1px 2px #6F6965,
+				0px 1px 2px #6F6965,
+				1px 0px 2px #6F6965,
+				0px -1px 2px #6F6965,
+				-1px 0px 2px #6F6965;
+}
+
+#.dogelink:hover{
+	text-shadow:1px 1px 2px #FFFFFF,
+				-1px -1px 2px #FFFFFF,
+				1px -1px 2px #FFFFFF,
+				-1px 1px 2px #FFFFFF,
+				0px 1px 2px #FFFFFF,
+				1px 0px 2px #FFFFFF,
+				0px -1px 2px #FFFFFF,
+				-1px 0px 2px #FFFFFF;
 }

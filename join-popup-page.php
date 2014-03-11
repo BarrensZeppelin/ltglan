@@ -154,7 +154,7 @@
 							<tbody id="signup_body">
 								<tr>
 									<td>
-										<b>Hold navn:</b>
+										<b><?php if($arr['id'] != 13) echo "Hold navn:"; else echo "Battletag:"; ?></b>
 									</td>
 									<td>
 										<input style="width:100%;height:20px" type="text" name="holdnavn" />

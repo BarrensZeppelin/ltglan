@@ -5,13 +5,27 @@
 				<p class="o-overskrift" align="center">Særlig tak til</p>
 			</div>
 			<div class="wrapper-o-tekst">
-				<p>
-					<div style="display:inline-block;float:left;"><a href="https://github.com/BarrensZeppelin" target="_blank">Oskar Veileborg</a> - <div style="display:inline-block;">Hovedprogrammør<br/>
-					<span style="font-size:0.5em">Design, Front- & Back-end, Maintenance</span></div></div><br/>
-					Mathias Brask   - Grundlæggende Design<br/>
-					Oliver Pedersen - PHP & JS<br/>
-					Jacob Sibbern - Ejer af UniqueHosting
-				</p>
+				<table>
+					<tr>
+						<td><a href="https://github.com/BarrensZeppelin" target="_blank">Oskar Veileborg</a></td>
+						<td><div style="display:inline-block;">Hovedprogrammør<br/><span style="font-size:0.5em">Design, Front- & Back-end, Maintenance</span></div></td>
+					</tr>
+					
+					<tr>
+						<td>Mathias Brask</td>
+						<td><div style="display:inline-block;">Grundlæggende Design<br/><span style="font-size:0.5em">HTML og CSS front-end</span></div></td>
+					</tr>
+					
+					<tr>
+						<td>Oliver Pedersen</td>
+						<td>PHP & JS</td>
+					</tr>
+					
+					<tr>
+						<td>Jacob Sibbern</td>
+						<td>Ejer af UniqueHosting & formand for LAN-gruppen</td>
+					</tr>
+				</table>
 			</div>
 			
 			<div class="omkring-overskrift">
@@ -19,8 +33,8 @@
 			</div>
 			<div class="wrapper-o-tekst">
 				<p>
-					Unique Hosting<br/>
-					Dominos Pizza
+					<a href="http://dominos.dk/" target="_blank">Domino's Pizza</a><br/>
+					<a href="http://fcomputer.dk/" target="_blank">Føniks Computer</a>
 				</p>
 			</div>
 		</div>

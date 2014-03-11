@@ -1,11 +1,12 @@
 <script type="text/javascript">
 	var state = 0;
 	var i = window.setInterval(function(){changeSponsor()}, 5000);
+	$(document).ready(function() {changeSponsor();});
 </script>
 
 <div id="wrapper-logo-sponsorer">
 	<div id="logo-ltg">
-		<img src="imgs/LTG-logo.png" width="320" height="84" alt="LTG - logo" />
+		<img src="<?php if(isset($_SESSION['cmms']) && $_SESSION['cmms']) echo "imgs/LTG-logo-doge.png"; else echo "imgs/LTG-logo.png"; ?>" width="320" height="84" alt="LTG - logo" />
 	</div>
 	
 	<div id="sponsor-logo">
@@ -21,9 +22,7 @@
 		<div id="logo-shark-gaming">
 			<a href="http://www.sharkgaming.dk/" target="_blank"><img src="imgs/sponsorer/sharkgaming.png" width="547" height="47" border="1" alt="SharkGaming" /></a>
 		</div>-->
-		<div id="logo-js">
-			<a href="http://unqhosting.com/" target="_blank"><img src="imgs/sponsorer/unqhosting.png" height="80px" border="1" alt="UNQHosting" /></a>
-		</div>
+		<div id="logo-js"></div>
 	</div>
 </div>
 

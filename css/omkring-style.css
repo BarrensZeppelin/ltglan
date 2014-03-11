@@ -20,7 +20,7 @@ p.o-overskrift{
 }
 
 .omkring-overskrift{
-	width:542px;
+	width:620px;
 	height:35px;
 	margin-left:61px;
 	margin-top:40px;
@@ -32,9 +32,13 @@ p.o-overskrift{
 }
 
 .wrapper-o-tekst{
-	width:542px;
+	width:620px;
 	height:350px;
 	margin-left:61px;
+}
+
+.wrapper-o-tekst td{
+	min-width:20%;
 }
 
 .wrapper-o-tekst a{
