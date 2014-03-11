@@ -15,13 +15,14 @@
 					
 					I år takker vi <a href="http://fcomputer.dk/">Føniks</a> for at være så venlige at sponsorere præmier til os, tjek dem ud!<br/><br/> 
 					
-					Desuden takker vi <a href="http://dominos.dk/">Domino's</a> for et flot tilbud på pizza lørdag aften, mere info følger i velkomsttalen og på <a href="https://www.facebook.com/events/611963642157710/">event-siden</a> på facebook.
+					Desuden takker vi <a href="http://dominos.dk/">Domino's</a> for et flot tilbud på pizza-levering fredag aften & lørdag, mere info følger i velkomsttalen og på <a href="https://www.facebook.com/events/611963642157710/">event-siden</a> på facebook.
 					Vinderne af CS:GO & LoL-turneringerne kan også glæde sig over 200,- gavekort til Domino's restauranter. (;
 				</span>
 			</div>
 		</div>
 		
-		<div id="forside-h">             
+		<div id="forside-h"> 
+			<?php if(!verify_login()) { ?>
 				<!-- 		Her er formen til at logge ind med		-->
 				<form action="./?p=front" method="post" id="login">
 					<label>
@@ -39,7 +40,8 @@
 				
 				<!--		Her er formen til at oprette sig med
 								når formen submittes, bliver javascript funktionen: checkPass() kørt igennem (functions.js), for at validere de indtastede data -->
-				<div><form name="opretForm" onsubmit="return checkPass()" action="./newuser.php" method="post" id="opret">
+				<div>
+					<form name="opretForm" onsubmit="return checkPass()" action="./newuser.php" method="post" id="opret">
 					<label>
 						<span>Billetnummer:</span><input type="text" name="billetnr" />
 					</label>
@@ -70,6 +72,22 @@
 						<input type="submit" value="Opret Bruger" />
 					</label>
 				</form>
-		</div>
+			</div>
+		<?php } else { ?>
+		
+			<div style="width:400px;padding-top: 50px;margin-right:40px;">
+				<a href="http://dominos.dk/" target="_blank"><img src="./imgs/sponsorer/dominos.png" width="100%" /></a><br/>
+				
+				<div style="width:375px;margin-top:10px;padding:15px;min-height:200px">
+					<span style="font-size: 19px">
+						Lidt info om levering af pizza og hvordan man bestiller og betaler
+					</span>
+				</div>
+				
+				
+				<a href="http://dominos.dk/" target="_blank"><img src="./imgs/sponsorer/dominos.png" width="100%" /></a>
+			</div>
+	
+		<?php } ?>
 	</div>
 </div>

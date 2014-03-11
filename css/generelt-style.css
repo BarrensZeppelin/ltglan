@@ -205,6 +205,13 @@ li#servere img{
 	border:none;
 }
 
+li#logout img{
+	margin-top:-5px;
+	margin-right:5px;
+	float:left;
+	border:none;
+}
+
 
 
 ----------------------

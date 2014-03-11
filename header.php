@@ -29,12 +29,14 @@
 <div id="wrapper-menu">
 	<div class="navmenu">
 		<ul>
-			<li id="hjem" 		<?php if($_GET['p']=="front") echo ' class="aktiv"'; ?> 		><a href="<?php echo (verify_login() ? "./?logout" : "./"); ?>"><img src="imgs/menu/home.png" width="32" height="32" alt="hjem" /><span><?php echo (verify_login() ? "Log Ud" : "Forside"); ?></span></a></li>
+			<li id="hjem" 		<?php if($_GET['p']=="front") echo ' class="aktiv"'; ?> 		><a href="./?p=front"><img src="imgs/menu/home.png" width="32" height="32" alt="hjem" /><span>Forside</span></a></li>
 			<li id="turneringer"<?php if($_GET['p']=="tournaments") echo ' class="aktiv"'; ?> 	><a href="./?p=tournaments"><img src="imgs/menu/turneringer.png" width="32" height="32" alt="turneringer" />Turneringer</a></li>
 			<li id="galleri" 	<?php if($_GET['p']=="gallery") echo ' class="aktiv"'; ?> 		><a href="./?p=gallery&page=1"><img src="imgs/menu/galleri.png" width="32" height="32" alt="galleri" />Galleri</a></li>
-			<li id="servere" 	<?php if($_GET['p']=="servers") echo ' class="aktiv"'; ?> 		><a href="./?p=servers"><img src="imgs/menu/servere.png" width="32" height="32" alt="omkring" />Servere</a></li>
+			<!--<li id="servere" 	<?php if($_GET['p']=="servers") echo ' class="aktiv"'; ?> 		><a href="./?p=servers"><img src="imgs/menu/servere.png" width="32" height="32" alt="omkring" />Servere</a></li>-->
 			<li id="omkring" 	<?php if($_GET['p']=="about") echo ' class="aktiv"'; ?> 		><a href="./?p=about"><img src="imgs/menu/omkring.png" width="32" height="32" alt="omkring" />Omkring</a></li>
-			<!--<li id="kontakt" 	<?php //if($_GET['p']=="contact") echo ' class="aktiv"'; ?> 		><a href="kontakt.html"><img src="imgs/menu/kontakt.png" width="32" height="32" alt="log ud" />Kontakt</a></li>-->
+			<?php if(verify_login()) { ?>
+				<li id="logout">																	 <a href="./?logout"><img src="imgs/menu/log-ud.png" width="32" height="32" alt="log ud" />Log ud</a></li>
+			<?php } ?>
 		</ul>
 	</div>
 </div>

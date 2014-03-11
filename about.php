@@ -1,6 +1,6 @@
 <div class="wrapper-midten" id="omkring">
-	<div id="wrapper-omkring-alt">
-		<div id="wrapper-omkring-oversigt">
+	<div id="wrapper-omkring-alt" style="text-align:center">
+		<div id="wrapper-omkring-oversigt" style="text-align:left">
 			<div class="omkring-overskrift">
 				<p class="o-overskrift" align="center">Særlig tak til</p>
 			</div>
@@ -32,7 +32,7 @@
 				<p class="o-overskrift" align="center">Sponsorer</p>
 			</div>
 			<div class="wrapper-o-tekst">
-				<p>
+				<p style="font-size: 40px">
 					<a href="http://dominos.dk/" target="_blank">Domino's Pizza</a><br/>
 					<a href="http://fcomputer.dk/" target="_blank">Føniks Computer</a>
 				</p>

@@ -10,7 +10,7 @@
 #wrapper-omkring-oversigt{ /*Rammen til den venstre-del af siden*/
 	width:603px;
 	height:auto;
-	float:left;
+	margin:0 150px;
 }
 
 p.o-overskrift{

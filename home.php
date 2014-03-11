@@ -16,7 +16,7 @@
 	}
 	
 	if(verify_login()) {
-		$allowedpages = array("tournaments", "about", "gallery", "servers");
+		$allowedpages = array("front", "tournaments", "about", "gallery", "servers");
 		if(!isset($_GET['p']) || !in_array($_GET['p'], $allowedpages)) { // $_GET['page'] bliver allerede brugt
 			header("Location: ./?p=tournaments");
 			exit;
