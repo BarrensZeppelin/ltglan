@@ -5,16 +5,7 @@
 	}
 
 
-
-	/*$mconnect = mysql_connect("localhost", "ltglanweblogin", "godtpass"); //
-	if(!$mconnect) {
-		die("ERROR! Unable to connect to MySQL.");
-	}
-	mysql_select_db("ltglan") or die("ERROR! Unable to select database!");*/
-
-
-	$mconnect = mysql_connect("localhost", "root", ""); //
-	if(!$mconnect) {
+	if(!mysql_connect("localhost", "root", "")) {
 		die("ERROR! Unable to connect to MySQL.");
 	}
 	mysql_select_db("ltglan") or die("ERROR! Unable to select database!");
