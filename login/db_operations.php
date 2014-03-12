@@ -74,6 +74,13 @@ function slet_hold($holdid) {
 	///////////////////////////////////
 	
 	
+	// Find guest ids of deltagere
+	$dguestids = array();
+	$query = mysql_query("SELECT * FROM deltagere WHERE team_id=". $team['id']);
+	while( $d = mysql_fetch_array($query) ) {
+		$dguestids[] = $d['guest_id'];
+	}
+	
 	
 	$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=". $team['tournament_id']), 0);
 	
@@ -84,6 +91,11 @@ function slet_hold($holdid) {
 	mysql_query("DELETE FROM invites WHERE team_id=" . $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM teams WHERE id=" . $team['id']) or die(mysql_error());
 	mysql_query("DELETE FROM beskeder WHERE indhold LIKE '%" . $team["navn"] . "%" . $turnering_navn . "%'") or die(mysql_error());
+	
+	// Delete messages about tournament from participating guests
+	for($i = 0; $i < count($dguestids); $i++) {
+		mysql_query("DELETE FROM beskeder WHERE modtager_id=". $dguestids[$i] ." AND indhold LIKE '%$turnering_navn%'") or die(mysql_error());
+	}
 }
 
 

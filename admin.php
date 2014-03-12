@@ -114,6 +114,11 @@
 					$c->makeCall("tournaments/". $mt['bracketlink'], array(), "delete");
 					
 					mysql_query("UPDATE tournaments SET bracketlink='' WHERE id=". $mt['id']) or die(mysql_error());
+					
+					$query = mysql_query("SELECT * FROM teams WHERE tournament_id=$tid") or die(mysql_error());
+					while( $t = mysql_fetch_array($query) ) {
+						mysql_query("DELETE FROM beskeder WHERE modtager_id=". $t['leader_id'] ." AND indhold LIKE '%midlertidig bracket%". $mt['navn'] ."%'") or die(mysql_error());
+					}
 				}
 			
 			} else if(isset($_GET['create_bracket'])) {
@@ -158,11 +163,12 @@
 						$i++;
 					}
 					
+					
 					// Send besked til alle teams i turneringen
 					$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $mt['id']);
 					while($team = mysql_fetch_array($query)) {
-						send_message($team['leader_id'], "En midlertidig bracket er blevet oprettet for ". $mt['navn'] ."-turneringen. Er dit hold ikke fyldt (Accepteret/Grønt) når turneringen starter, bliver dit hold slettet og holdet deltager ikke i turneringen.", -1);
-						if($team['teamstatus'] == "Pending") send_message($team['leader_id'], "Du vil først kunne se dit hold i turneringsbracket\'en, når det er fyldt helt op.", -1);
+						send_message($team['leader_id'], "En midlertidig bracket er blevet oprettet for ". $mt['navn'] ."-turneringen. Er dit hold ikke fyldt (Accepteret/Grønt) når turneringen starter, bliver dit hold slettet og holdet deltager ikke i turneringen. 
+						På samme måde optræder holdet først i bracket\'en, når det er fyldt helt op.", -1);
 					}
 					
 					
@@ -184,8 +190,8 @@
 					$query = mysql_query("SELECT * FROM teams WHERE tournament_id=". $mt['id']);
 					while($team = mysql_fetch_array($query)) {
 						if($team['teamstatus'] == "Pending") {
-							send_message($team['leader_id'], $mt['navn'] ."-turneringen er startet og dit hold var ikke fyldt, det betyder, at I desværre ikke kommer med i turneringen.", -1);
 							slet_hold($team['id']);
+							send_message($team['leader_id'], $mt['navn'] ."-turneringen er startet og dit hold var ikke fyldt, det betyder, at I desværre ikke kommer med i turneringen.", -1);
 						} else {
 							send_message($team['leader_id'], $mt['navn'] ."-turneringen er startet og I kan se de endelige brackets nu. Held og lykke!", -1);
 						}
