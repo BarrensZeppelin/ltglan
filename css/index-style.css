@@ -4,12 +4,13 @@
 /*Index og forside*/
 /*Venstre side af index og forsiden*/
 #forside-v{
-	width:375px;
-	height:630px;
-	float:left;
-	padding-left:30px;
-	padding-right:110px;
-	line-height:normal;
+	width: 375px;
+	display: inline-blockl;
+	float: left;
+	padding-left: 30px;
+	padding-right: 110px;
+	margin-bottom: 20px;
+	line-height: normal;
 	font: Arial, Helvetica, sans-serif;
 }
 
