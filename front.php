@@ -75,12 +75,24 @@
 			</div>
 		<?php } else { ?>
 		
-			<div style="width:400px;padding-top: 50px;margin-right:40px;">
+			<div style="width:400px;padding-top: 30px;margin-right:40px;">
 				<a href="http://dominos.dk/" target="_blank"><img src="./imgs/sponsorer/dominos.png" width="100%" /></a><br/>
 				
 				<div style="width:375px;margin-top:10px;padding:15px;min-height:200px">
 					<span style="font-size: 19px">
-						Lidt info om levering af pizza og hvordan man bestiller og betaler
+						Domino's Pizza leverer direkte til LTG!<br/> Det sker på disse tidspunkter:<br/>
+						<br/>
+						<div style="text-align:center;width:100%;font-weight:bold;font-size:30px">
+						Fredag kl. 20:30<br/>
+						Lørdag kl. 13:00<br/>
+						Lørdag kl. 20:00
+						</div>
+						<br/>
+						<span style="font-size: 14px">
+							Vil man benytte tilbuddet, skal man senest bestille og betale sin pizza 1 time inden det estimerede leveringstidspunkt.<br/>
+							<br/>
+							Betaling foregår enten kontant, igennem MobilePay eller på kreditkort. Tjek deres menu ud, så ses vi!
+						</span>
 					</span>
 				</div>
 				
