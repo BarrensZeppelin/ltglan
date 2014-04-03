@@ -80,8 +80,14 @@
 			if(isset($_SESSION['cmms'])) {
 				if($_SESSION['cmms']) {
 					echo "<style>
+						body {
+							background: url('./imgs/bg6.gif');
+							background-size: 25% 33.33%;
+						}
+					
 						body div{ 
 							font-family: \"Comic Sans MS\" !important;
+							color: lime;
 						}
 						
 						body div a{ 
@@ -90,6 +96,11 @@
 						
 						body div p{ 
 							font-family: \"Comic Sans MS\" !important;
+						}
+						
+						body #wrapper {
+							background: url('./imgs/bg9.gif') !important;
+							background-size: 100% !important;
 						}
 						</style>";
 				}

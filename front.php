@@ -16,7 +16,7 @@
 					I år takker vi <a target="_blank" href="http://fcomputer.dk/">Føniks</a> for at være så venlige at sponsorere præmier til os, tjek dem ud!<br/><br/> 
 					
 					Desuden takker vi <a target="_blank" href="http://dominos.dk/">Domino's</a> for et flot tilbud på pizza-levering fredag aften & lørdag, mere info følger i velkomsttalen og på <a target="_blank" href="https://www.facebook.com/events/632966440097615/">event-siden</a> på facebook.
-					Vinderne af CS:GO & LoL-turneringerne kan også glæde sig over 200,- gavekort til Domino's restauranter. (;
+					Vinderne af CS:GO & LoL-turneringerne kan også glæde sig over gavekort til Domino's restauranter.
 				</span>
 			</div>
 		</div>
@@ -75,23 +75,28 @@
 			</div>
 		<?php } else { ?>
 		
-			<div style="width:400px;padding-top: 30px;margin-right:40px;">
+			<div style="width:400px;padding-top: 10px;padding-bottom: 50px;margin-right:40px;">
 				<a href="http://dominos.dk/" target="_blank"><img src="./imgs/sponsorer/dominos.png" width="100%" /></a><br/>
 				
 				<div style="width:375px;margin-top:10px;padding:15px;min-height:200px">
 					<span style="font-size: 19px">
-						Domino's Pizza leverer direkte til LTG!<br/> Det sker på disse tidspunkter:<br/>
+						Domino's Pizza leverer direkte til LTG med <div style="font-size:35px;display:inline-block;width:100%;text-align:center">30% rabat!</div><br/><br/> Det sker på disse tidspunkter:<br/>
 						<br/>
 						<div style="text-align:center;width:100%;font-weight:bold;font-size:30px">
 						Fredag kl. 20:30<br/>
-						Lørdag kl. 13:00<br/>
-						Lørdag kl. 20:00
+						Lørdag kl. 16:00<br/>
+						Lørdag kl. 20:30
 						</div>
 						<br/>
 						<span style="font-size: 14px">
-							Vil man benytte tilbuddet, skal man senest bestille og betale sin pizza 1 time inden det estimerede leveringstidspunkt.<br/>
+							Vil man benytte tilbuddet, skal man senest bestille og betale sin pizza 1 time inden det estimerede leveringstidspunkt. 
+							Domino's medarbejdere vil kunne ses i Domino's trøjer igennem hele eventet.<br/>
 							<br/>
-							Betaling foregår enten kontant, igennem MobilePay eller på kreditkort. Tjek deres menu ud, så ses vi!
+							Betaling foregår enten kontant, igennem MobilePay eller på kreditkort. Tjek vores menu ud, så ses vi!
+						</span>
+						<br/>
+						<span style="font-size: 11px;">
+							Bestilling og betaling skal ske på stedet og ikke via <i>dominos.dk</i>
 						</span>
 					</span>
 				</div>

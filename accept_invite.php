@@ -28,6 +28,6 @@
 	// Opret deltageren
 	ny_deltager($userid, $team_id, $hash);
 	
-	header("Location: ./");
+	header("Location: ./?p=tournaments");
 	die("Du er nu medlem af holdet $team_navn");
 ?>

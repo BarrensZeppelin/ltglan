@@ -15,7 +15,7 @@
 	
 	$turnering_navn = mysql_result(mysql_query("SELECT navn FROM tournaments WHERE id=$tid"), 0);
 	
-	$team = get_team(id);
+	$team = get_team($id);
 	
 	
 	$bruger = get_guest_wbilletnr(intval($_SESSION['billetnr']));
@@ -24,6 +24,6 @@
 		
 		header("Location: ./");
 		die("Dit hold er blevet slettet. Du omdirigeres til hovedsiden om 2 sekunder.");
-	}
+	} else die($bruger['id'] . " - " . $team['leader_id']);
 	
 ?>

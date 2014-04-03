@@ -29,7 +29,7 @@
 	
 	$turnering = get_tournament($id);
 	
-	if($turnering['active'] != 1) {
+	if($turnering['active'] != 1 && $turnering['reg_open'] == 1) {
 		post_to("./?p=tournaments", array("alert" => "Denne turnering er ikke aktiv."));
 	}
 	
