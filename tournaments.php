@@ -131,7 +131,6 @@
 	}
 	
 	$(document).ready(function() {
-	
 		// Sætter AJAX op til bl.a. ikke at være asynkront
 		$.ajaxSetup({
 			cache: false,
@@ -154,11 +153,7 @@
 				effect: "fade",
 				duration: 400
 			},
-			/*hide: {
-				effect: "puff",
-				duration: 200
-			},*/
-			close: function() {document.getElementById("dialog").innerHTML = "";}
+			close: function() {$( "#dialog ").html("");}
 		});
 	});
 	
@@ -513,7 +508,6 @@
 	} else if($_GET["page"] == "bracket") {
 		if(!isset($_GET["turl"])) { toIndex(); }
 		$challonge_url = $_GET["turl"];
-		//echo '<iframe src="'. $challonge_url .'/module" style="width:925px;height:580px;margin:0px;" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>';
 		
 		?>
 		

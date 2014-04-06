@@ -45,9 +45,6 @@
 	
 	
 	
-	
-	
-	
 	$extramessage = "";
 	
 	$turnering_navn = $turnering["navn"];
