@@ -283,7 +283,7 @@ li#logout img{
 }
 	/*index.html og forside.html*/
 	.wrapper-midten#index-forside{
-		height:630px;
+		display:inline-block;
 		padding-top:30px;
 	}
 	

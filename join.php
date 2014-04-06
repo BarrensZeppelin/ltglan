@@ -29,7 +29,7 @@
 	
 	$turnering = get_tournament($id);
 	
-	if($turnering['active'] != 1) {
+	if($turnering['active'] != 1 && $turnering['reg_open'] == 1) {
 		post_to("./?p=tournaments", array("alert" => "Denne turnering er ikke aktiv."));
 	}
 	
@@ -184,7 +184,7 @@
 			send_message($userid, "Du inviterede ". $guest['navn'] ." til $holdnavn i ". $turnering_navn ."-turneringen.", -1);
 		}
 		
-		header("Location: ./");
+		header("Location: ./?p=tournaments");
 		die($extramessage . "Dit hold er blevet oprettet og der er blevet sendt invites ud til dem du har inviteret. Du vil automatisk blive redirected.");
 	}
 ?>

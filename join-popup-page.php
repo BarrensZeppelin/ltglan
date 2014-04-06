@@ -199,7 +199,7 @@
 									<td>
 										<b>Rules & Format:</b>
 									</td>
-									<td style="border: 1px solid black; width: auto; padding:4px;">
+									<td style="border: 1px solid black; width: auto; padding:4px;font-size:14px">
 										<?php echo $rules; ?>
 									</td>
 									<td>
