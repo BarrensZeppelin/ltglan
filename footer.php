@@ -7,12 +7,7 @@
 	 <div id="footer-box2">
 		<?php if(isset($_SESSION["admin"]) && $_SESSION["admin"]) {
 				echo "<p align='center'><a class='dogelink' target='blank' href='./admin.php'>Vær Admin :D</a></p>";
-			} 
-			
-			/*if(isset($_SESSION['cmms']) && $_SESSION['cmms']) {
-				?> <iframe style="display:inline-block;border: 0; width: 300px; height: 42px;" src="http://bandcamp.com/EmbeddedPlayer/album=61306845/size=small/bgcol=333333/linkcol=ffffff/transparent=true/" seamless><a href="http://atismuskk.bandcamp.com/album/den-gyldne-br-nd">Den Gyldne Brønd by AtisMuskk</a></iframe> <?php 
-			} else if*/
-			if(!isset($_SESSION["admin"]) || $_SESSION["admin"] == false) {
+			} else {
 				echo '
 				<p align="center" id="footer-kontakt">
 					HTX LAN LTG
