@@ -13,7 +13,7 @@
 		$pass = mysql_real_escape_string($_POST["pass"]);
 		$klasse = mysql_real_escape_string($_POST["klasse"]);
 		
-		$navn = ucwords(strtolower($navn)); //Fikser navnet, sa det forste bogstav star med stort, og resten er smat.
+		$navn = ucwords(strtolower($navn)); //Fikser navnet, sa det første bogstav star med stort, og resten er småt.
 		
 		$pass_hashed = md5($pass);
 		
@@ -23,11 +23,9 @@
 		if(!in_array($klasse, $klassearray)) {
 			post_to("./?p=front", array("alert" => "Den klasse kunne ikke findes."));
 		}
-		
 		if(mysql_num_rows(mysql_query("SELECT * FROM guests WHERE billetnr=$billet_nr"))!=0) {
 			post_to("./?p=front", array("alert" => "Dette billetnummer er allerede blevet registreret."));
 		}
-		
 		if(mysql_num_rows(mysql_query("SELECT * FROM billetnr WHERE billetnr=$billet_nr"))==0) {
 			post_to("./?p=front", array("alert" => "Dette billetnummer kunne ikke findes i databasen."));
 		}
@@ -50,7 +48,7 @@
 		
 		header("Location: ./");
 		echo "Brugeren er registret. Siden omdirigerer dig automatisk.";
-	}
+	} else header("Location: ./");
 	
 	
 ?>

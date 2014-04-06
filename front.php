@@ -55,7 +55,9 @@
 					<select name="klasse">
 						<?php
 							$klassearray = get_klasse_array();						
-							for($i = 0; $i<sizeof($klassearray); $i++) {echo '<option value="' . $klassearray[$i] . '">' . $klassearray[$i] . '</option>';}
+							for($i = 0; $i<sizeof($klassearray); $i++) {
+								echo '<option value="' . $klassearray[$i] . '">' . $klassearray[$i] . '</option>';
+							}
 						?>
 					</select>
 					</div>

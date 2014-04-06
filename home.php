@@ -1,9 +1,6 @@
 <?php
 	$klassearray = get_klasse_array();
 
-	// TEST MOED
-	//if(isset($_SESSION['billetnr'])) {if($_SESSION['billetnr'] != 000000 && $_SESSION['billetnr'] != 000001 && $_SESSION['billetnr'] != 000002) {die("Please come back later.");}}
-
 	if(isset($_GET['cmms'])) {
 		if(!isset($_SESSION['cmms'])) {
 			$_SESSION['cmms'] = true;
